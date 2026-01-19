@@ -37,15 +37,15 @@ create table Agg_Promotore (
      constraint ID_Agg_Promotore_ID primary key (Codice_Promotore, Codice_Richiesta));
 
 create table Ambito (
-     Nome char(1) not null,
+     Nome varchar(30) not null,
      Colore varchar(10) not null,
      constraint ID_Ambito_ID primary key (Nome));
 
 create table Cambiare_Orario (
      Codice_Orario numeric(10) not null,
      Codice_Ric numeric(10) not null,
-     Nuovo_Inizio date,
-     Nuovo_Fine date,
+     Nuovo_Inizio datetime,
+     Nuovo_Fine datetime,
      Codice_Luogo numeric(10),
      constraint ID_Cambiare_Orario_ID primary key (Codice_Orario, Codice_Ric));
 
@@ -54,8 +54,8 @@ create table Canale (
      Codice numeric(10) not null,
      Nome varchar(30) not null,
      Grado numeric(1) not null,
-     Visualizzare char not null,
-     Visualizzare_Tutti char not null,
+     Visualizzare TINYINT(1) not null,
+     Visualizzare_Tutti TINYINT(1) not null,
      constraint ID_Canale_ID primary key (Cod_Forum, Codice));
 
 create table Citta (
@@ -67,7 +67,7 @@ create table Citta (
 create table Classe (
      Codice_Uni numeric(10) not null,
      Codice_Stanza numeric(4,3) not null,
-     Lab char not null,
+     Lab TINYINT(1) not null,
      constraint ID_Class_Unive_ID primary key (Codice_Uni, Codice_Stanza));
 
 create table Collaboratore (
@@ -78,7 +78,7 @@ create table Collaboratore (
 create table Composto_Da (
      Codice_PianoDid numeric(10) not null,
      Cod_Mat_Anno numeric(10) not null,
-     Superato char not null,
+     Superato TINYINT(1) not null,
      constraint ID_Composto_Da_ID primary key (Cod_Mat_Anno, Codice_PianoDid));
 
 create table Corso (
@@ -86,7 +86,7 @@ create table Corso (
      Nome varchar(30) not null,
      Descrizione varchar(510) not null,
      Colore varchar(10) not null,
-     Ambito char(1) not null,
+     Ambito varchar(30) not null,
      constraint ID_Corso_ID primary key (Codice));
 
 create table Elemento (
@@ -120,8 +120,8 @@ create table Esterno (
 create table Evento (
      Codice numeric(10) not null,
      Nome varchar(30) not null,
-     Inizio date not null,
-     Fine date not null,
+     Inizio datetime not null,
+     Fine datetime not null,
      Posti numeric(6) not null,
      Descrizione varchar(510) not null,
      CF varchar(16) not null,
@@ -130,7 +130,7 @@ create table Evento (
 create table Formato_Da (
      Codice_Mat numeric(10) not null,
      Codice_Corso numeric(10) not null,
-     Obbligatorio char not null,
+     Obbligatorio TINYINT(1) not null,
      Grado numeric(1) not null,
      Periodo numeric(1) not null,
      CFU numeric(2) not null,
@@ -142,9 +142,9 @@ create table Forum (
      constraint ID_Forum_ID primary key (Codice));
 
 create table Immagine (
-     Path varchar(255) not null,
+     `Path` varchar(255) not null,
      Descrizione varchar(510),
-     constraint ID_Immagine_ID primary key (Path));
+     constraint ID_Immagine_ID primary key (`Path`));
 
 create table Indirizzo (
      Codice_Prov varchar(5) not null,
@@ -156,13 +156,13 @@ create table Indirizzo (
 
 create table Inoltrare_Messaggio (
      Cod_Unico varchar(10) not null,
-     Path varchar(255) not null,
-     constraint ID_Inoltrare_Messaggio_ID primary key (Path, Cod_Unico));
+     `Path` varchar(255) not null,
+     constraint ID_Inoltrare_Messaggio_ID primary key (`Path`, Cod_Unico));
 
 create table Inoltrare_Thread (
      Cod_Unico varchar(10) not null,
-     Path varchar(255) not null,
-     constraint ID_Inoltrare_Thread_ID primary key (Cod_Unico, Path));
+     `Path` varchar(255) not null,
+     constraint ID_Inoltrare_Thread_ID primary key (Cod_Unico, `Path`));
 
 create table Insegna (
      Cod_Mat_Anno numeric(10) not null,
@@ -184,7 +184,7 @@ create table Materia (
 create table Materia_Anno (
      Cod_Mat_Anno numeric(10) not null,
      Codice_Mat numeric(10) not null,
-     Anno date not null,
+     Anno year not null,
      constraint SID_Materia_Anno_ID unique (Codice_Mat, Anno),
      constraint ID_Materia_Anno_ID primary key (Cod_Mat_Anno));
 
@@ -193,11 +193,11 @@ create table Messaggio (
      Codice numeric(10) not null,
      Cod_Unico_Thread varchar(10) not null,
      Testo varchar(60000) not null,
-     Data date not null,
+     Data datetime not null,
      Likes numeric(10) not null,
      Dislike numeric(10) not null,
-     Pin char not null,
-     Pin_Speciale char not null,
+     Pin TINYINT(1) not null,
+     Pin_Speciale TINYINT(1) not null,
      Messaggio_Puntato varchar(10),
      Matricola numeric(10) not null,
      constraint ID_Messaggio_ID primary key (Cod_Unico),
@@ -206,8 +206,8 @@ create table Messaggio (
 create table Modulo (
      Cod_Mat_Anno numeric(10) not null,
      Codice numeric(10) not null,
-     Inizio_Modulo date not null,
-     Fine_Modulo date not null,
+     Inizio_Modulo datetime not null,
+     Fine_Modulo datetime not null,
      Descrizione varchar(510) not null,
      Matricola_Tit numeric(10) not null,
      constraint ID_Modulo_ID primary key (Cod_Mat_Anno, Codice));
@@ -215,7 +215,7 @@ create table Modulo (
 create table Notifica (
      Codice numeric(10) not null,
      Descizione varchar(510) not null,
-     Chiusa char not null,
+     Chiusa TINYINT(1) not null,
      Matricola numeric(10) not null,
      constraint ID_Notifica_ID primary key (Codice));
 
@@ -223,10 +223,10 @@ create table Orario (
      Codice numeric(10) not null,
      Cod_Mat_Anno numeric(10) not null,
      Codice_Modulo numeric(10) not null,
-     Orario_inizio date not null,
+     Orario_inizio datetime not null,
      Codice_Uni numeric(10) not null,
      Codice_Stanza numeric(4,3) not null,
-     Orario_fine date not null,
+     Orario_fine datetime not null,
      constraint SID_Orario_1_ID unique (Cod_Mat_Anno, Codice_Modulo, Orario_inizio),
      constraint SID_Orario_ID unique (Codice_Uni, Codice_Stanza, Orario_inizio),
      constraint ID_Orario_ID primary key (Codice));
@@ -234,9 +234,9 @@ create table Orario (
 create table Orario_Evento (
      Codice numeric(10) not null,
      Codice_Evento numeric(10) not null,
-     Inizio date not null,
+     Inizio datetime not null,
      Cod_Luogo numeric(10) not null,
-     Fine date not null,
+     Fine datetime not null,
      constraint SID_Orario_Evento_1_ID unique (Codice_Evento, Inizio),
      constraint SID_Orario_Evento_ID unique (Cod_Luogo, Inizio),
      constraint ID_Orario_Evento_ID primary key (Codice));
@@ -253,7 +253,7 @@ create table Persona (
 
 create table Piano_Didattico (
      Codice_PianoDid numeric(10) not null,
-     Anno date not null,
+     Anno year not null,
      Codice_Corso numeric(10) not null,
      Matricola numeric(10) not null,
      constraint ID_Piano_Didattico_ID primary key (Codice_PianoDid),
@@ -288,9 +288,9 @@ create table Rappresentano (
 
 create table Ricevimento (
      Codice numeric(10) not null,
-     Online char not null,
-     Data_Inizio date not null,
-     Data_Fine date not null,
+     `Online` TINYINT(1) not null,
+     Data_Inizio datetime not null,
+     Data_Fine datetime not null,
      N_Slot numeric(3) not null,
      Codice_Uni numeric(10),
      Codice_Stanza numeric(4,3),
@@ -312,8 +312,8 @@ create table Richiesta_Evento (
 create table Richiesta_Orario (
      Codice numeric(10) not null,
      Tipo varchar(20) not null,
-     Data_Inizio date,
-     Data_Fine date,
+     Data_Inizio datetime,
+     Data_Fine datetime,
      Codice_Orario numeric(10),
      Cod_Mat_Anno numeric(10),
      Codice_Modulo numeric(10),
@@ -324,7 +324,7 @@ create table Richiesta_Orario (
 
 create table Richiesta_Ricevimento (
      Codice numeric(10) not null,
-     Inserimento char not null,
+     Inserimento TINYINT(1) not null,
      Matricola numeric(10) not null,
      Codice_Ric numeric(10),
      N_Slot numeric(3),
@@ -380,12 +380,12 @@ create table Thread (
      Codice numeric(10) not null,
      Titolo varchar(20) not null,
      Testo varchar(60000) not null,
-     Data date not null,
+     Data datetime not null,
      Likes numeric(10) not null,
      Dislike numeric(10) not null,
-     Pin char not null,
-     Chiuso char not null,
-     No_Reply char not null,
+     Pin TINYINT(1) not null,
+     Chiuso TINYINT(1) not null,
+     No_Reply TINYINT(1) not null,
      Thread_Puntato varchar(10),
      Matricola numeric(10) not null,
      constraint SID_Thread_ID unique (Cod_Forum, Cod_Canale, Codice),
@@ -526,16 +526,16 @@ alter table Indirizzo add constraint REF_Indir_Citta
      references Citta(Codice_Prov, Codice);
 
 alter table Inoltrare_Messaggio add constraint REF_Inolt_Immag_1
-     foreign key (Path)
-     references Immagine(Path);
+     foreign key (`Path`)
+     references Immagine(`Path`);
 
 alter table Inoltrare_Messaggio add constraint REF_Inolt_Messa_FK
      foreign key (Cod_Unico)
      references Messaggio(Cod_Unico);
 
 alter table Inoltrare_Thread add constraint REF_Inolt_Immag_FK
-     foreign key (Path)
-     references Immagine(Path);
+     foreign key (`Path`)
+     references Immagine(`Path`);
 
 alter table Inoltrare_Thread add constraint REF_Inolt_Threa
      foreign key (Cod_Unico)
@@ -874,22 +874,22 @@ create unique index ID_Forum_IND
      on Forum (Codice);
 
 create unique index ID_Immagine_IND
-     on Immagine (Path);
+     on Immagine (`Path`);
 
 create unique index ID_Indirizzo_IND
      on Indirizzo (Codice_Prov, Codice_Citta, N_Civico);
 
 create unique index ID_Inoltrare_Messaggio_IND
-     on Inoltrare_Messaggio (Path, Cod_Unico);
+     on Inoltrare_Messaggio (`Path`, Cod_Unico);
 
 create index REF_Inolt_Messa_IND
      on Inoltrare_Messaggio (Cod_Unico);
 
 create unique index ID_Inoltrare_Thread_IND
-     on Inoltrare_Thread (Cod_Unico, Path);
+     on Inoltrare_Thread (Cod_Unico, `Path`);
 
 create index REF_Inolt_Immag_IND
-     on Inoltrare_Thread (Path);
+     on Inoltrare_Thread (`Path`);
 
 create unique index ID_Insegna_IND
      on Insegna (Cod_Mat_Anno, Matricola);
