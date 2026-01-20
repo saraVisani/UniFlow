@@ -409,6 +409,253 @@ create table Universitario (
      constraint ID_Universitario_ID primary key (Codice_Uni, Codice),
      constraint SID_Unive_Luogo_ID unique (Cod_Luogo));
 
+# ---------------------------------------------------------------------- #
+# Add info into "Canale"                                                 #
+# ---------------------------------------------------------------------- #
+
+truncate table Canale;
+
+# ---------------------------------------------------------------------- #
+# Add info into "Forum"                                                  #
+# ---------------------------------------------------------------------- #
+
+truncate table Forum;
+
+insert into Forum values ("0", "Forum Professori");
+insert into Forum values ("1", "Forum Studenti");
+insert into Forum values ("2", "Forum Generale");
+
+# ---------------------------------------------------------------------- #
+# Add info into "Esterno"                                                #
+# ---------------------------------------------------------------------- #
+
+truncate table Esterno;
+
+insert into Esterno values ("0","CA", "CA", "41", "0");
+insert into Esterno values ("1","VE", "JE", "110", "1");
+insert into Esterno values ("2","AP", "AP", "45", "2");
+insert into Esterno values ("3","TN", "AL", "108", "3");
+insert into Esterno values ("4","TP", "SN", "142", "4");
+insert into Esterno values ("5","AN", "FO", "50", "5");
+insert into Esterno values ("6","GE", "ZO", "146", "6");
+insert into Esterno values ("7","FR", "CM", "131", "7");
+insert into Esterno values ("8","RC", "RC", "116", "8");
+insert into Esterno values ("9","BT", "AN", "84", "9");
+insert into Esterno values ("10","CA", "CA", "117", "10");
+insert into Esterno values ("11","MI", "MI", "18", "11");
+insert into Esterno values ("12","VE", "VE", "54", "12");
+insert into Esterno values ("13","CN", "CA", "129", "13");
+insert into Esterno values ("14","FR", "CM", "12", "14");
+
+# ---------------------------------------------------------------------- #
+# Add info into "Indirizzo"                                              #
+# ---------------------------------------------------------------------- #
+
+truncate table indirizzo;
+
+insert into Indirizzo values ("CA","CA", "41", "Strada", "Centrale");
+insert into Indirizzo values ("VE","JE", "110", "Viale", "Alto");
+insert into Indirizzo values ("AP","AP", "45", "Vicolo", "Giacomo Leopardi");
+insert into Indirizzo values ("TN","AL", "108", "Contrada", "Moderno");
+insert into Indirizzo values ("TP","SN", "142", "Galleria", "Cesare Battisti");
+insert into Indirizzo values ("AN","FO", "50", "Calle", "Università");
+insert into Indirizzo values ("GE","ZO", "146", "Via", "della Libertà");
+insert into Indirizzo values ("FR","CM", "131", "Largo", "San Giuseppe");
+insert into Indirizzo values ("RC","RC", "116", "Salita", "Ferrovia");
+insert into Indirizzo values ("BT","AN", "84", "Viale", "del Mare");
+insert into Indirizzo values ("CA","CA", "117", "Strada", "Marco Polo");
+insert into Indirizzo values ("MI","MI", "18", "Via", "San Francesco");
+insert into Indirizzo values ("VE","VE", "54", "Piazzale", "della Chiesa");
+insert into Indirizzo values ("CN","CA", "129", "Calle", "della Resistenza");
+insert into Indirizzo values ("FR","CM", "12", "Galleria", "Centrale");
+
+# ---------------------------------------------------------------------- #
+# Add info into "Citta"                                                  #
+# ---------------------------------------------------------------------- #
+     
+truncate table Citta;
+
+insert into Citta values ("AO","AO","Aosta");
+insert into Citta values ("AO","DO","Donnas");
+insert into Citta values ("TO","TO","Torino");
+insert into Citta values ("TO","FR","Front");
+insert into Citta values ("AT","AT","Asti");
+insert into Citta values ("AT","CO","Corsione");
+insert into Citta values ("CN","CN","Cuneo");
+insert into Citta values ("CN","CA","Carrù");
+insert into Citta values ("MI","MI","Milano");
+insert into Citta values ("MI","RH","Rho");
+insert into Citta values ("CO","CO","Como");
+insert into Citta values ("CO","ST","Stazzona");
+insert into Citta values ("MN","MN","Mantova");
+insert into Citta values ("MN","CG","Castel Goffredo");
+insert into Citta values ("CR","CR","Cremona");
+insert into Citta values ("CR","SB","San Bassano");
+insert into Citta values ("BZ","BZ","Bolzano");
+insert into Citta values ("BZ","CH","Chiusa");
+insert into Citta values ("TN","TN","Trento");
+insert into Citta values ("TN","AL","Ala");
+insert into Citta values ("VE","VE","Venezia");
+insert into Citta values ("VE","JE","Jesolo");
+insert into Citta values ("PD","PD","Padova");
+insert into Citta values ("PD","PS","Piove di Sacco");
+insert into Citta values ("VR","VR","Verona");
+insert into Citta values ("VR","ER","Erbe");
+insert into Citta values ("GO","GO","Gorizia");
+insert into Citta values ("GO","MO","Mossa");
+insert into Citta values ("UD","UD","Udine");
+insert into Citta values ("UD","TR","Tricesino");
+insert into Citta values ("TS","TS","Trieste");
+insert into Citta values ("TS","MU","Muggia");
+insert into Citta values ("GE","GE","Genova");
+insert into Citta values ("GE","ZO","Zoagli");
+insert into Citta values ("SP","SP","La Spezia");
+insert into Citta values ("SP","BE","Beverino");
+insert into Citta values ("SV","SV","Savona");
+insert into Citta values ("SV","SS","Borghetto Santo Spirito");
+insert into Citta values ("BO","BO","Bologna");
+insert into Citta values ("BO","IM","Imola");
+insert into Citta values ("FC","FO","Forlì");
+insert into Citta values ("FC","CE","Cesena");
+insert into Citta values ("RA","RA","Ravenna");
+insert into Citta values ("RA","CB","Castel Bolognese");
+insert into Citta values ("AR","AR","Arezzo");
+insert into Citta values ("AR","PO","Poppi");
+insert into Citta values ("PI","PI","Pisa");
+insert into Citta values ("PI","GT","San Giuliano Terme");
+insert into Citta values ("FI","FI","Firenze");
+insert into Citta values ("FI","FR","Firenzuola");
+insert into Citta values ("PU","PE","Pesaro");
+insert into Citta values ("PU","UD","Udine");
+insert into Citta values ("AP","AP","Ascoli Piceno");
+insert into Citta values ("AP","CA","Carassai");
+insert into Citta values ("AN","AN","Ancona");
+insert into Citta values ("AN","FO","Force");
+insert into Citta values ("RM","RM","Roma");
+insert into Citta values ("RM","MO","Montegallo");
+insert into Citta values ("FR","FR","Frosinone");
+insert into Citta values ("FR","CM","Cupra Marittima");
+insert into Citta values ("RI","RI","Rieti");
+insert into Citta values ("RI","BS","Belmonte in Sabina");
+insert into Citta values ("AQ","AQ","L’Aquila");
+insert into Citta values ("AQ","SC","Scoppito");
+insert into Citta values ("CH","CH","Chieti");
+insert into Citta values ("CH","AR","Archi");
+insert into Citta values ("PG","PG","Perugia");
+insert into Citta values ("PG","FO","Force");
+insert into Citta values ("TR","TR","Terni");
+insert into Citta values ("TR","BA","Baschi");
+insert into Citta values ("NA","NA","Napoli");
+insert into Citta values ("NA","MS","Massa di Somma");
+insert into Citta values ("BN","BN","Benevento");
+insert into Citta values ("BN","MA","Montefiore dell'Aso");
+insert into Citta values ("SA","SA","Salerno");
+insert into Citta values ("SA","CO","Corbara");
+insert into Citta values ("CB","CB","Campobasso");
+insert into Citta values ("CB","TO","Toro");
+insert into Citta values ("BA","BA","Bari");
+insert into Citta values ("BA","TU","Turi");
+insert into Citta values ("BT","BA","Barletta");
+insert into Citta values ("BT","AN","Andria");
+insert into Citta values ("MT","MT","Matera");
+insert into Citta values ("MT","SJ","Scanzano Jonico");
+insert into Citta values ("PZ","PZ","Potenza");
+insert into Citta values ("PZ","CA","Carbone");
+insert into Citta values ("RC","RC","Reggio Calabria");
+insert into Citta values ("RC","PL","Plati");
+insert into Citta values ("KR","KR","Crotone");
+insert into Citta values ("KR","VE","Verzino");
+insert into Citta values ("PA","PA","Palermo");
+insert into Citta values ("PA","GR","Gratteri");
+insert into Citta values ("CT","CT","Catania");
+insert into Citta values ("CT","MI","Milo");
+insert into Citta values ("TP","TP","Trapani");
+insert into Citta values ("TP","SN","Santa Ninfa");
+insert into Citta values ("CA","CA","Cagliari");
+insert into Citta values ("CA","CP","Capoterra");
+insert into Citta values ("SS","SS","Sassari");
+insert into Citta values ("SS","MO","Mores");
+
+# ---------------------------------------------------------------------- #
+# Add info into "Luogo"                                                  #
+# ---------------------------------------------------------------------- #
+
+truncate table Luogo;
+
+insert into Luogo values ("0","75", "Spazio Cultura");
+insert into Luogo values ("1","100", "Anfiteatro");
+insert into Luogo values ("2","1960", "Spazio Cultura");
+insert into Luogo values ("3","115", "Palazzo della Cultura");
+insert into Luogo values ("4","90", "Campo Sportivo");
+insert into Luogo values ("5","43465", "Spazio Cultura");
+insert into Luogo values ("6","605", "Teatro Goldoni");
+insert into Luogo values ("7","530", "Cinema Moderno");
+insert into Luogo values ("8","3080", "Spazio Cultura");
+insert into Luogo values ("9","60", "Arena Comunale");
+insert into Luogo values ("10","95", "Palazzetto dello Sport");
+insert into Luogo values ("11","105", "Stadio Olimpico");
+insert into Luogo values ("12","3265", "Stadio Municipale");
+insert into Luogo values ("13","745", "Arena Estiva");
+insert into Luogo values ("14","65", "Centro Sportivo");
+
+# ---------------------------------------------------------------------- #
+# Add info into "Provincia"                                              #
+# ---------------------------------------------------------------------- #
+
+truncate table Provincia;
+
+insert into Provincia values ("AO","Aosta");
+insert into Provincia values ("TO","Torino");
+insert into Provincia values ("AT","Asti");
+insert into Provincia values ("CN","Cuneo");
+insert into Provincia values ("MI","Milano");
+insert into Provincia values ("CO","Como");
+insert into Provincia values ("MN","Mantova");
+insert into Provincia values ("CR","Cremona");
+insert into Provincia values ("BZ","Bolzano");
+insert into Provincia values ("TN","Trento");
+insert into Provincia values ("VE","Venezia");
+insert into Provincia values ("PD","Padova");
+insert into Provincia values ("VR","Verona");
+insert into Provincia values ("GO","Gorizia");
+insert into Provincia values ("UD","Udine");
+insert into Provincia values ("TS","Trieste");
+insert into Provincia values ("GE","Genova");
+insert into Provincia values ("SP","La Spezia");
+insert into Provincia values ("SV","Savona");
+insert into Provincia values ("BO","Bologna");
+insert into Provincia values ("FC","Forlì-Cesena");
+insert into Provincia values ("RA","Ravenna");
+insert into Provincia values ("AR","Arezzo");
+insert into Provincia values ("PI","Pisa");
+insert into Provincia values ("FI","Firenze");
+insert into Provincia values ("PU","Pesaro-Urbino");
+insert into Provincia values ("AP","Ascoli Piceno");
+insert into Provincia values ("AN","Ancona");
+insert into Provincia values ("RM","Roma");
+insert into Provincia values ("FR","Frosinone");
+insert into Provincia values ("RI","Rieti");
+insert into Provincia values ("AQ","L'Aquila");
+insert into Provincia values ("CH","Chieti");
+insert into Provincia values ("PG","Perugia");
+insert into Provincia values ("TR","Terni");
+insert into Provincia values ("NA","Napoli");
+insert into Provincia values ("BN","Benevento");
+insert into Provincia values ("SA","Salerno");
+insert into Provincia values ("CB","Campobasso");
+insert into Provincia values ("BA","Bari");
+insert into Provincia values ("BT","Barletta-Andria-Trani");
+insert into Provincia values ("MT","Matera");
+insert into Provincia values ("PZ","Potenza");
+insert into Provincia values ("RC","Reggio Calabria");
+insert into Provincia values ("KR","Crotone");
+insert into Provincia values ("PA","Palermo");
+insert into Provincia values ("CT","Catania");
+insert into Provincia values ("TP","Trapani");
+insert into Provincia values ("CA","Cagliari");
+insert into Provincia values ("SS","Sassari");
+
+
 
 -- Constraints Section
 -- ___________________ 
