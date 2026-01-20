@@ -1,16 +1,16 @@
 -- *********************************************
--- * Standard SQL generation                   
+-- * Standard SQL generation
 -- *--------------------------------------------
--- * DB-MAIN version: 11.0.2              
--- * Generator date: Sep 14 2021              
--- * Generation date: Mon Jan 19 14:37:15 2026 
--- * LUN file: C:\Users\pc\Tecnologie-Web\Progetto Web\Uniflow.lun 
--- * Schema: Uniflow/SQL 
--- ********************************************* 
+-- * DB-MAIN version: 11.0.2
+-- * Generator date: Sep 14 2021
+-- * Generation date: Mon Jan 19 14:37:15 2026
+-- * LUN file: C:\Users\pc\Tecnologie-Web\Progetto Web\Uniflow.lun
+-- * Schema: Uniflow/SQL
+-- *********************************************
 
 
 -- Database Section
--- ________________ 
+-- ________________
 
 drop database if exists Uniflow;
 
@@ -24,7 +24,7 @@ use Uniflow;
 
 
 -- Tables Section
--- _____________ 
+-- _____________
 
 create table Agg_Collaboratore (
      Codice_Richiesta numeric(10) not null,
@@ -472,7 +472,7 @@ insert into Indirizzo values ("FR","CM", "12", "Galleria", "Centrale");
 # ---------------------------------------------------------------------- #
 # Add info into "Citta"                                                  #
 # ---------------------------------------------------------------------- #
-     
+
 truncate table Citta;
 
 insert into Citta values ("AO","AO","Aosta");
@@ -655,10 +655,8 @@ insert into Provincia values ("TP","Trapani");
 insert into Provincia values ("CA","Cagliari");
 insert into Provincia values ("SS","Sassari");
 
-
-
 -- Constraints Section
--- ___________________ 
+-- ___________________
 
 alter table Agg_Collaboratore add constraint REF_Agg_C_Perso_FK
      foreign key (CF)
@@ -730,7 +728,7 @@ alter table Elemento add constraint REF_Eleme_Messa_FK
 
 alter table Elemento add constraint EXTONE_Elemento
      check((Cod_Unico_Thread is not null and Cod_Unico_Messaggio is null)
-           or (Cod_Unico_Thread is null and Cod_Unico_Messaggio is not null)); 
+          or (Cod_Unico_Thread is null and Cod_Unico_Messaggio is not null));
 
 alter table Elim_Collaboratore add constraint REF_Elim__Perso_FK
      foreign key (CF)
@@ -878,7 +876,7 @@ alter table Ricevimento add constraint REF_Ricev_Uffic_FK
 
 alter table Ricevimento add constraint REF_Ricev_Uffic_CHK
      check((Codice_Uni is not null and Codice_Stanza is not null)
-           or (Codice_Uni is null and Codice_Stanza is null)); 
+          or (Codice_Uni is null and Codice_Stanza is null));
 
 alter table Ricevimento add constraint REF_Ricev_Profe_FK
      foreign key (Matricola)
@@ -910,7 +908,7 @@ alter table Richiesta_Orario add constraint REF_Richi_Modul_FK
 
 alter table Richiesta_Orario add constraint REF_Richi_Modul_CHK
      check((Cod_Mat_Anno is not null and Codice_Modulo is not null)
-           or (Cod_Mat_Anno is null and Codice_Modulo is null)); 
+          or (Cod_Mat_Anno is null and Codice_Modulo is null));
 
 alter table Richiesta_Orario add constraint REF_Richi_Class_FK
      foreign key (Codice_Uni, Codice_Stanza)
@@ -918,7 +916,7 @@ alter table Richiesta_Orario add constraint REF_Richi_Class_FK
 
 alter table Richiesta_Orario add constraint REF_Richi_Class_CHK
      check((Codice_Uni is not null and Codice_Stanza is not null)
-           or (Codice_Uni is null and Codice_Stanza is null)); 
+          or (Codice_Uni is null and Codice_Stanza is null));
 
 alter table Richiesta_Orario add constraint REF_Richi_Profe_FK
      foreign key (Matricola)
@@ -934,7 +932,7 @@ alter table Richiesta_Ricevimento add constraint REF_Richi_Slot_FK
 
 alter table Richiesta_Ricevimento add constraint REF_Richi_Slot_CHK
      check((Codice_Ric is not null and N_Slot is not null)
-           or (Codice_Ric is null and N_Slot is null)); 
+          or (Codice_Ric is null and N_Slot is null));
 
 alter table Richiesta_Ricevimento add constraint REF_Richi_Ricev_FK
      foreign key (Ricevimento)
@@ -1022,7 +1020,7 @@ alter table Universitario add constraint SID_Unive_Luogo_FK
 
 
 -- Index Section
--- _____________ 
+-- _____________
 
 create unique index ID_Agg_Collaboratore_IND
      on Agg_Collaboratore (Codice_Richiesta, CF);
