@@ -332,11 +332,11 @@ create table Richiesta_Ricevimento (
      constraint ID_Richiesta_Ricevimento_ID primary key (Codice));
 
 create table Sede (
-     Codice numeric(10) not null,
-     Codice_Prov varchar(5) not null,
+     Codice numeric(10) not null,  
+     Codice_Prov varchar(5) not null,       
      Codice_Citta varchar(5) not null,
-     N_Civico numeric(6) not null,
-     Nome varchar(30) not null,
+     N_Civico numeric(6) not null,            
+     Nome varchar(30) not null,               
      constraint SID_Sede_Indir_ID unique (Codice_Prov, Codice_Citta, N_Civico),
      constraint ID_Sede_ID primary key (Codice));
 
@@ -410,6 +410,29 @@ create table Universitario (
      constraint SID_Unive_Luogo_ID unique (Cod_Luogo));
 
 # ---------------------------------------------------------------------- #
+# Add info into "Ambito"                                                 #
+# ---------------------------------------------------------------------- #
+
+truncate table Ambito;
+
+insert into Ambito values ("Economia e Management", "#ffc72c");
+insert into Ambito values ("Farmacia e Biotecnologie", "#f58025");
+insert into Ambito values ("Giurisprudenza", "#92c1e9");
+insert into Ambito values ("Ingegneria e Architettura", "#008578");
+insert into Ambito values ("Lingue e Letterature, Traduzione e Interpretazione", "#004c97");
+insert into Ambito values ("Medicina e Chirurgia", "#c8102e");
+insert into Ambito values ("Medicina Veterinaria", "#aa0061");
+insert into Ambito values ("Psicologia", "#b15a7d");
+insert into Ambito values ("Scienze", "#00843d");
+insert into Ambito values ("Scienze Agro-alimentari", "#6e7e1f");
+insert into Ambito values ("Scienze dell'Educazione e della Formazione", "#861f41");
+insert into Ambito values ("Scienze Motorie", "#002554");
+insert into Ambito values ("Scienze Politiche", "#5f259f");
+insert into Ambito values ("Scienze Statistiche", "#005eb8");
+insert into Ambito values ("Sociologia", "#685bc7");
+insert into Ambito values ("Studi Umanistici", "#363535");
+
+# ---------------------------------------------------------------------- #
 # Add info into "Canale"                                                 #
 # ---------------------------------------------------------------------- #
 
@@ -428,60 +451,6 @@ insert into Canale values (2, 0, "Comunicazioni Interne Segreteria", 4, false, f
 insert into Canale values (2, 1, "Avvisi Segreteria ai Docenti", 4, true, false);
 insert into Canale values (2, 2, "Coordinamento Segreteria–Docenti", 3, true, false);
 insert into Canale values (2, 3, "Comunicazioni Ufficiali Generali", 3, true, true);
-
-# ---------------------------------------------------------------------- #
-# Add info into "Forum"                                                  #
-# ---------------------------------------------------------------------- #
-
-truncate table Forum;
-
-insert into Forum values (0, "Forum Professori");
-insert into Forum values (1, "Forum Studenti");
-insert into Forum values (2, "Forum Generale");
-
-# ---------------------------------------------------------------------- #
-# Add info into "Esterno"                                                #
-# ---------------------------------------------------------------------- #
-
-truncate table Esterno;
-
-insert into Esterno values (0,"RI", "RI", 76, 0);
-insert into Esterno values (1,"BA", "BA", 6, 1);
-insert into Esterno values (2,"CO", "CO", 142, 2);
-insert into Esterno values (3,"VR", "ER", 121, 3);
-insert into Esterno values (4,"TO", "TO", 83, 4);
-insert into Esterno values (5,"AN", "AN", 79, 5);
-insert into Esterno values (6,"TN", "AL", 60, 6);
-insert into Esterno values (7,"AQ", "SC", 37, 7);
-insert into Esterno values (8,"VE", "JE", 91, 8);
-insert into Esterno values (9,"BZ", "CH", 71, 9);
-insert into Esterno values (10,"SS", "SS", 58, 10);
-insert into Esterno values (11,"SS", "MO", 109, 11);
-insert into Esterno values (12,"KR", "VE", 60, 12);
-insert into Esterno values (13,"SA", "SA", 80, 13);
-insert into Esterno values (14,"CA", "CP", 83, 14);
-
-# ---------------------------------------------------------------------- #
-# Add info into "Indirizzo"                                              #
-# ---------------------------------------------------------------------- #
-
-truncate table indirizzo;
-
-insert into Indirizzo values ("RI","RI", 76, "Galleria", "del Mulino");
-insert into Indirizzo values ("BA","BA", 6, "Piazzale", "Porto");
-insert into Indirizzo values ("CO","CO", 142, "Lungomare", "Italia");
-insert into Indirizzo values ("VR","ER", 121, "Viale", "Università");
-insert into Indirizzo values ("TO","TO", 83, "Corso", "Università");
-insert into Indirizzo values ("AN","AN", 79, "Calle", "dei Pini");
-insert into Indirizzo values ("TN","AL", 60, "Piazzale", "Michelangelo Buonarroti");
-insert into Indirizzo values ("AQ","SC", 37, "Piazzale", "Antico");
-insert into Indirizzo values ("VE","JE", 91, "Borgo", "Roma");
-insert into Indirizzo values ("BZ","CH", 71, "Piazza", "degli Artigiani");
-insert into Indirizzo values ("SS","SS", 58, "Largo", "delle Vigne");
-insert into Indirizzo values ("SS","MO", 109, "Ponte", "San Francesco");
-insert into Indirizzo values ("KR","VE", 60, "Contrada", "Marco Polo");
-insert into Indirizzo values ("SA","SA", 80, "Ponte", "San Michele");
-insert into Indirizzo values ("CA","CP", 83, "Piazzale", "Vecchio");
 
 # ---------------------------------------------------------------------- #
 # Add info into "Citta"                                                  #
@@ -533,6 +502,7 @@ insert into Citta values ("FC","FO","Forlì");
 insert into Citta values ("FC","CE","Cesena");
 insert into Citta values ("RA","RA","Ravenna");
 insert into Citta values ("RA","CB","Castel Bolognese");
+insert into Citta values ("RN","RN","Rimini");
 insert into Citta values ("AR","AR","Arezzo");
 insert into Citta values ("AR","PO","Poppi");
 insert into Citta values ("PI","PI","Pisa");
@@ -591,6 +561,202 @@ insert into Citta values ("SS","SS","Sassari");
 insert into Citta values ("SS","MO","Mores");
 
 # ---------------------------------------------------------------------- #
+# Add info into "Corso"                                                  #
+# ---------------------------------------------------------------------- #
+
+truncate table Corso;
+
+insert into Corso values ("ECO01","Economia Aziendale","Studio dell'organizzazione e gestione delle imprese",NULL,"Economia e Management");
+insert into Corso values ("ECO02","Economia del Turismo","Formazione economica per il settore turistico",NULL,"Economia e Management");
+insert into Corso values ("ECO03","Economia e Finanza","Analisi dei mercati finanziari e degli strumenti di investimento","#1E90FF","Economia e Management");
+insert into Corso values ("TUR01","Scienze del Turismo","Gestione e valorizzazione dei sistemi turistici",NULL,"Economia e Management");
+insert into Corso values ("ING01","Ingegneria Gestionale","Ottimizzazione dei processi aziendali e industriali",NULL,"Ingegneria e Architettura");
+insert into Corso values ("ING02","Ingegneria Meccanica","Progettazione e analisi di sistemi meccanici",NULL,"Ingegneria e Architettura");
+insert into Corso values ("ING_INF01","Ingegneria e Scienze Informatiche","Corso triennale di ingegneria e informatica, sviluppo software e sistemi intelligenti","#00FF00","Ingegneria e Architettura");
+insert into Corso values ("ING_INF02","Informatica","Programmazione, algoritmi e sistemi informatici","#00FF00","Ingegneria e Architettura");
+insert into Corso values ("ING_INF03","Data Science","Analisi dati, statistica e machine learning","#32CD32","Ingegneria e Architettura");
+insert into Corso values ("ROB01","Robotica","Progettazione e programmazione di sistemi robotici","#FF69B4","Ingegneria e Architettura");
+insert into Corso values ("MAT01","Matematica","Studio delle strutture matematiche e dei modelli teorici",NULL,"Scienze");
+insert into Corso values ("FIS01","Fisica","Studio delle leggi fondamentali della natura",NULL,"Scienze");
+insert into Corso values ("CHI01","Chimica","Studio della materia e delle sue trasformazioni",NULL,"Scienze");
+insert into Corso values ("BIO01","Biologia","Studio dei sistemi biologici",NULL,"Scienze");
+insert into Corso values ("STA01","Statistica","Analisi dei dati e modelli statistici","#FFD700","Scienze");
+insert into Corso values ("ANA01","Analisi Matematica","Studio dei fondamenti dell'analisi reale e complessa",NULL,"Scienze");
+insert into Corso values ("MED01","Medicina e Chirurgia","Formazione del medico e delle professioni sanitarie",NULL,"Medicina e Chirurgia");
+insert into Corso values ("INF01","Infermieristica","Assistenza infermieristica e sanitaria",NULL,"Medicina e Chirurgia");
+insert into Corso values ("FAR01","Farmacia","Studio del farmaco e della sua applicazione clinica",NULL,"Farmacia e Biotecnologie");
+insert into Corso values ("BIOFAR01","Biotecnologie Farmaceutiche","Tecnologie per la ricerca e sviluppo di farmaci","#FF4500","Farmacia e Biotecnologie");
+insert into Corso values ("GIU01","Giurisprudenza","Formazione giuridica completa per le professioni legali",NULL,"Giurisprudenza");
+insert into Corso values ("DIR01","Scienze dei Servizi Giuridici","Studio del diritto applicato ai servizi",NULL,"Giurisprudenza");
+insert into Corso values ("POL01","Scienze Politiche","Analisi dei sistemi politici e istituzionali",NULL,"Scienze Politiche");
+insert into Corso values ("SOC01","Sociologia","Studio delle dinamiche sociali",NULL,"Sociologia");
+insert into Corso values ("COM01","Scienze della Comunicazione","Teorie e tecniche della comunicazione",NULL,"Sociologia");
+insert into Corso values ("PSI01","Psicologia","Studio del comportamento e dei processi cognitivi","#FF69B4","Psicologia");
+insert into Corso values ("LET01","Lettere Moderne","Studio della letteratura e della lingua italiana",NULL,"Studi Umanistici");
+insert into Corso values ("STO01","Storia","Analisi storica dall'antichità all'età contemporanea",NULL,"Studi Umanistici");
+insert into Corso values ("FIL01","Filosofia","Studio del pensiero filosofico",NULL,"Studi Umanistici");
+insert into Corso values ("LIN01","Lingue e Letterature Straniere","Studio delle lingue e culture straniere",NULL,"Lingue e Letterature, Traduzione e Interpretazione");
+insert into Corso values ("ARC01","Architettura","Progettazione architettonica e urbana",NULL,"Ingegneria e Architettura");
+insert into Corso values ("DES01","Design Industriale","Progettazione di prodotti e servizi",NULL,"Ingegneria e Architettura");
+insert into Corso values ("URB01","Urbanistica","Pianificazione e gestione dello spazio urbano","#00CED1","Ingegneria e Architettura");
+insert into Corso values ("ARC_CES01", "Architettura e Progettazione Edile", "Corso base di Architettura con focus su progettazione e costruzioni", NULL, "Ingegneria e Architettura");
+insert into Corso values ("ARC_CES02", "Ingegneria Civile e Ambientale", "Studio delle strutture civili e gestione delle infrastrutture", NULL, "Ingegneria e Architettura");
+insert into Corso values ("DES_CES01", "Design Industriale e Innovazione", "Progettazione di prodotti industriali e innovazione tecnologica", NULL, "Ingegneria e Architettura");
+insert into Corso values ("URB_CES01", "Urbanistica e Pianificazione Territoriale", "Analisi e pianificazione dello spazio urbano", NULL, "Ingegneria e Architettura");
+insert into Corso values ("TEC_CES01", "Tecnologie per l'Architettura", "Laboratori e applicazioni di nuove tecnologie nel design architettonico", "#00cc99", "Ingegneria e Architettura");
+
+# ---------------------------------------------------------------------- #
+# Add info into "Esterno"                                                #
+# ---------------------------------------------------------------------- #
+
+truncate table Esterno;
+
+insert into Esterno values (0,"RI", "RI", 76, 0);
+insert into Esterno values (1,"BA", "BA", 6, 1);
+insert into Esterno values (2,"CO", "CO", 142, 2);
+insert into Esterno values (3,"VR", "ER", 121, 3);
+insert into Esterno values (4,"TO", "TO", 83, 4);
+insert into Esterno values (5,"AN", "AN", 79, 5);
+insert into Esterno values (6,"TN", "AL", 60, 6);
+insert into Esterno values (7,"AQ", "SC", 37, 7);
+insert into Esterno values (8,"VE", "JE", 91, 8);
+insert into Esterno values (9,"BZ", "CH", 71, 9);
+insert into Esterno values (10,"SS", "SS", 58, 10);
+insert into Esterno values (11,"SS", "MO", 109, 11);
+insert into Esterno values (12,"KR", "VE", 60, 12);
+insert into Esterno values (13,"SA", "SA", 80, 13);
+insert into Esterno values (14,"CA", "CP", 83, 14);
+
+# ---------------------------------------------------------------------- #
+# Add info into "Formato_Da"                                             #
+# ---------------------------------------------------------------------- #
+
+truncate table Formato_Da;
+
+insert into Formato_Da values (1001,"ECO01",1,3,1,12);
+insert into Formato_Da values (1001,"ECO02",0,2,2,6);
+insert into Formato_Da values (1002,"ECO01",1,4,1,12);
+insert into Formato_Da values (1002,"ECO03",0,2,2,6);
+insert into Formato_Da values (1003,"ECO01",1,2,1,6);
+insert into Formato_Da values (1003,"ECO02",0,3,2,12);
+insert into Formato_Da values (1004,"TUR01",1,3,1,12);
+insert into Formato_Da values (1004,"ECO02",0,2,2,6);
+insert into Formato_Da values (1005,"TUR01",1,2,1,6);
+insert into Formato_Da values (1005,"ECO03",0,3,2,12);
+insert into Formato_Da values (1006,"ECO03",1,5,1,12);
+insert into Formato_Da values (1007,"ECO01",1,3,2,6);
+insert into Formato_Da values (1008,"MAT01",1,2,1,12);
+insert into Formato_Da values (1009,"FIS01",1,2,1,12);
+insert into Formato_Da values (1010,"CHI01",1,1,1,6);
+insert into Formato_Da values (1011,"BIO01",1,2,2,12);
+insert into Formato_Da values (1012,"ING01",0,3,1,6);
+insert into Formato_Da values (1013,"ING01",0,2,2,12);
+insert into Formato_Da values (1014,"ING02",0,4,1,6);
+insert into Formato_Da values (1015,"MAT01",1,3,2,12);
+insert into Formato_Da values (1016,"FIS01",0,4,2,12);
+insert into Formato_Da values (1017,"ING_INF01",1,3,1,12);
+insert into Formato_Da values (1018,"ING_INF02",1,2,2,6);
+insert into Formato_Da values (1019,"ING01",0,5,1,12);
+insert into Formato_Da values (1020,"ING01",0,3,2,6);
+insert into Formato_Da values (1021,"ING02",0,4,1,12);
+insert into Formato_Da values (1022,"ING02",0,2,2,6);
+insert into Formato_Da values (1023,"ING02",0,3,1,12);
+insert into Formato_Da values (1024,"ING_INF02",1,2,1,12);
+insert into Formato_Da values (1025,"ING_INF02",0,3,2,6);
+insert into Formato_Da values (1026,"ING_INF03",1,5,1,12);
+insert into Formato_Da values (1027,"ING_INF03",0,4,2,6);
+insert into Formato_Da values (1028,"ING_INF01",0,3,1,12);
+insert into Formato_Da values (1029,"BASI_DATI01",1,5,1,12);
+insert into Formato_Da values (1030,"BASI_DATI02",0,4,2,6);
+insert into Formato_Da values (1031,"ML01",1,5,1,12);
+insert into Formato_Da values (1032,"ANALISI_DATI",0,5,2,6);
+insert into Formato_Da values (1033,"ROB01",1,5,1,12);
+insert into Formato_Da values (1034,"ARC01",1,5,1,12);
+insert into Formato_Da values (1035,"DES01",1,5,1,6);
+insert into Formato_Da values (1036,"URB01",1,5,1,12);
+insert into Formato_Da values (1037,"ARC_CES01",0,4,2,12);
+insert into Formato_Da values (1038,"ARC_CES02",0,3,1,6);
+insert into Formato_Da values (1039,"DES_CES01",0,4,2,12);
+insert into Formato_Da values (1040,"URB_CES01",0,3,1,12);
+insert into Formato_Da values (1041,"TEC_CES01",0,4,2,12);
+insert into Formato_Da values (1042,"MICRO01",1,1,1,12);
+insert into Formato_Da values (1043,"MACRO01",1,2,1,6);
+insert into Formato_Da values (1044,"GESTAZ01",1,3,1,12);
+insert into Formato_Da values (1045,"TUR_SOS01",1,2,1,6);
+insert into Formato_Da values (1046,"MARK_TUR01",1,3,2,12);
+insert into Formato_Da values (1047,"FINAZ01",1,5,1,12);
+insert into Formato_Da values (1048,"MICRO02",0,2,2,6);
+insert into Formato_Da values (1049,"ANALISI01",1,4,1,12);
+insert into Formato_Da values (1050,"FIS02",0,3,2,12);
+insert into Formato_Da values (1051,"CHI02",1,1,2,12);
+insert into Formato_Da values (1052,"BIO02",0,2,1,12);
+insert into Formato_Da values (1053,"OTT01",0,3,2,12);
+insert into Formato_Da values (1054,"GESTIND01",0,4,1,6);
+insert into Formato_Da values (1055,"PROGET01",0,3,2,12);
+insert into Formato_Da values (1056,"ANALISI02",1,2,1,12);
+insert into Formato_Da values (1057,"FIS03",0,4,2,12);
+insert into Formato_Da values (1058,"PROGBASE01",1,3,1,12);
+insert into Formato_Da values (1059,"INF01",1,2,2,12);
+insert into Formato_Da values (1060,"MED01",1,5,1,12);
+insert into Formato_Da values (1061,"ARC03",0,4,2,12);
+insert into Formato_Da values (1062,"PROGAV01",0,3,1,12);
+insert into Formato_Da values (1063,"BASI_DATI03",0,4,2,12);
+insert into Formato_Da values (1064,"ML02",0,5,1,12);
+insert into Formato_Da values (1065,"ANALISI_DATI02",0,4,2,12);
+insert into Formato_Da values (1066,"PSI01",1,3,1,12);
+insert into Formato_Da values (1066,"SOC01",0,2,2,12);
+
+
+# ---------------------------------------------------------------------- #
+# Add info into "Forum"                                                  #
+# ---------------------------------------------------------------------- #
+
+truncate table Forum;
+
+insert into Forum values (0, "Forum Professori");
+insert into Forum values (1, "Forum Studenti");
+insert into Forum values (2, "Forum Generale");
+
+# ---------------------------------------------------------------------- #
+# Add info into "Indirizzo"                                              #
+# ---------------------------------------------------------------------- #
+
+truncate table indirizzo;
+
+insert into Indirizzo values ("RI","RI", 76, "Galleria", "del Mulino");
+insert into Indirizzo values ("BA","BA", 6, "Piazzale", "Porto");
+insert into Indirizzo values ("CO","CO", 142, "Lungomare", "Italia");
+insert into Indirizzo values ("VR","ER", 121, "Viale", "Università");
+insert into Indirizzo values ("TO","TO", 83, "Corso", "Università");
+insert into Indirizzo values ("AN","AN", 79, "Calle", "dei Pini");
+insert into Indirizzo values ("TN","AL", 60, "Piazzale", "Michelangelo Buonarroti");
+insert into Indirizzo values ("AQ","SC", 37, "Piazzale", "Antico");
+insert into Indirizzo values ("VE","JE", 91, "Borgo", "Roma");
+insert into Indirizzo values ("BZ","CH", 71, "Piazza", "degli Artigiani");
+insert into Indirizzo values ("SS","SS", 58, "Largo", "delle Vigne");
+insert into Indirizzo values ("SS","MO", 109, "Ponte", "San Francesco");
+insert into Indirizzo values ("KR","VE", 60, "Contrada", "Marco Polo");
+insert into Indirizzo values ("SA","SA", 80, "Ponte", "San Michele");
+insert into Indirizzo values ("CA","CP", 83, "Piazzale", "Vecchio");
+insert into Indirizzo values ("BO", "BO", 33, "Via", "Zamboni");
+insert into Indirizzo values ("BO", "BO", 38, "Via", "Zamboni");
+insert into Indirizzo values ("BO", "BO", 2, "Piazza", "San Giovanni in Monte");
+insert into Indirizzo values ("BO", "BO", 20, "Via", "Guerrazzi");
+insert into Indirizzo values ("BO", "BO", 45, "Viale", "Maggiore");
+insert into Indirizzo values ("BO", "BO", 28, "Via", "del Terracini");
+insert into Indirizzo values ("BO", "BO", 9, "Via", "Massarenti");
+insert into Indirizzo values ("FC", "CE", 50, "Via", "dell'Università");
+insert into Indirizzo values ("FC", "FO", 1, "Via", "Giacomo della Torre");
+insert into Indirizzo values ("RA", "RA", 27, "Via", "Baccarini");
+insert into Indirizzo values ("RA", "RA", 1, "Via", "degli Ariani");
+insert into Indirizzo values ("RA", "RA", 6, "Via", "Mariani");
+insert into Indirizzo values ("RA", "RA", 23, "Via", "Pasolini");
+insert into Indirizzo values ("RA", "RA", 163, "Via", "Sant'Alberto");
+insert into Indirizzo values ("RA", "RA", 55, "Via", "Tombesi dall'Ova");
+insert into Indirizzo values ("RA", "RA", 5, "Viale", "Randi");
+insert into Indirizzo values ("RN", "RN", 22, "Via", "Angherà");
+
+# ---------------------------------------------------------------------- #
 # Add info into "Luogo"                                                  #
 # ---------------------------------------------------------------------- #
 
@@ -613,8 +779,84 @@ insert into Luogo values (13,115, "Palazzetto dello Sport");
 insert into Luogo values (14,130, "Sala Conferenze");
 
 # ---------------------------------------------------------------------- #
+# Add info into "Materia"                                                #
+# ---------------------------------------------------------------------- #
+
+truncate table Materia;
+
+insert into Materia values (1001, "Microeconomia", 0);
+insert into Materia values (1002, "Macroeconomia", 0);
+insert into Materia values (1003, "Gestione Aziendale", 0);
+insert into Materia values (1004, "Turismo Sostenibile", 0);
+insert into Materia values (1005, "Marketing Turistico", 0);
+insert into Materia values (1006, "Finanza Aziendale", 1);
+insert into Materia values (1007, "Microeconomia", 2);
+insert into Materia values (1008, "Analisi Matematica I", 2);
+insert into Materia values (1009, "Fisica I", 2);
+insert into Materia values (1010, "Chimica", 2);
+insert into Materia values (1011, "Biologia", 2);
+insert into Materia values (1012, "Ottimizzazione dei Processi", 3);
+insert into Materia values (1013, "Gestione Industriale", 3);
+insert into Materia values (1014, "Progettazione Meccanica", 3);
+insert into Materia values (1015, "Analisi Matematica I", 4);
+insert into Materia values (1016, "Fisica I", 4);
+insert into Materia values (1017, "Programmazione Base", 5);
+insert into Materia values (1018, "Ottimizzazione dei Processi", 5);
+insert into Materia values (1019, "Gestione Industriale", 5);
+insert into Materia values (1020, "Progettazione Meccanica", 5);
+insert into Materia values (1021, "Programmazione Avanzata", 5);
+insert into Materia values (1022, "Basi di Dati", 5);
+insert into Materia values (1023, "Machine Learning", 5);
+insert into Materia values (1024, "Analisi dei Dati", 5);
+insert into Materia values (1025, "Robotica Industriale", 5);
+insert into Materia values (1026, "Architettura", 5);
+insert into Materia values (1027, "Design dei Prodotti", 5);
+insert into Materia values (1028, "Pianificazione Urbana", 5);
+insert into Materia values (1029, "Programmazione Base", 6);
+insert into Materia values (1030, "Infermieristica", 6);
+insert into Materia values (1031, "Medicina e Chirurgia", 6);
+insert into Materia values (1032, "Architettura", 7);
+insert into Materia values (1033, "Programmazione Base", 7);
+insert into Materia values (1034, "Algoritmi e Strutture Dati", 7);
+insert into Materia values (1035, "Sistemi Intelligenti", 7);
+insert into Materia values (1036, "Progettazione Edile", 7);
+insert into Materia values (1037, "Strutture Civili", 7);
+insert into Materia values (1038, "Innovazione Industriale", 7);
+insert into Materia values (1039, "Pianificazione Territoriale", 7);
+insert into Materia values (1040, "Tecnologie per l'Architettura", 7);
+insert into Materia values (1041, "Microeconomia", 8);
+insert into Materia values (1042, "Macroeconomia", 8);
+insert into Materia values (1043, "Gestione Aziendale", 8);
+insert into Materia values (1044, "Turismo Sostenibile", 8);
+insert into Materia values (1045, "Marketing Turistico", 8);
+insert into Materia values (1046, "Analisi Matematica I", 9);
+insert into Materia values (1047, "Microeconomia", 9);
+insert into Materia values (1048, "Macroeconomia", 9);
+insert into Materia values (1049, "Gestione Aziendale", 9);
+insert into Materia values (1050, "Turismo Sostenibile", 9);
+insert into Materia values (1051, "Marketing Turistico", 9);
+insert into Materia values (1052, "Architettura", 11);
+insert into Materia values (1053, "Urbanistica", 11);
+insert into Materia values (1054, "Analisi Matematica I", 12);
+insert into Materia values (1055, "Turismo Sostenibile", 12);
+insert into Materia values (1056, "Marketing Turistico", 12);
+insert into Materia values (1057, "Pianificazione Urbana", 12);
+insert into Materia values (1058, "Analisi Matematica I", 13);
+insert into Materia values (1059, "Fisica I", 13);
+insert into Materia values (1060, "Analisi Matematica I", 14);
+insert into Materia values (1061, "Fisica I", 14);
+insert into Materia values (1062, "Scienze Politiche", 15);
+insert into Materia values (1063, "Medicina e Chirurgia", 15);
+insert into Materia values (1064, "Scienze Politiche", 16);
+insert into Materia values (1065, "Sociologia", 16);
+insert into Materia values (1066, "Scienze della Comunicazione", 16);
+
+
+# ---------------------------------------------------------------------- #
 # Add info into "Persona"                                                #
 # ---------------------------------------------------------------------- #
+
+truncate table Persona; 
 
 insert into Persona values ("DMCSRN57B50F875R","Serena","D'Amico","1957-02-10","serena.d'amico36@yahoo.it",1);
 insert into Persona values ("PRSGNN08R52D491D","Giovanna","Piras","2008-10-12","giovanna.piras42@gmail.com",4);
@@ -721,6 +963,8 @@ insert into Persona values ("FRRRNN70T48G715L","Arianna","Ferrari","1970-12-08",
 # Add info into "Professore"                                             #
 # ---------------------------------------------------------------------- #
 
+truncate table Professore;
+
 insert into Professore values (3);
 insert into Professore values (5);
 insert into Professore values (8);
@@ -798,21 +1042,124 @@ insert into Provincia values ("CA","Cagliari");
 insert into Provincia values ("SS","Sassari");
 
 # ---------------------------------------------------------------------- #
+# Add info into "Sede"                                                   #
+# ---------------------------------------------------------------------- #
+
+truncate table Sede;
+
+insert into Sede values (0, "BO", "BO", 33, "Palazzo Poggi");
+insert into Sede values (1, "BO", "BO", 38, "Palazzo Riario");
+insert into Sede values (2, "BO", "BO", 2, "San Giovanni in Monte");
+insert into Sede values (3, "BO", "BO", 20, "Collegio dei Fiamminghi");
+insert into Sede values (4, "BO", "BO", 45, "Palazzo Hercolani");
+insert into Sede values (5, "BO", "BO", 28, "Complesso Terracini");
+insert into Sede values (6, "BO", "BO", 9, "Policlinico Sant'Orsola-Malpighi");
+insert into Sede values (7, "FC", "CE", 50, "Campus universitario di Cesena");
+insert into Sede values (8, "FC", "FO", 1, "Polo universitario di Forlì");
+insert into Sede values (9, "RA", "RA", 27, "Direzione e servizi studenti");
+insert into Sede values (10, "RA", "RA", 1, "Dipartimento Beni Culturali");
+insert into Sede values (11, "RA", "RA", 6, "Palazzo Corradini");
+insert into Sede values (12, "RA", "RA", 23, "Palazzo Verdi");
+insert into Sede values (13, "RA", "RA", 163, "Laboratori Scientifici");
+insert into Sede values (14, "RA", "RA", 55, "Ingegneria e Architettura");
+insert into Sede values (15, "RA", "RA", 5, "Ospedale S.Maria delle Croci");
+insert into Sede values (16, "RN", "RN", 22, "Complesso Valgimigli");
+
+# ---------------------------------------------------------------------- #
 # Add info into "Segreteria"                                             #
 # ---------------------------------------------------------------------- #
 
-/*insert into Segreteria values (1,4);
+truncate table Segreteria;
+
+insert into Segreteria values (1,4);
 insert into Segreteria values (7,3);
 insert into Segreteria values (10,9);
 insert into Segreteria values (13,4);
 insert into Segreteria values (25,6);
 insert into Segreteria values (47,3);
 insert into Segreteria values (49,7);
-insert into Segreteria values (55,8);*/
+insert into Segreteria values (55,8);
+
+# ---------------------------------------------------------------------- #
+# Add info into "Seguito_In"                                             #
+# ---------------------------------------------------------------------- #
+
+truncate table Seguito_In;
+
+insert into Seguito_In values ("ECO01", 0); 
+insert into Seguito_In values ("ECO01", 8);
+insert into Seguito_In values ("ECO01", 9);
+insert into Seguito_In values ("ECO01", 12);
+insert into Seguito_In values ("ECO02", 0);
+insert into Seguito_In values ("ECO02", 8);
+insert into Seguito_In values ("ECO02", 12);
+insert into Seguito_In values ("ECO03", 1);
+insert into Seguito_In values ("ECO03", 3);
+insert into Seguito_In values ("TUR01", 0);
+insert into Seguito_In values ("TUR01", 8);
+insert into Seguito_In values ("TUR01", 12);
+insert into Seguito_In values ("ING01", 3);
+insert into Seguito_In values ("ING01", 5);
+insert into Seguito_In values ("ING01", 8);
+insert into Seguito_In values ("ING02", 3);
+insert into Seguito_In values ("ING02", 5);
+insert into Seguito_In values ("ING_INF01", 7);
+insert into Seguito_In values ("ING_INF01", 10);
+insert into Seguito_In values ("ING_INF02", 5);
+insert into Seguito_In values ("ING_INF02", 8);
+insert into Seguito_In values ("ING_INF02", 10); 
+insert into Seguito_In values ("ING_INF03", 5);
+insert into Seguito_In values ("ING_INF03", 10);
+insert into Seguito_In values ("ROB01", 5);
+insert into Seguito_In values ("ROB01", 10);    
+insert into Seguito_In values ("ARC01", 5);
+insert into Seguito_In values ("ARC01", 11);      
+insert into Seguito_In values ("DES01", 5);
+insert into Seguito_In values ("URB01", 5);
+insert into Seguito_In values ("URB01", 12);
+insert into Seguito_In values ("ARC_CES01", 7);
+insert into Seguito_In values ("ARC_CES01", 10);  
+insert into Seguito_In values ("ARC_CES02", 7);
+insert into Seguito_In values ("DES_CES01", 7);
+insert into Seguito_In values ("URB_CES01", 7);
+insert into Seguito_In values ("TEC_CES01", 7);
+insert into Seguito_In values ("MAT01", 2);
+insert into Seguito_In values ("MAT01", 8);
+insert into Seguito_In values ("MAT01", 13);
+insert into Seguito_In values ("FIS01", 2);
+insert into Seguito_In values ("FIS01", 4);
+insert into Seguito_In values ("FIS01", 13);
+insert into Seguito_In values ("CHI01", 2);
+insert into Seguito_In values ("BIO01", 2);
+insert into Seguito_In values ("STA01", 2);
+insert into Seguito_In values ("STA01", 8);
+insert into Seguito_In values ("ANA01", 2);
+insert into Seguito_In values ("ANA01", 12);
+insert into Seguito_In values ("MED01", 6); 
+insert into Seguito_In values ("MED01", 15);
+insert into Seguito_In values ("INF01", 6);  
+insert into Seguito_In values ("FAR01", 0);
+insert into Seguito_In values ("BIOFAR01", 0);
+insert into Seguito_In values ("GIU01", 0);
+insert into Seguito_In values ("GIU01", 12); 
+insert into Seguito_In values ("DIR01", 0);
+insert into Seguito_In values ("POL01", 12);
+insert into Seguito_In values ("POL01", 16); 
+insert into Seguito_In values ("SOC01", 16);
+insert into Seguito_In values ("COM01", 16);
+insert into Seguito_In values ("PSI01", 0);
+insert into Seguito_In values ("LET01", 0);
+insert into Seguito_In values ("LET01", 12);
+insert into Seguito_In values ("STO01", 0);
+insert into Seguito_In values ("STO01", 11);
+insert into Seguito_In values ("FIL01", 0);
+insert into Seguito_In values ("LIN01", 0);
 
 # ---------------------------------------------------------------------- #
 # Add info into "Sistema Universitario"                                  #
 # ---------------------------------------------------------------------- #
+
+truncate table Sistema_Universitario;
 
 insert into Sistema_Universitario values (0,"serena.d'amico55@studio.unibo.it","svtn55dmg3","DMCSRN57B50F875R");
 insert into Sistema_Universitario values (1,"giovanna.piras@studio.unibo.it","u76mw7obsm","PRSGNN08R52D491D");
@@ -893,6 +1240,8 @@ insert into Sistema_Universitario values (74,"arianna.ferrari@studio.unibo.it","
 # ---------------------------------------------------------------------- #
 # Add info into "Studente"                                               #
 # ---------------------------------------------------------------------- #
+
+truncate table Studente;
 
 insert into Studente values (0);
 insert into Studente values (2);
