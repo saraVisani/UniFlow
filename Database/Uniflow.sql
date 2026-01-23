@@ -645,6 +645,76 @@ insert into Classe values (16, 2.6, 0);
 insert into Classe values (16, 3.4, 0);
 
 # ---------------------------------------------------------------------- #
+# Add info into "Composto_Da"                                            #
+# ---------------------------------------------------------------------- #
+
+truncate table Composto_Da;
+
+insert into Composto_Da values (0, 8, 0);
+insert into Composto_Da values (0, 9, 1);
+insert into Composto_Da values (0, 30, 0);
+insert into Composto_Da values (0, 31, 1);
+insert into Composto_Da values (0, 39, 0);
+insert into Composto_Da values (0, 40, 1);
+insert into Composto_Da values (4, 244, 1);
+insert into Composto_Da values (6, 263, 0);
+insert into Composto_Da values (6, 264, 1);
+insert into Composto_Da values (8, 69, 1);
+insert into Composto_Da values (10, 74, 1);
+insert into Composto_Da values (11, 63, 0);
+insert into Composto_Da values (11, 64, 0);
+insert into Composto_Da values (12, 286, 1);
+insert into Composto_Da values (18, 83, 1);
+insert into Composto_Da values (18, 89, 0);
+insert into Composto_Da values (18, 90, 1);
+insert into Composto_Da values (18, 139, 1);
+insert into Composto_Da values (21, 12, 1);
+insert into Composto_Da values (21, 34, 0);
+insert into Composto_Da values (22, 10, 1);
+insert into Composto_Da values (22, 32, 1);
+insert into Composto_Da values (22, 41, 1);
+insert into Composto_Da values (23, 262, 1);
+insert into Composto_Da values (25, 117, 0);
+insert into Composto_Da values (25, 118, 1);
+insert into Composto_Da values (25, 194, 0);
+insert into Composto_Da values (25, 195, 1);
+insert into Composto_Da values (26, 235, 0);
+insert into Composto_Da values (26, 236, 1);
+insert into Composto_Da values (27, 271, 1);
+insert into Composto_Da values (28, 242, 0);
+insert into Composto_Da values (28, 243, 1);
+insert into Composto_Da values (30, 249, 1);
+insert into Composto_Da values (31, 8, 0);
+insert into Composto_Da values (31, 9, 1);
+insert into Composto_Da values (31, 30, 1);
+insert into Composto_Da values (31, 39, 1);
+insert into Composto_Da values (34, 79, 0);
+insert into Composto_Da values (34, 80, 1);
+insert into Composto_Da values (34, 85, 1);
+insert into Composto_Da values (34, 130, 1);
+insert into Composto_Da values (34, 135, 0);
+insert into Composto_Da values (34, 136, 1);
+insert into Composto_Da values (36, 74, 0);
+insert into Composto_Da values (36, 75, 1);
+insert into Composto_Da values (37, 461, 1);
+insert into Composto_Da values (39, 23, 1);
+insert into Composto_Da values (39, 29, 1);
+insert into Composto_Da values (41, 74, 0);
+insert into Composto_Da values (41, 75, 0);
+insert into Composto_Da values (42, 5, 1);
+insert into Composto_Da values (42, 13, 1);
+insert into Composto_Da values (42, 18, 0);
+insert into Composto_Da values (42, 19, 1);
+insert into Composto_Da values (42, 47, 0);
+insert into Composto_Da values (42, 48, 0);
+insert into Composto_Da values (43, 270, 0);
+insert into Composto_Da values (43, 271, 0);
+insert into Composto_Da values (46, 277, 0);
+insert into Composto_Da values (46, 278, 0);
+insert into Composto_Da values (48, 64, 0);
+insert into Composto_Da values (48, 65, 1);
+
+# ---------------------------------------------------------------------- #
 # Add info into "Corso"                                                  #
 # ---------------------------------------------------------------------- #
 
@@ -789,7 +859,6 @@ insert into Formato_Da values (1064,"ML02",0,5,1,12);
 insert into Formato_Da values (1065,"ANALISI_DATI02",0,4,2,12);
 insert into Formato_Da values (1066,"PSI01",1,3,1,12);
 insert into Formato_Da values (1066,"SOC01",0,2,2,12);
-
 
 # ---------------------------------------------------------------------- #
 # Add info into "Forum"                                                  #
