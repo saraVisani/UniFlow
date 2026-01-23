@@ -332,11 +332,11 @@ create table Richiesta_Ricevimento (
      constraint ID_Richiesta_Ricevimento_ID primary key (Codice));
 
 create table Sede (
-     Codice numeric(10) not null,  
-     Codice_Prov varchar(5) not null,       
+     Codice numeric(10) not null,
+     Codice_Prov varchar(5) not null,
      Codice_Citta varchar(5) not null,
-     N_Civico numeric(6) not null,            
-     Nome varchar(30) not null,               
+     N_Civico numeric(6) not null,
+     Nome varchar(30) not null,
      constraint SID_Sede_Indir_ID unique (Codice_Prov, Codice_Citta, N_Civico),
      constraint ID_Sede_ID primary key (Codice));
 
@@ -851,12 +851,480 @@ insert into Materia values (1064, "Scienze Politiche", 16);
 insert into Materia values (1065, "Sociologia", 16);
 insert into Materia values (1066, "Scienze della Comunicazione", 16);
 
+# ---------------------------------------------------------------------- #
+# Add info into "Materia_Anno"                                           #
+# ---------------------------------------------------------------------- #
+
+truncate table Materia_Anno;
+
+insert into Materia_Anno values (0, 1001, 2020);
+insert into Materia_Anno values (1, 1001, 2021);
+insert into Materia_Anno values (2, 1001, 2022);
+insert into Materia_Anno values (3, 1001, 2023);
+insert into Materia_Anno values (4, 1001, 2024);
+insert into Materia_Anno values (5, 1001, 2025);
+insert into Materia_Anno values (6, 1001, 2026);
+insert into Materia_Anno values (7, 1002, 2020);
+insert into Materia_Anno values (8, 1002, 2021);
+insert into Materia_Anno values (9, 1002, 2022);
+insert into Materia_Anno values (10, 1002, 2023);
+insert into Materia_Anno values (11, 1002, 2024);
+insert into Materia_Anno values (12, 1002, 2025);
+insert into Materia_Anno values (13, 1002, 2026);
+insert into Materia_Anno values (14, 1003, 2020);
+insert into Materia_Anno values (15, 1003, 2021);
+insert into Materia_Anno values (16, 1003, 2022);
+insert into Materia_Anno values (17, 1003, 2023);
+insert into Materia_Anno values (18, 1003, 2024);
+insert into Materia_Anno values (19, 1003, 2025);
+insert into Materia_Anno values (20, 1003, 2026);
+insert into Materia_Anno values (21, 1004, 2020);
+insert into Materia_Anno values (22, 1004, 2021);
+insert into Materia_Anno values (23, 1004, 2022);
+insert into Materia_Anno values (24, 1004, 2023);
+insert into Materia_Anno values (25, 1004, 2024);
+insert into Materia_Anno values (26, 1004, 2025);
+insert into Materia_Anno values (27, 1004, 2026);
+insert into Materia_Anno values (28, 1005, 2020);
+insert into Materia_Anno values (29, 1005, 2021);
+insert into Materia_Anno values (30, 1005, 2022);
+insert into Materia_Anno values (31, 1005, 2023);
+insert into Materia_Anno values (32, 1005, 2024);
+insert into Materia_Anno values (33, 1005, 2025);
+insert into Materia_Anno values (34, 1005, 2026);
+insert into Materia_Anno values (35, 1006, 2020);
+insert into Materia_Anno values (36, 1006, 2021);
+insert into Materia_Anno values (37, 1006, 2022);
+insert into Materia_Anno values (38, 1006, 2023);
+insert into Materia_Anno values (39, 1006, 2024);
+insert into Materia_Anno values (40, 1006, 2025);
+insert into Materia_Anno values (41, 1006, 2026);
+insert into Materia_Anno values (42, 1007, 2020);
+insert into Materia_Anno values (43, 1007, 2021);
+insert into Materia_Anno values (44, 1007, 2022);
+insert into Materia_Anno values (45, 1007, 2023);
+insert into Materia_Anno values (46, 1007, 2024);
+insert into Materia_Anno values (47, 1007, 2025);
+insert into Materia_Anno values (48, 1007, 2026);
+insert into Materia_Anno values (49, 1008, 2020);
+insert into Materia_Anno values (50, 1008, 2021);
+insert into Materia_Anno values (51, 1008, 2022);
+insert into Materia_Anno values (52, 1008, 2023);
+insert into Materia_Anno values (53, 1008, 2024);
+insert into Materia_Anno values (54, 1008, 2025);
+insert into Materia_Anno values (55, 1008, 2026);
+insert into Materia_Anno values (56, 1009, 2020);
+insert into Materia_Anno values (57, 1009, 2021);
+insert into Materia_Anno values (58, 1009, 2022);
+insert into Materia_Anno values (59, 1009, 2023);
+insert into Materia_Anno values (60, 1009, 2024);
+insert into Materia_Anno values (61, 1009, 2025);
+insert into Materia_Anno values (62, 1009, 2026);
+insert into Materia_Anno values (63, 1010, 2020);
+insert into Materia_Anno values (64, 1010, 2021);
+insert into Materia_Anno values (65, 1010, 2022);
+insert into Materia_Anno values (66, 1010, 2023);
+insert into Materia_Anno values (67, 1010, 2024);
+insert into Materia_Anno values (68, 1010, 2025);
+insert into Materia_Anno values (69, 1010, 2026);
+insert into Materia_Anno values (70, 1011, 2020);
+insert into Materia_Anno values (71, 1011, 2021);
+insert into Materia_Anno values (72, 1011, 2022);
+insert into Materia_Anno values (73, 1011, 2023);
+insert into Materia_Anno values (74, 1011, 2024);
+insert into Materia_Anno values (75, 1011, 2025);
+insert into Materia_Anno values (76, 1011, 2026);
+insert into Materia_Anno values (77, 1012, 2020);
+insert into Materia_Anno values (78, 1012, 2021);
+insert into Materia_Anno values (79, 1012, 2022);
+insert into Materia_Anno values (80, 1012, 2023);
+insert into Materia_Anno values (81, 1012, 2024);
+insert into Materia_Anno values (82, 1012, 2025);
+insert into Materia_Anno values (83, 1012, 2026);
+insert into Materia_Anno values (84, 1013, 2020);
+insert into Materia_Anno values (85, 1013, 2021);
+insert into Materia_Anno values (86, 1013, 2022);
+insert into Materia_Anno values (87, 1013, 2023);
+insert into Materia_Anno values (88, 1013, 2024);
+insert into Materia_Anno values (89, 1013, 2025);
+insert into Materia_Anno values (90, 1013, 2026);
+insert into Materia_Anno values (91, 1014, 2020);
+insert into Materia_Anno values (92, 1014, 2021);
+insert into Materia_Anno values (93, 1014, 2022);
+insert into Materia_Anno values (94, 1014, 2023);
+insert into Materia_Anno values (95, 1014, 2024);
+insert into Materia_Anno values (96, 1014, 2025);
+insert into Materia_Anno values (97, 1014, 2026);
+insert into Materia_Anno values (98, 1015, 2020);
+insert into Materia_Anno values (99, 1015, 2021);
+insert into Materia_Anno values (100, 1015, 2022);
+insert into Materia_Anno values (101, 1015, 2023);
+insert into Materia_Anno values (102, 1015, 2024);
+insert into Materia_Anno values (103, 1015, 2025);
+insert into Materia_Anno values (104, 1015, 2026);
+insert into Materia_Anno values (105, 1016, 2020);
+insert into Materia_Anno values (106, 1016, 2021);
+insert into Materia_Anno values (107, 1016, 2022);
+insert into Materia_Anno values (108, 1016, 2023);
+insert into Materia_Anno values (109, 1016, 2024);
+insert into Materia_Anno values (110, 1016, 2025);
+insert into Materia_Anno values (111, 1016, 2026);
+insert into Materia_Anno values (112, 1017, 2020);
+insert into Materia_Anno values (113, 1017, 2021);
+insert into Materia_Anno values (114, 1017, 2022);
+insert into Materia_Anno values (115, 1017, 2023);
+insert into Materia_Anno values (116, 1017, 2024);
+insert into Materia_Anno values (117, 1017, 2025);
+insert into Materia_Anno values (118, 1017, 2026);
+insert into Materia_Anno values (119, 1018, 2020);
+insert into Materia_Anno values (120, 1018, 2021);
+insert into Materia_Anno values (121, 1018, 2022);
+insert into Materia_Anno values (122, 1018, 2023);
+insert into Materia_Anno values (123, 1018, 2024);
+insert into Materia_Anno values (124, 1018, 2025);
+insert into Materia_Anno values (125, 1018, 2026);
+insert into Materia_Anno values (126, 1019, 2020);
+insert into Materia_Anno values (127, 1019, 2021);
+insert into Materia_Anno values (128, 1019, 2022);
+insert into Materia_Anno values (129, 1019, 2023);
+insert into Materia_Anno values (130, 1019, 2024);
+insert into Materia_Anno values (131, 1019, 2025);
+insert into Materia_Anno values (132, 1019, 2026);
+insert into Materia_Anno values (133, 1020, 2020);
+insert into Materia_Anno values (134, 1020, 2021);
+insert into Materia_Anno values (135, 1020, 2022);
+insert into Materia_Anno values (136, 1020, 2023);
+insert into Materia_Anno values (137, 1020, 2024);
+insert into Materia_Anno values (138, 1020, 2025);
+insert into Materia_Anno values (139, 1020, 2026);
+insert into Materia_Anno values (140, 1021, 2020);
+insert into Materia_Anno values (141, 1021, 2021);
+insert into Materia_Anno values (142, 1021, 2022);
+insert into Materia_Anno values (143, 1021, 2023);
+insert into Materia_Anno values (144, 1021, 2024);
+insert into Materia_Anno values (145, 1021, 2025);
+insert into Materia_Anno values (146, 1021, 2026);
+insert into Materia_Anno values (147, 1022, 2020);
+insert into Materia_Anno values (148, 1022, 2021);
+insert into Materia_Anno values (149, 1022, 2022);
+insert into Materia_Anno values (150, 1022, 2023);
+insert into Materia_Anno values (151, 1022, 2024);
+insert into Materia_Anno values (152, 1022, 2025);
+insert into Materia_Anno values (153, 1022, 2026);
+insert into Materia_Anno values (154, 1023, 2020);
+insert into Materia_Anno values (155, 1023, 2021);
+insert into Materia_Anno values (156, 1023, 2022);
+insert into Materia_Anno values (157, 1023, 2023);
+insert into Materia_Anno values (158, 1023, 2024);
+insert into Materia_Anno values (159, 1023, 2025);
+insert into Materia_Anno values (160, 1023, 2026);
+insert into Materia_Anno values (161, 1024, 2020);
+insert into Materia_Anno values (162, 1024, 2021);
+insert into Materia_Anno values (163, 1024, 2022);
+insert into Materia_Anno values (164, 1024, 2023);
+insert into Materia_Anno values (165, 1024, 2024);
+insert into Materia_Anno values (166, 1024, 2025);
+insert into Materia_Anno values (167, 1024, 2026);
+insert into Materia_Anno values (168, 1025, 2020);
+insert into Materia_Anno values (169, 1025, 2021);
+insert into Materia_Anno values (170, 1025, 2022);
+insert into Materia_Anno values (171, 1025, 2023);
+insert into Materia_Anno values (172, 1025, 2024);
+insert into Materia_Anno values (173, 1025, 2025);
+insert into Materia_Anno values (174, 1025, 2026);
+insert into Materia_Anno values (175, 1026, 2020);
+insert into Materia_Anno values (176, 1026, 2021);
+insert into Materia_Anno values (177, 1026, 2022);
+insert into Materia_Anno values (178, 1026, 2023);
+insert into Materia_Anno values (179, 1026, 2024);
+insert into Materia_Anno values (180, 1026, 2025);
+insert into Materia_Anno values (181, 1026, 2026);
+insert into Materia_Anno values (182, 1027, 2020);
+insert into Materia_Anno values (183, 1027, 2021);
+insert into Materia_Anno values (184, 1027, 2022);
+insert into Materia_Anno values (185, 1027, 2023);
+insert into Materia_Anno values (186, 1027, 2024);
+insert into Materia_Anno values (187, 1027, 2025);
+insert into Materia_Anno values (188, 1027, 2026);
+insert into Materia_Anno values (189, 1028, 2020);
+insert into Materia_Anno values (190, 1028, 2021);
+insert into Materia_Anno values (191, 1028, 2022);
+insert into Materia_Anno values (192, 1028, 2023);
+insert into Materia_Anno values (193, 1028, 2024);
+insert into Materia_Anno values (194, 1028, 2025);
+insert into Materia_Anno values (195, 1028, 2026);
+insert into Materia_Anno values (196, 1029, 2020);
+insert into Materia_Anno values (197, 1029, 2021);
+insert into Materia_Anno values (198, 1029, 2022);
+insert into Materia_Anno values (199, 1029, 2023);
+insert into Materia_Anno values (200, 1029, 2024);
+insert into Materia_Anno values (201, 1029, 2025);
+insert into Materia_Anno values (202, 1029, 2026);
+insert into Materia_Anno values (203, 1030, 2020);
+insert into Materia_Anno values (204, 1030, 2021);
+insert into Materia_Anno values (205, 1030, 2022);
+insert into Materia_Anno values (206, 1030, 2023);
+insert into Materia_Anno values (207, 1030, 2024);
+insert into Materia_Anno values (208, 1030, 2025);
+insert into Materia_Anno values (209, 1030, 2026);
+insert into Materia_Anno values (210, 1031, 2020);
+insert into Materia_Anno values (211, 1031, 2021);
+insert into Materia_Anno values (212, 1031, 2022);
+insert into Materia_Anno values (213, 1031, 2023);
+insert into Materia_Anno values (214, 1031, 2024);
+insert into Materia_Anno values (215, 1031, 2025);
+insert into Materia_Anno values (216, 1031, 2026);
+insert into Materia_Anno values (217, 1032, 2020);
+insert into Materia_Anno values (218, 1032, 2021);
+insert into Materia_Anno values (219, 1032, 2022);
+insert into Materia_Anno values (220, 1032, 2023);
+insert into Materia_Anno values (221, 1032, 2024);
+insert into Materia_Anno values (222, 1032, 2025);
+insert into Materia_Anno values (223, 1032, 2026);
+insert into Materia_Anno values (224, 1033, 2020);
+insert into Materia_Anno values (225, 1033, 2021);
+insert into Materia_Anno values (226, 1033, 2022);
+insert into Materia_Anno values (227, 1033, 2023);
+insert into Materia_Anno values (228, 1033, 2024);
+insert into Materia_Anno values (229, 1033, 2025);
+insert into Materia_Anno values (230, 1033, 2026);
+insert into Materia_Anno values (231, 1034, 2020);
+insert into Materia_Anno values (232, 1034, 2021);
+insert into Materia_Anno values (233, 1034, 2022);
+insert into Materia_Anno values (234, 1034, 2023);
+insert into Materia_Anno values (235, 1034, 2024);
+insert into Materia_Anno values (236, 1034, 2025);
+insert into Materia_Anno values (237, 1034, 2026);
+insert into Materia_Anno values (238, 1035, 2020);
+insert into Materia_Anno values (239, 1035, 2021);
+insert into Materia_Anno values (240, 1035, 2022);
+insert into Materia_Anno values (241, 1035, 2023);
+insert into Materia_Anno values (242, 1035, 2024);
+insert into Materia_Anno values (243, 1035, 2025);
+insert into Materia_Anno values (244, 1035, 2026);
+insert into Materia_Anno values (245, 1036, 2020);
+insert into Materia_Anno values (246, 1036, 2021);
+insert into Materia_Anno values (247, 1036, 2022);
+insert into Materia_Anno values (248, 1036, 2023);
+insert into Materia_Anno values (249, 1036, 2024);
+insert into Materia_Anno values (250, 1036, 2025);
+insert into Materia_Anno values (251, 1036, 2026);
+insert into Materia_Anno values (252, 1037, 2020);
+insert into Materia_Anno values (253, 1037, 2021);
+insert into Materia_Anno values (254, 1037, 2022);
+insert into Materia_Anno values (255, 1037, 2023);
+insert into Materia_Anno values (256, 1037, 2024);
+insert into Materia_Anno values (257, 1037, 2025);
+insert into Materia_Anno values (258, 1037, 2026);
+insert into Materia_Anno values (259, 1038, 2020);
+insert into Materia_Anno values (260, 1038, 2021);
+insert into Materia_Anno values (261, 1038, 2022);
+insert into Materia_Anno values (262, 1038, 2023);
+insert into Materia_Anno values (263, 1038, 2024);
+insert into Materia_Anno values (264, 1038, 2025);
+insert into Materia_Anno values (265, 1038, 2026);
+insert into Materia_Anno values (266, 1039, 2020);
+insert into Materia_Anno values (267, 1039, 2021);
+insert into Materia_Anno values (268, 1039, 2022);
+insert into Materia_Anno values (269, 1039, 2023);
+insert into Materia_Anno values (270, 1039, 2024);
+insert into Materia_Anno values (271, 1039, 2025);
+insert into Materia_Anno values (272, 1039, 2026);
+insert into Materia_Anno values (273, 1040, 2020);
+insert into Materia_Anno values (274, 1040, 2021);
+insert into Materia_Anno values (275, 1040, 2022);
+insert into Materia_Anno values (276, 1040, 2023);
+insert into Materia_Anno values (277, 1040, 2024);
+insert into Materia_Anno values (278, 1040, 2025);
+insert into Materia_Anno values (279, 1040, 2026);
+insert into Materia_Anno values (280, 1041, 2020);
+insert into Materia_Anno values (281, 1041, 2021);
+insert into Materia_Anno values (282, 1041, 2022);
+insert into Materia_Anno values (283, 1041, 2023);
+insert into Materia_Anno values (284, 1041, 2024);
+insert into Materia_Anno values (285, 1041, 2025);
+insert into Materia_Anno values (286, 1041, 2026);
+insert into Materia_Anno values (287, 1042, 2020);
+insert into Materia_Anno values (288, 1042, 2021);
+insert into Materia_Anno values (289, 1042, 2022);
+insert into Materia_Anno values (290, 1042, 2023);
+insert into Materia_Anno values (291, 1042, 2024);
+insert into Materia_Anno values (292, 1042, 2025);
+insert into Materia_Anno values (293, 1042, 2026);
+insert into Materia_Anno values (294, 1043, 2020);
+insert into Materia_Anno values (295, 1043, 2021);
+insert into Materia_Anno values (296, 1043, 2022);
+insert into Materia_Anno values (297, 1043, 2023);
+insert into Materia_Anno values (298, 1043, 2024);
+insert into Materia_Anno values (299, 1043, 2025);
+insert into Materia_Anno values (300, 1043, 2026);
+insert into Materia_Anno values (301, 1044, 2020);
+insert into Materia_Anno values (302, 1044, 2021);
+insert into Materia_Anno values (303, 1044, 2022);
+insert into Materia_Anno values (304, 1044, 2023);
+insert into Materia_Anno values (305, 1044, 2024);
+insert into Materia_Anno values (306, 1044, 2025);
+insert into Materia_Anno values (307, 1044, 2026);
+insert into Materia_Anno values (308, 1045, 2020);
+insert into Materia_Anno values (309, 1045, 2021);
+insert into Materia_Anno values (310, 1045, 2022);
+insert into Materia_Anno values (311, 1045, 2023);
+insert into Materia_Anno values (312, 1045, 2024);
+insert into Materia_Anno values (313, 1045, 2025);
+insert into Materia_Anno values (314, 1045, 2026);
+insert into Materia_Anno values (315, 1046, 2020);
+insert into Materia_Anno values (316, 1046, 2021);
+insert into Materia_Anno values (317, 1046, 2022);
+insert into Materia_Anno values (318, 1046, 2023);
+insert into Materia_Anno values (319, 1046, 2024);
+insert into Materia_Anno values (320, 1046, 2025);
+insert into Materia_Anno values (321, 1046, 2026);
+insert into Materia_Anno values (322, 1047, 2020);
+insert into Materia_Anno values (323, 1047, 2021);
+insert into Materia_Anno values (324, 1047, 2022);
+insert into Materia_Anno values (325, 1047, 2023);
+insert into Materia_Anno values (326, 1047, 2024);
+insert into Materia_Anno values (327, 1047, 2025);
+insert into Materia_Anno values (328, 1047, 2026);
+insert into Materia_Anno values (329, 1048, 2020);
+insert into Materia_Anno values (330, 1048, 2021);
+insert into Materia_Anno values (331, 1048, 2022);
+insert into Materia_Anno values (332, 1048, 2023);
+insert into Materia_Anno values (333, 1048, 2024);
+insert into Materia_Anno values (334, 1048, 2025);
+insert into Materia_Anno values (335, 1048, 2026);
+insert into Materia_Anno values (336, 1049, 2020);
+insert into Materia_Anno values (337, 1049, 2021);
+insert into Materia_Anno values (338, 1049, 2022);
+insert into Materia_Anno values (339, 1049, 2023);
+insert into Materia_Anno values (340, 1049, 2024);
+insert into Materia_Anno values (341, 1049, 2025);
+insert into Materia_Anno values (342, 1049, 2026);
+insert into Materia_Anno values (343, 1050, 2020);
+insert into Materia_Anno values (344, 1050, 2021);
+insert into Materia_Anno values (345, 1050, 2022);
+insert into Materia_Anno values (346, 1050, 2023);
+insert into Materia_Anno values (347, 1050, 2024);
+insert into Materia_Anno values (348, 1050, 2025);
+insert into Materia_Anno values (349, 1050, 2026);
+insert into Materia_Anno values (350, 1051, 2020);
+insert into Materia_Anno values (351, 1051, 2021);
+insert into Materia_Anno values (352, 1051, 2022);
+insert into Materia_Anno values (353, 1051, 2023);
+insert into Materia_Anno values (354, 1051, 2024);
+insert into Materia_Anno values (355, 1051, 2025);
+insert into Materia_Anno values (356, 1051, 2026);
+insert into Materia_Anno values (357, 1052, 2020);
+insert into Materia_Anno values (358, 1052, 2021);
+insert into Materia_Anno values (359, 1052, 2022);
+insert into Materia_Anno values (360, 1052, 2023);
+insert into Materia_Anno values (361, 1052, 2024);
+insert into Materia_Anno values (362, 1052, 2025);
+insert into Materia_Anno values (363, 1052, 2026);
+insert into Materia_Anno values (364, 1053, 2020);
+insert into Materia_Anno values (365, 1053, 2021);
+insert into Materia_Anno values (366, 1053, 2022);
+insert into Materia_Anno values (367, 1053, 2023);
+insert into Materia_Anno values (368, 1053, 2024);
+insert into Materia_Anno values (369, 1053, 2025);
+insert into Materia_Anno values (370, 1053, 2026);
+insert into Materia_Anno values (371, 1054, 2020);
+insert into Materia_Anno values (372, 1054, 2021);
+insert into Materia_Anno values (373, 1054, 2022);
+insert into Materia_Anno values (374, 1054, 2023);
+insert into Materia_Anno values (375, 1054, 2024);
+insert into Materia_Anno values (376, 1054, 2025);
+insert into Materia_Anno values (377, 1054, 2026);
+insert into Materia_Anno values (378, 1055, 2020);
+insert into Materia_Anno values (379, 1055, 2021);
+insert into Materia_Anno values (380, 1055, 2022);
+insert into Materia_Anno values (381, 1055, 2023);
+insert into Materia_Anno values (382, 1055, 2024);
+insert into Materia_Anno values (383, 1055, 2025);
+insert into Materia_Anno values (384, 1055, 2026);
+insert into Materia_Anno values (385, 1056, 2020);
+insert into Materia_Anno values (386, 1056, 2021);
+insert into Materia_Anno values (387, 1056, 2022);
+insert into Materia_Anno values (388, 1056, 2023);
+insert into Materia_Anno values (389, 1056, 2024);
+insert into Materia_Anno values (390, 1056, 2025);
+insert into Materia_Anno values (391, 1056, 2026);
+insert into Materia_Anno values (392, 1057, 2020);
+insert into Materia_Anno values (393, 1057, 2021);
+insert into Materia_Anno values (394, 1057, 2022);
+insert into Materia_Anno values (395, 1057, 2023);
+insert into Materia_Anno values (396, 1057, 2024);
+insert into Materia_Anno values (397, 1057, 2025);
+insert into Materia_Anno values (398, 1057, 2026);
+insert into Materia_Anno values (399, 1058, 2020);
+insert into Materia_Anno values (400, 1058, 2021);
+insert into Materia_Anno values (401, 1058, 2022);
+insert into Materia_Anno values (402, 1058, 2023);
+insert into Materia_Anno values (403, 1058, 2024);
+insert into Materia_Anno values (404, 1058, 2025);
+insert into Materia_Anno values (405, 1058, 2026);
+insert into Materia_Anno values (406, 1059, 2020);
+insert into Materia_Anno values (407, 1059, 2021);
+insert into Materia_Anno values (408, 1059, 2022);
+insert into Materia_Anno values (409, 1059, 2023);
+insert into Materia_Anno values (410, 1059, 2024);
+insert into Materia_Anno values (411, 1059, 2025);
+insert into Materia_Anno values (412, 1059, 2026);
+insert into Materia_Anno values (413, 1060, 2020);
+insert into Materia_Anno values (414, 1060, 2021);
+insert into Materia_Anno values (415, 1060, 2022);
+insert into Materia_Anno values (416, 1060, 2023);
+insert into Materia_Anno values (417, 1060, 2024);
+insert into Materia_Anno values (418, 1060, 2025);
+insert into Materia_Anno values (419, 1060, 2026);
+insert into Materia_Anno values (420, 1061, 2020);
+insert into Materia_Anno values (421, 1061, 2021);
+insert into Materia_Anno values (422, 1061, 2022);
+insert into Materia_Anno values (423, 1061, 2023);
+insert into Materia_Anno values (424, 1061, 2024);
+insert into Materia_Anno values (425, 1061, 2025);
+insert into Materia_Anno values (426, 1061, 2026);
+insert into Materia_Anno values (427, 1062, 2020);
+insert into Materia_Anno values (428, 1062, 2021);
+insert into Materia_Anno values (429, 1062, 2022);
+insert into Materia_Anno values (430, 1062, 2023);
+insert into Materia_Anno values (431, 1062, 2024);
+insert into Materia_Anno values (432, 1062, 2025);
+insert into Materia_Anno values (433, 1062, 2026);
+insert into Materia_Anno values (434, 1063, 2020);
+insert into Materia_Anno values (435, 1063, 2021);
+insert into Materia_Anno values (436, 1063, 2022);
+insert into Materia_Anno values (437, 1063, 2023);
+insert into Materia_Anno values (438, 1063, 2024);
+insert into Materia_Anno values (439, 1063, 2025);
+insert into Materia_Anno values (440, 1063, 2026);
+insert into Materia_Anno values (441, 1064, 2020);
+insert into Materia_Anno values (442, 1064, 2021);
+insert into Materia_Anno values (443, 1064, 2022);
+insert into Materia_Anno values (444, 1064, 2023);
+insert into Materia_Anno values (445, 1064, 2024);
+insert into Materia_Anno values (446, 1064, 2025);
+insert into Materia_Anno values (447, 1064, 2026);
+insert into Materia_Anno values (448, 1065, 2020);
+insert into Materia_Anno values (449, 1065, 2021);
+insert into Materia_Anno values (450, 1065, 2022);
+insert into Materia_Anno values (451, 1065, 2023);
+insert into Materia_Anno values (452, 1065, 2024);
+insert into Materia_Anno values (453, 1065, 2025);
+insert into Materia_Anno values (454, 1065, 2026);
+insert into Materia_Anno values (455, 1066, 2020);
+insert into Materia_Anno values (456, 1066, 2021);
+insert into Materia_Anno values (457, 1066, 2022);
+insert into Materia_Anno values (458, 1066, 2023);
+insert into Materia_Anno values (459, 1066, 2024);
+insert into Materia_Anno values (460, 1066, 2025);
+insert into Materia_Anno values (461, 1066, 2026);
 
 # ---------------------------------------------------------------------- #
 # Add info into "Persona"                                                #
 # ---------------------------------------------------------------------- #
 
-truncate table Persona; 
+truncate table Persona;
 
 insert into Persona values ("DMCSRN57B50F875R","Serena","D'Amico","1957-02-10","serena.d'amico36@yahoo.it",1);
 insert into Persona values ("PRSGNN08R52D491D","Giovanna","Piras","2008-10-12","giovanna.piras42@gmail.com",4);
@@ -958,6 +1426,62 @@ insert into Persona values ("DLCLRA95T45I143C","Laura","De Luca","1995-12-05","l
 insert into Persona values ("PGLNMO07S52D760Z","Noemi","Puglisi","2007-11-12","noemi.puglisi73@hotmail.com",1);
 insert into Persona values ("TSCLNZ75B02H223Z","Lorenzo","Toscano","1975-02-02","lorenzo.toscano49@hotmail.com",3);
 insert into Persona values ("FRRRNN70T48G715L","Arianna","Ferrari","1970-12-08","arianna.ferrari79@hotmail.com",1);
+
+# ---------------------------------------------------------------------- #
+# Add info into "Piano_Didattico"                                        #
+# ---------------------------------------------------------------------- #
+
+truncate table Piano_Didattico;
+
+insert into Piano_Didattico (0, 2020, "ECO03", 0);
+insert into Piano_Didattico (1, 2021, "GIU01", 2);
+insert into Piano_Didattico (2, 2025, "MED01", 4);
+insert into Piano_Didattico (3, 2023, "DES01", 6);
+insert into Piano_Didattico (4, 2022, "DES01", 11);
+insert into Piano_Didattico (5, 2024, "FIL01", 12);
+insert into Piano_Didattico (6, 2022, "ARC_CES02", 14);
+insert into Piano_Didattico (7, 2025, "FIL01", 15);
+insert into Piano_Didattico (8, 2026, "CHI01", 16);
+insert into Piano_Didattico (9, 2026, "ARC_CES02", 17);
+insert into Piano_Didattico (10, 2023, "BIO01", 18);
+insert into Piano_Didattico (11, 2020, "CHI01", 19);
+insert into Piano_Didattico (12, 2023, "TEC_CES01", 21);
+insert into Piano_Didattico (13, 2023, "ANA01", 23);
+insert into Piano_Didattico (14, 2023, "FIL01", 24);
+insert into Piano_Didattico (15, 2023, "URB01", 26);
+insert into Piano_Didattico (16, 2026, "ING_INF02", 27);
+insert into Piano_Didattico (17, 2026, "ECO02", 29);
+insert into Piano_Didattico (18, 2024, "ING01", 30);
+insert into Piano_Didattico (19, 2026, "ING02", 31);
+insert into Piano_Didattico (20, 2024, "FIL01", 32);
+insert into Piano_Didattico (21, 2024, "ECO03", 33);
+insert into Piano_Didattico (22, 2022, "ECO03", 34);
+insert into Piano_Didattico (23, 2021, "ARC_CES02", 36);
+insert into Piano_Didattico (24, 2026, "BIO01", 37);
+insert into Piano_Didattico (25, 2023, "ING_INF01", 39);
+insert into Piano_Didattico (26, 2020, "ARC01", 40);
+insert into Piano_Didattico (27, 2022, "DES_CES01", 42);
+insert into Piano_Didattico (28, 2020, "DES01", 43);
+insert into Piano_Didattico (29, 2021, "FIL01", 45);
+insert into Piano_Didattico (30, 2020, "URB01", 48);
+insert into Piano_Didattico (31, 2020, "ECO03", 50);
+insert into Piano_Didattico (32, 2026, "ROB01", 51);
+insert into Piano_Didattico (33, 2025, "COM01", 52);
+insert into Piano_Didattico (34, 2020, "ING01", 53);
+insert into Piano_Didattico (35, 2026, "ROB01", 54);
+insert into Piano_Didattico (36, 2023, "BIO01", 56);
+insert into Piano_Didattico (37, 2025, "SOC01", 57);
+insert into Piano_Didattico (38, 2023, "ROB01", 59);
+insert into Piano_Didattico (39, 2020, "TUR01", 61);
+insert into Piano_Didattico (40, 2022, "STA01", 63);
+insert into Piano_Didattico (41, 2023, "BIO01", 64);
+insert into Piano_Didattico (42, 2023, "ECO01", 66);
+insert into Piano_Didattico (43, 2021, "DES_CES01", 68);
+insert into Piano_Didattico (44, 2025, "ARC_CES02", 69);
+insert into Piano_Didattico (45, 2024, "GIU01", 70);
+insert into Piano_Didattico (46, 2022, "URB_CES01", 71);
+insert into Piano_Didattico (47, 2025, "STA01", 72);
+insert into Piano_Didattico (48, 2021, "CHI01", 74);
 
 # ---------------------------------------------------------------------- #
 # Add info into "Professore"                                             #
@@ -1086,7 +1610,7 @@ insert into Segreteria values (55,8);
 
 truncate table Seguito_In;
 
-insert into Seguito_In values ("ECO01", 0); 
+insert into Seguito_In values ("ECO01", 0);
 insert into Seguito_In values ("ECO01", 8);
 insert into Seguito_In values ("ECO01", 9);
 insert into Seguito_In values ("ECO01", 12);
@@ -1107,18 +1631,18 @@ insert into Seguito_In values ("ING_INF01", 7);
 insert into Seguito_In values ("ING_INF01", 10);
 insert into Seguito_In values ("ING_INF02", 5);
 insert into Seguito_In values ("ING_INF02", 8);
-insert into Seguito_In values ("ING_INF02", 10); 
+insert into Seguito_In values ("ING_INF02", 10);
 insert into Seguito_In values ("ING_INF03", 5);
 insert into Seguito_In values ("ING_INF03", 10);
 insert into Seguito_In values ("ROB01", 5);
-insert into Seguito_In values ("ROB01", 10);    
+insert into Seguito_In values ("ROB01", 10);
 insert into Seguito_In values ("ARC01", 5);
-insert into Seguito_In values ("ARC01", 11);      
+insert into Seguito_In values ("ARC01", 11);
 insert into Seguito_In values ("DES01", 5);
 insert into Seguito_In values ("URB01", 5);
 insert into Seguito_In values ("URB01", 12);
 insert into Seguito_In values ("ARC_CES01", 7);
-insert into Seguito_In values ("ARC_CES01", 10);  
+insert into Seguito_In values ("ARC_CES01", 10);
 insert into Seguito_In values ("ARC_CES02", 7);
 insert into Seguito_In values ("DES_CES01", 7);
 insert into Seguito_In values ("URB_CES01", 7);
@@ -1135,16 +1659,16 @@ insert into Seguito_In values ("STA01", 2);
 insert into Seguito_In values ("STA01", 8);
 insert into Seguito_In values ("ANA01", 2);
 insert into Seguito_In values ("ANA01", 12);
-insert into Seguito_In values ("MED01", 6); 
+insert into Seguito_In values ("MED01", 6);
 insert into Seguito_In values ("MED01", 15);
-insert into Seguito_In values ("INF01", 6);  
+insert into Seguito_In values ("INF01", 6);
 insert into Seguito_In values ("FAR01", 0);
 insert into Seguito_In values ("BIOFAR01", 0);
 insert into Seguito_In values ("GIU01", 0);
-insert into Seguito_In values ("GIU01", 12); 
+insert into Seguito_In values ("GIU01", 12);
 insert into Seguito_In values ("DIR01", 0);
 insert into Seguito_In values ("POL01", 12);
-insert into Seguito_In values ("POL01", 16); 
+insert into Seguito_In values ("POL01", 16);
 insert into Seguito_In values ("SOC01", 16);
 insert into Seguito_In values ("COM01", 16);
 insert into Seguito_In values ("PSI01", 0);
@@ -1297,6 +1821,8 @@ insert into Studente values (74);
 # Add info into "Thread"                                                 #
 # ---------------------------------------------------------------------- #
 
+truncate table Thread;
+
 insert into Thread values
 (0, 0, 0, 0,
  "Riunione dipartimento",
@@ -1309,29 +1835,29 @@ insert into Thread values
  "Inserire qui le disponibilità per eventuali sostituzioni della prossima settimana.",
  "2026-01-11 08:15:00",
  3, 0, 0, 0, 0, null, 5);
- 
+
  insert into Thread values
 (2, 0, 3, 0,
  "Calendario verifiche",
  "Il calendario delle verifiche del mese è disponibile sul registro elettronico.",
  "2026-01-12 10:00:00",
  12, 1, 1, 0, 1, null, 8);
- 
- 
+
+
  insert into Thread values
 (3, 1, 0, 0,
  "Assemblea di istituto",
  "Proposte per i temi dell’assemblea del prossimo mese.",
  "2026-01-13 14:20:00",
  8, 0, 0, 0, 0, null, 23);
- 
+
  insert into Thread values
 (4, 1, 1, 0,
  "Incontro con i docenti",
  "L’incontro con i docenti rappresentanti si terrà martedì alle 11.",
  "2026-01-14 09:00:00",
  15, 2, 1, 0, 1, null, 31);
- 
+
  insert into Thread values
 (5, 1, 2, 0,
  "Gita scolastica",
@@ -1344,8 +1870,8 @@ insert into Thread values
  "Che ne pensate del nuovo orario delle lezioni?",
  "2026-01-16 12:10:00",
  10, 1, 0, 0, 0, null, 24);
- 
- 
+
+
  insert into Thread values
 (7, 2, 3, 0,
  "Chiusura scuola",
