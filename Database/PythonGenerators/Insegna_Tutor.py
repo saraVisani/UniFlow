@@ -1,117 +1,5 @@
-Formato_Da = [(1001,"ECO01",1,3,1,12),
-(1001,"ECO02",0,2,2,6),
-(1002,"ECO01",1,4,1,12),
-(1002,"ECO03",0,3,2,6),
-(1003,"ECO01",1,2,1,6),
-(1003,"ECO02",0,3,2,12),
-(1004,"TUR01",1,3,1,12),
-(1004,"ECO02",0,2,2,6),
-(1005,"TUR01",1,2,1,6),
-(1005,"ECO03",0,3,2,12),
-(1006,"ECO03",1,5,1,12),
-(1007,"ECO01",1,3,2,6),
-(1008,"MAT01",1,2,1,12),
-(1008,"ANA01",0,3,2,6),
-(1009,"FIS01",1,2,1,12),
-(1010,"CHI01",1,1,1,6),
-(1011,"BIO01",1,2,2,12),
-(1012,"ING01",0,3,1,6),
-(1013,"ING01",0,2,2,12),
-(1014,"ING02",0,4,1,6),
-(1015,"MAT01",1,3,2,12),
-(1016,"FIS01",0,4,2,12),
-(1017,"ING_INF01",1,3,1,12),
-(1017,"ING_INF02",0,4,2,6),
-(1018,"ING_INF02",1,2,2,6),
-(1019,"ING01",0,5,1,12),
-(1020,"ING01",0,3,2,6),
-(1021,"ING02",0,4,1,12),
-(1022,"ING02",0,2,2,6),
-(1023,"ING02",0,3,1,12),
-(1024,"ING_INF02",1,2,1,12),
-(1025,"ING_INF02",0,3,2,6),
-(1026,"ING_INF03",1,5,1,12),
-(1027,"ING_INF03",0,4,2,6),
-(1028,"ING_INF01",0,3,1,12),
-(1029,"ING_INF01",0,4,2,6),
-(1030,"INF01",1,2,1,12),
-(1031,"ING_INF03",1,5,1,12),
-(1032,"ING_INF03",0,4,2,6),
-(1033,"ROB01",1,5,1,12),
-(1034,"ROB01",0,4,2,6),
-(1035,"ARC01",1,5,1,12),
-(1036,"DES01",1,4,1,6),
-(1037,"URB01",1,5,1,12),
-(1038,"ARC_CES01",0,3,2,6),
-(1039,"ARC_CES02",0,4,1,12),
-(1040,"DES_CES01",0,4,2,12),
-(1041,"URB_CES01",0,3,1,12),
-(1042,"TEC_CES01",0,4,2,12),
-(1043,"LET01",1,2,1,6),
-(1044,"STO01",1,3,1,12),
-(1045,"FIL01",0,4,2,6),
-(1046,"LIN01",0,3,1,12),
-(1047,"POL01",1,4,1,12),
-(1048,"SOC01",1,3,2,6),
-(1049,"COM01",0,2,1,6),
-(1050,"PSI01",1,4,1,12),
-(1051,"GIU01",1,3,1,12),
-(1052,"DIR01",0,2,2,6),
-(1053,"FAR01",1,4,1,12),
-(1054,"BIOFAR01",0,5,2,12),
-(1055,"MED01",1,5,1,12),
-(1056,"MED01",0,4,2,6),
-(1057,"ANA01",1,3,1,12),
-(1058,"STA01",1,4,2,6),
-(1059,"STA01",0,3,1,12),
-(1060,"MAT01",1,2,1,12),
-(1061,"FIS01",0,4,2,12),
-(1062,"CHI01",1,2,1,6),
-(1063,"BIO01",0,3,2,12),
-(1064,"POL01",1,4,1,12),
-(1065,"SOC01",0,3,2,6),
-(1066,"PSI01",1,3,1,12),
-(1066,"SOC01",0,2,2,6)]
-
-corsi = [("ECO01","Economia Aziendale","Studio dell'organizzazione e gestione delle imprese","null","Economia e Management"),
-("ECO02","Economia del Turismo","Formazione economica per il settore turistico","null","Economia e Management"),
-("ECO03","Economia e Finanza","Analisi dei mercati finanziari e degli strumenti di investimento","#1E90FF","Economia e Management"),
-("TUR01","Scienze del Turismo","Gestione e valorizzazione dei sistemi turistici","null","Economia e Management"),
-("ING01","Ingegneria Gestionale","Ottimizzazione dei processi aziendali e industriali","null","Ingegneria e Architettura"),
-("ING02","Ingegneria Meccanica","Progettazione e analisi di sistemi meccanici","null","Ingegneria e Architettura"),
-("ING_INF01","Ingegneria e Scienze Informatiche","Corso triennale di ingegneria e informatica, sviluppo software e sistemi intelligenti","#00FF00","Ingegneria e Architettura"),
-("ING_INF02","Informatica","Programmazione, algoritmi e sistemi informatici","#00FF00","Ingegneria e Architettura"),
-("ING_INF03","Data Science","Analisi dati, statistica e machine learning","#32CD32","Ingegneria e Architettura"),
-("ROB01","Robotica","Progettazione e programmazione di sistemi robotici","#FF69B4","Ingegneria e Architettura"),
-("MAT01","Matematica","Studio delle strutture matematiche e dei modelli teorici","null","Scienze"),
-("FIS01","Fisica","Studio delle leggi fondamentali della natura","null","Scienze"),
-("CHI01","Chimica","Studio della materia e delle sue trasformazioni","null","Scienze"),
-("BIO01","Biologia","Studio dei sistemi biologici","null","Scienze"),
-("STA01","Statistica","Analisi dei dati e modelli statistici","#FFD700","Scienze"),
-("ANA01","Analisi Matematica","Studio dei fondamenti dell'analisi reale e complessa","null","Scienze"),
-("MED01","Medicina e Chirurgia","Formazione del medico e delle professioni sanitarie","null","Medicina e Chirurgia"),
-("INF01","Infermieristica","Assistenza infermieristica e sanitaria","null","Medicina e Chirurgia"),
-("FAR01","Farmacia","Studio del farmaco e della sua applicazione clinica","null","Farmacia e Biotecnologie"),
-("BIOFAR01","Biotecnologie Farmaceutiche","Tecnologie per la ricerca e sviluppo di farmaci","#FF4500","Farmacia e Biotecnologie"),
-("GIU01","Giurisprudenza","Formazione giuridica completa per le professioni legali","null","Giurisprudenza"),
-("DIR01","Scienze dei Servizi Giuridici","Studio del diritto applicato ai servizi","null","Giurisprudenza"),
-("POL01","Scienze Politiche","Analisi dei sistemi politici e istituzionali","null","Scienze Politiche"),
-("SOC01","Sociologia","Studio delle dinamiche sociali","null","Sociologia"),
-("COM01","Scienze della Comunicazione","Teorie e tecniche della comunicazione","null","Sociologia"),
-("PSI01","Psicologia","Studio del comportamento e dei processi cognitivi","#FF69B4","Psicologia"),
-("LET01","Lettere Moderne","Studio della letteratura e della lingua italiana","null","Studi Umanistici"),
-("STO01","Storia","Analisi storica dall'antichità all'età contemporanea","null","Studi Umanistici"),
-("FIL01","Filosofia","Studio del pensiero filosofico","null","Studi Umanistici"),
-("LIN01","Lingue e Letterature Straniere","Studio delle lingue e culture straniere","null","Lingue e Letterature, Traduzione e Interpretazione"),
-("ARC01","Architettura","Progettazione architettonica e urbana","null","Ingegneria e Architettura"),
-("DES01","Design Industriale","Progettazione di prodotti e servizi","null","Ingegneria e Architettura"),
-("URB01","Urbanistica","Pianificazione e gestione dello spazio urbano","#00CED1","Ingegneria e Architettura"),
-("ARC_CES01", "Architettura e Progettazione Edile", "Corso base di Architettura con focus su progettazione e costruzioni", "null", "Ingegneria e Architettura"),
-("ARC_CES02", "Ingegneria Civile e Ambientale", "Studio delle strutture civili e gestione delle infrastrutture", "null", "Ingegneria e Architettura"),
-("DES_CES01", "Design Industriale e Innovazione", "Progettazione di prodotti industriali e innovazione tecnologica", "null", "Ingegneria e Architettura"),
-("URB_CES01", "Urbanistica e Pianificazione Territoriale", "Analisi e pianificazione dello spazio urbano", "null", "Ingegneria e Architettura"),
-("TEC_CES01", "Tecnologie per l'Architettura", "Laboratori e applicazioni di nuove tecnologie nel design architettonico", "#00cc99", "Ingegneria e Architettura")]
-
+studenti = [0,2,4,6,11,12,14,15,16,17,18,19,21,23,24,26,27,29,30,31,32,33,34,36,37,39,40,42,43,45,48,50,51,52,53,54,56,57,59,61,63,64,66,68,69,70,71,72,74,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,207,208,209,210,211,212,213,214,215,216,217,218,219,220,221,222,223,224]
+professori = [3,5,8,9,20,22,28,35,38,41,44,46,58,60,62,65,67,73,78,80,81,82,83,84,88,94,95,96,98,99,100,101,102,103,104,106,109,111,113,116,117,118,119,123]
 materie_anno = [(0, 1001, 2020),
 (1, 1001, 2021),
 (2, 1001, 2022),
@@ -575,7 +463,7 @@ materie_anno = [(0, 1001, 2020),
 (460, 1066, 2025),
 (461, 1066, 2026)]
 
-"""piano_didattico = [(0, 2020, "ECO03", 0),
+piano_didattico = [(0, 2020, "ECO03", 0),
 (1, 2021, "GIU01", 2),
 (2, 2025, "MED01", 4),
 (3, 2023, "DES01", 6),
@@ -623,9 +511,7 @@ materie_anno = [(0, 1001, 2020),
 (45, 2024, "GIU01", 70),
 (46, 2022, "URB_CES01", 71),
 (47, 2025, "STA01", 72),
-(48, 2021, "CHI01", 74)]"""
-
-piano_didattico=[
+(48, 2021, "CHI01", 74),
 (49, 2025, "DES_CES01", 126),
 (50, 2021, "ARC_CES01", 127),
 (51, 2025, "DES_CES01", 128),
@@ -727,66 +613,29 @@ piano_didattico=[
 (147, 2021, "ECO03", 224),
 (148, 2020, "URB01", 125)]
 
+def genera_insegna():
+    riga = 449
+    for insegnante in professori:
+        riga = riga+1
+        for i in range (7):
+            cod_materia_anno, _, _ = materie_anno[i+riga]
+            print(f"insert into Insegna values ({cod_materia_anno},{insegnante});")
+
+#genera_insegna()
 
 import random
+def genera_tutor():
+    for cod_materia_anno,_,anno in materie_anno:
+        go = False
+        secondo_campo = 0
+        while not go:
+            studente = random.choice(studenti)
+            for tupla in materie_anno:
+                if tupla[-1] == studente:  # controlla l'ultimo elemento
+                    secondo_campo = tupla[1]  # prendi il secondo elemento
+                    break
+            if 2026-secondo_campo >= 2:
+                go = True
+        print(f"insert into Tutor values ({cod_materia_anno},{studente});")
 
-def superato_80():
-    return random.choices([1, 0], weights=[0.6, 0.4], k=1)[0]
-
-materia_anno_index = {
-    (m[1], m[2]): m[0]
-    for m in materie_anno
-}
-
-def genera_composto_da(piano_didattico, formato_da, materia_anno_index):
-    composto_da = []
-
-    for piano in piano_didattico:
-        cod_piano = piano[0]
-        anno_iscr = piano[1]
-        corso = piano[2]
-
-        # materie previste per il corso
-        materie_corso = [
-            f for f in formato_da
-            if f[1] == corso
-        ]
-
-        for m in materie_corso:
-            cod_mat = m[0]
-            grado = m[3]
-
-            anno_materia = anno_iscr + (grado - 1)
-
-            key = (cod_mat, anno_materia)
-            if key not in materia_anno_index:
-                continue
-
-            cod_mat_anno = materia_anno_index[key]
-            sup = superato_80()
-
-            composto_da.append(
-                (cod_piano, cod_mat_anno, sup)
-            )
-
-            # se NON superato → ripetizione anno dopo
-            if sup == 0:
-                key_next = (cod_mat, anno_materia + 1)
-                if key_next in materia_anno_index:
-                    composto_da.append(
-                        (cod_piano, materia_anno_index[key_next], superato_80())
-                    )
-
-    return composto_da
-
-composto_da = genera_composto_da(
-    piano_didattico,
-    Formato_Da,
-    materia_anno_index
-)
-
-for c in composto_da:
-    print(
-        f"insert into Composto_Da values ({c[0]}, {c[1]}, {c[2]});"
-    )
-
+genera_tutor()

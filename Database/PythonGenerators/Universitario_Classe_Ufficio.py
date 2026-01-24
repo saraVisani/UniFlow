@@ -1,6 +1,6 @@
 import random
 
-codice_corrente = 15
+codice_corrente = 185
 
 def codice():
     global codice_corrente
@@ -202,9 +202,43 @@ def stampa_luoghi():
     for l in luoghi:
         print(f"insert into Luogo values ({l['Codice']}, {l['Capienza']}, '{l['Nome']}');")
 
-genera_luoghi(170)
+nuovi_Professori = [78,80,81,82,83,84,88,94,95,96,98,99,100,101,102,103,104,106,109,111,113,116,117,118,119,123]
+
+def genera_uffici():
+    for prof in nuovi_Professori:
+        codice_uni, _, _, _, _ = random.choice(sedi)
+        cs = codice_stanza()
+        luogo = luoghi.pop(0)
+        universitari.append(
+            (codice_uni, cs, luogo["Codice"])
+        )
+        uffici.append(
+            (codice_uni, cs, prof))
+
+    for u in universitari:
+        print(f"insert into Universitario values ({u[0]}, {u[1]}, {u[2]});")
+    for u in uffici:
+        print(f"insert into Ufficio values ({u[0]}, {u[1]}, {u[2]});")
+
+def capienza_modificata():
+    fascia = "ufficio"
+    return random.randint(3, 10), fascia
+
+def genera_luoghi_uffici(n):
+    for _ in range(n):
+        cap, fascia = capienza_modificata()
+        luoghi.append({
+            "Codice": codice(),
+            "Capienza": cap,
+            "Nome": calcola_Nome(fascia),
+            "Fascia": fascia
+        })   
+
+#genera_luoghi(26)
+genera_luoghi_uffici(26)
 stampa_luoghi()
-genera_stanze_per_sedi()
+genera_uffici()
+#genera_stanze_per_sedi()
 
 
 
