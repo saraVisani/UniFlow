@@ -204,13 +204,14 @@ create table Messaggio (
      constraint SID_Messaggio_ID unique (Cod_Unico_Thread, Codice));
 
 create table Modulo (
+	 Codice_Modulo varchar(10) not null,
      Cod_Mat_Anno numeric(10) not null,
      Codice numeric(10) not null,
      Inizio_Modulo datetime not null,
      Fine_Modulo datetime not null,
      Descrizione varchar(510) not null,
      Matricola_Tit numeric(10) not null,
-     constraint ID_Modulo_ID primary key (Cod_Mat_Anno, Codice));
+     constraint ID_Modulo_ID primary key (Codice_Modulo, Cod_Mat_Anno, Codice));
 
 create table Notifica (
      Codice numeric(10) not null,
@@ -221,13 +222,14 @@ create table Notifica (
 
 create table Orario (
      Codice numeric(10) not null,
+     Codice_Corso varchar(10) not null,
      Cod_Mat_Anno numeric(10) not null,
      Codice_Modulo numeric(10) not null,
      Orario_inizio datetime not null,
      Codice_Uni numeric(10) not null,
      Codice_Stanza numeric(3) not null,
      Orario_fine datetime not null,
-     constraint SID_Orario_1_ID unique (Cod_Mat_Anno, Codice_Modulo, Orario_inizio),
+     constraint SID_Orario_1_ID unique (Codice_Corso, Cod_Mat_Anno, Codice_Modulo, Orario_inizio),
      constraint SID_Orario_ID unique (Codice_Uni, Codice_Stanza, Orario_inizio),
      constraint ID_Orario_ID primary key (Codice));
 
@@ -314,6 +316,7 @@ create table Richiesta_Orario (
      Data_Inizio datetime,
      Data_Fine datetime,
      Codice_Orario numeric(10),
+     Codice_Corso varchar(10),
      Cod_Mat_Anno numeric(10),
      Codice_Modulo numeric(10),
      Codice_Uni numeric(10),
@@ -3438,6 +3441,10 @@ alter table Messaggio add constraint REF_Messa_Siste_FK
      foreign key (Matricola)
      references Sistema_Universitario(Matricola);
 
+alter table Modulo add constraint EQU_Modul_Corso
+	 foreign key (Codice_Corso)
+     references Corso(Codice);
+
 alter table Modulo add constraint EQU_Modul_Mater
      foreign key (Cod_Mat_Anno)
      references Materia_Anno(Cod_Mat_Anno);
@@ -3451,8 +3458,8 @@ alter table Notifica add constraint REF_Notif_Siste_FK
      references Sistema_Universitario(Matricola);
 
 alter table Orario add constraint REF_Orari_Modul
-     foreign key (Cod_Mat_Anno, Codice_Modulo)
-     references Modulo(Cod_Mat_Anno, Codice);
+     foreign key (Codice_Corso, Cod_Mat_Anno, Codice_Modulo)
+     references Modulo(Codice_Corso, Cod_Mat_Anno, Codice);
 
 alter table Orario add constraint REF_Orari_Class
      foreign key (Codice_Uni, Codice_Stanza)
@@ -3527,7 +3534,7 @@ alter table Richiesta_Orario add constraint REF_Richi_Orari_FK
      references Orario(Codice);
 
 alter table Richiesta_Orario add constraint REF_Richi_Modul_FK
-     foreign key (Cod_Mat_Anno, Codice_Modulo)
+     foreign key (Codice_Corso, Cod_Mat_Anno, Codice_Modulo)
      references Modulo(Cod_Mat_Anno, Codice);
 
 alter table Richiesta_Orario add constraint REF_Richi_Modul_CHK
@@ -3794,7 +3801,7 @@ create index REF_Messa_Siste_IND
      on Messaggio (Matricola);
 
 create unique index ID_Modulo_IND
-     on Modulo (Cod_Mat_Anno, Codice);
+     on Modulo (Codice_Materia, Cod_Mat_Anno, Codice);
 
 create index REF_Modul_Profe_IND
      on Modulo (Matricola_Tit);
@@ -3806,7 +3813,7 @@ create index REF_Notif_Siste_IND
      on Notifica (Matricola);
 
 create unique index SID_Orario_1_IND
-     on Orario (Cod_Mat_Anno, Codice_Modulo, Orario_inizio);
+     on Orario (Codice_Corso, Cod_Mat_Anno, Codice_Modulo, Orario_inizio);
 
 create unique index SID_Orario_IND
      on Orario (Codice_Uni, Codice_Stanza, Orario_inizio);
