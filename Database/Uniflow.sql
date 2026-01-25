@@ -983,6 +983,53 @@ insert into Esterno values (13,"SA", "SA", 80, 13);
 insert into Esterno values (14,"CA", "CP", 83, 14);
 
 # ---------------------------------------------------------------------- #
+# Add info into "Esterno"                                                #
+# ---------------------------------------------------------------------- #
+
+truncate table Evento;
+
+insert into Evento values (1, "Workshop di Economia Aziendale", "2024-02-12", "2024-02-13", 8, "Incontro di presentazione di nuove tecnologie", "PRSRCC56E69L045Y");
+insert into Evento values (2, "Giornata della Creatività Digitale", "2022-05-12", "2022-05-12", 5, "Incontro di approfondimento metodologico", "RMNLCU08A19B882Z");      
+insert into Evento values (3, "Concorso di Startup Studentesche", "2026-04-27", "2026-04-29", 298, "Ciclo di incontri tematici interdisciplinari", "CLBJCP02S16L219Y");  
+insert into Evento values (4, "Workshop di Statistica", "2022-12-31", "2022-12-31", 1162, "Workshop pratico con simulazioni reali", "PGLRFL03M08B354B");
+insert into Evento values (5, "Laboratorio di Informatica", "2020-05-11", "2020-05-11", 3, "Incontro di approfondimento metodologico", "PGLRFL03M08B354B");
+insert into Evento values (6, "Giornata della Robotica", "2021-08-04", "2021-08-05", 1412, "Seminario di orientamento al lavoro", "TSTMTT60T09D394B");
+insert into Evento values (7, "Giornata della Creatività", "2025-10-01", "2025-10-01", 115, "Evento culturale aperto al pubblico", "NREDNL98P01A913Z");
+insert into Evento values (8, "Giornata della Creatività", "2023-12-02", "2023-12-02", 325, "Evento culturale aperto al pubblico", "ZCCGPP02T07A390P");
+insert into Evento values (9, "Laboratorio di Chimica Organica", "2022-06-29", "2022-06-30", 87, "Conferenza su tematiche di attualità", "SRRLSN74H26L219Y");
+insert into Evento values (10, "Evento di Innovazione Tecnologica", "2020-05-21", "2020-05-21", 238, "Evento culturale aperto al pubblico", "NNCPRZ61M68H266K");
+insert into Evento values (11, "Giornata della Robotica", "2026-12-27", "2026-12-29", 53, "Workshop intensivo di aggiornamento", "TSCLXA86C08D969F");
+insert into Evento values (12, "Torneo di Sci Universitario", "2020-06-24", "2020-06-24", 44, "Presentazione di progetti di ricerca innovativi", "PGLRFL03M08B354B");    
+insert into Evento values (13, "Festival della Musica Universitaria", "2022-06-19", "2022-06-19", 650, "Evento istituzionale promosso dall’ateneo", "BRMDVD84P02A587E"); 
+insert into Evento values (14, "Evento di Innovazione Tecnologica", "2024-03-07", "2024-03-09", 109, "Giornata di sensibilizzazione e informazione", "VTLMSM83B20I386Q");
+insert into Evento values (15, "Saggio Teatrale Studentesco", "2026-07-01", "2026-07-02", 104, "Presentazione di progetti di ricerca innovativi", "TSCLXA86C08D969F");   
+insert into Evento values (16, "Giornata della Robotica", "2021-03-26", "2021-03-26", 9, "Presentazione di progetti di ricerca innovativi", "TSCLXA86C08D969F");
+insert into Evento values (17, "Mostra Fotografica Universitaria", "2026-09-07", "2026-09-07", 102, "Seminario avanzato per studenti magistrali", "RNLNGL87A67C986S");
+insert into Evento values (18, "Rassegna Cinematografica Universitaria", "2021-12-04", "2021-12-06", 10, "Evento aperto alla cittadinanza", "ZCCGPP02T07A390P");
+insert into Evento values (19, "Evento di Volontariato Universitario", "2025-12-06", "2025-12-07", 10, "Iniziativa di orientamento post-laurea", "FRRDGI02C23D525W");
+insert into Evento values (20, "Hackathon Informatica", "2024-11-30", "2024-11-30", 59, "Presentazione di progetti di ricerca innovativi", "BRMDVD84P02A587E");
+insert into Evento values (21, "Workshop di Economia Aziendale", "2021-12-09", "2021-12-09", 140, "Tavola rotonda con professionisti del settore", "CLMCSR80B23H224A");
+insert into Evento values (22, "Giornata della Creatività Digitale", "2021-02-03", "2021-02-04", 108, "Seminario avanzato per studenti magistrali", "NNCPRZ61M68H266K");
+insert into Evento values (23, "Workshop di Comunicazione Scientifica", "2020-11-29", "2020-11-29", 91, "Incontro di divulgazione scientifica", "CNTMRC71D08B207F");
+insert into Evento values (24, "Workshop di Scrittura Accademica", "2024-01-07", "2024-01-08", 1139, "Evento di formazione continua", "PRSGNN08R52D491D");
+insert into Evento values (25, "Conferenza Internazionale", "2024-09-20", "2024-09-20", 61, "Incontro di presentazione di nuove tecnologie", "VTLMSM83B20I386Q");
+insert into Evento values (26, "Laboratorio di Robotica", "2021-06-27", "2021-06-29", 102, "Workshop pratico per studenti universitari", "PGLRFL03M08B354B");
+insert into Evento values (27, "Laboratorio di Robotica", "2020-12-01", "2020-12-01", 325, "Laboratorio interattivo a numero chiuso", "FRRRRT95E07G715D");
+insert into Evento values (28, "Evento di Innovazione Tecnologica", "2024-07-09", "2024-07-09", 5, "Incontro di approfondimento metodologico", "BRMDVD84P02A587E");
+insert into Evento values (29, "Rassegna Cinematografica Universitaria", "2021-10-20", "2021-10-20", 99, "Giornata di studio e confronto accademico", "PRSRCC56E69L045Y");
+insert into Evento values (30, "Conferenza di Matematica Applicata", "2023-10-21", "2023-10-21", 10, "Giornata informativa sui servizi universitari", "CNISMN85T28L424I");
+insert into Evento values (31, "Torneo di Sci Universitario", "2021-09-17", "2021-09-19", 8, "Conferenza su tematiche di attualità", "DMCLCU91S70F205J");
+insert into Evento values (32, "Laboratorio di Informatica", "2023-12-22", "2023-12-23", 355, "Seminario introduttivo per nuovi iscritti", "SRRVCN59C25D027Z");
+insert into Evento values (33, "Workshop di Scrittura Accademica", "2025-06-06", "2025-06-07", 67, "Presentazione di progetti di ricerca innovativi", "CNISMN85T28L424I");
+insert into Evento values (34, "Giornata dell'Ingegneria", "2025-10-17", "2025-10-17", 93, "Evento di orientamento per studenti e famiglie", "CVLNGL82M52A037X");
+insert into Evento values (35, "Festival della Musica Universitaria", "2023-10-11", "2023-10-11", 211, "Presentazione di progetti di ricerca innovativi", "FZADNC77B24D949G");
+insert into Evento values (36, "Conferenza di Biotecnologie", "2023-05-15", "2023-05-15", 102, "Evento aperto alla cittadinanza", "PRSGNN08R52D491D");
+insert into Evento values (37, "Evento di Innovazione Tecnologica", "2022-03-18", "2022-03-18", 1365, "Giornata di studio e confronto accademico", "SRRLSN74H26L219Y");
+insert into Evento values (38, "Conferenza di Matematica Applicata", "2023-01-08", "2023-01-08", 6, "Conferenza su tematiche di attualità", "FBBLCA75B52A286A");
+insert into Evento values (39, "Giornata dell'Ingegneria", "2021-07-24", "2021-07-24", 47, "Conferenza con relatori internazionali", "GNTNNL66C57D276W");
+insert into Evento values (40, "Giornata delle Professioni Digitali", "2026-12-21", "2026-12-21", 210, "Evento di presentazione dei corsi di laurea", "NREDNL98P01A913Z");
+
+# ---------------------------------------------------------------------- #
 # Add info into "Formato_Da"                                             #
 # ---------------------------------------------------------------------- #
 
@@ -3336,6 +3383,74 @@ insert into Modulo values ('PSI01', 461, 1, '2026-09-08', '2026-12-20', 'Approfo
 insert into Modulo values ('PSI01', 461, 2, '2026-09-15', '2026-12-10', 'Laboratorio creativo', 82);
 
 # ---------------------------------------------------------------------- #
+# Add info into "Orario_Evento"                                          #
+# ---------------------------------------------------------------------- #
+
+truncate table Orario_Evento;
+
+insert into Orario_Evento values (1, 1, "2024-02-12 10:30:00", 28, "2024-02-12 11:30:00");
+insert into Orario_Evento values (2, 1, "2024-02-13 17:00:00", 28, "2024-02-13 19:00:00");
+insert into Orario_Evento values (3, 2, "2022-05-12 16:30:00", 60, "2022-05-12 17:30:00");
+insert into Orario_Evento values (4, 3, "2026-04-27 10:30:00", 11, "2026-04-27 13:30:00");
+insert into Orario_Evento values (5, 3, "2026-04-28 13:30:00", 11, "2026-04-28 15:30:00");
+insert into Orario_Evento values (6, 3, "2026-04-29 14:30:00", 11, "2026-04-29 16:30:00");
+insert into Orario_Evento values (7, 4, "2022-12-31 14:00:00", 5, "2022-12-31 17:00:00");
+insert into Orario_Evento values (8, 5, "2020-05-11 11:30:00", 176, "2020-05-11 13:30:00");
+insert into Orario_Evento values (9, 6, "2021-08-04 11:30:00", 83, "2021-08-04 12:30:00");
+insert into Orario_Evento values (10, 6, "2021-08-05 11:00:00", 83, "2021-08-05 14:00:00");
+insert into Orario_Evento values (11, 7, "2025-10-01 14:30:00", 2, "2025-10-01 17:30:00");
+insert into Orario_Evento values (12, 8, "2023-12-02 09:00:00", 83, "2023-12-02 11:00:00");
+insert into Orario_Evento values (13, 9, "2022-06-29 12:00:00", 133, "2022-06-29 15:00:00");
+insert into Orario_Evento values (14, 9, "2022-06-30 16:30:00", 133, "2022-06-30 19:30:00");
+insert into Orario_Evento values (15, 10, "2020-05-21 17:00:00", 100, "2020-05-21 19:00:00");
+insert into Orario_Evento values (16, 11, "2026-12-27 14:30:00", 146, "2026-12-27 16:30:00");
+insert into Orario_Evento values (17, 11, "2026-12-28 08:30:00", 146, "2026-12-28 11:30:00");
+insert into Orario_Evento values (18, 11, "2026-12-29 16:30:00", 146, "2026-12-29 18:30:00");
+insert into Orario_Evento values (19, 12, "2020-06-24 10:00:00", 32, "2020-06-24 12:00:00");
+insert into Orario_Evento values (20, 13, "2022-06-19 09:00:00", 168, "2022-06-19 11:00:00");
+insert into Orario_Evento values (21, 14, "2024-03-07 10:30:00", 93, "2024-03-07 13:30:00");
+insert into Orario_Evento values (22, 14, "2024-03-08 16:00:00", 93, "2024-03-08 17:00:00");
+insert into Orario_Evento values (23, 14, "2024-03-09 12:00:00", 93, "2024-03-09 14:00:00");
+insert into Orario_Evento values (24, 15, "2026-07-01 12:30:00", 13, "2026-07-01 13:30:00");
+insert into Orario_Evento values (25, 15, "2026-07-02 15:00:00", 13, "2026-07-02 18:00:00");
+insert into Orario_Evento values (26, 16, "2021-03-26 08:30:00", 165, "2021-03-26 10:30:00");
+insert into Orario_Evento values (27, 17, "2026-09-07 11:30:00", 21, "2026-09-07 12:30:00");
+insert into Orario_Evento values (28, 18, "2021-12-04 17:00:00", 15, "2021-12-04 20:00:00");
+insert into Orario_Evento values (29, 18, "2021-12-05 12:30:00", 15, "2021-12-05 15:30:00");
+insert into Orario_Evento values (30, 18, "2021-12-06 17:00:00", 15, "2021-12-06 20:00:00");
+insert into Orario_Evento values (31, 19, "2025-12-06 09:00:00", 157, "2025-12-06 10:00:00");
+insert into Orario_Evento values (32, 19, "2025-12-07 17:00:00", 157, "2025-12-07 19:00:00");
+insert into Orario_Evento values (33, 20, "2024-11-30 08:00:00", 121, "2024-11-30 09:00:00");
+insert into Orario_Evento values (34, 21, "2021-12-09 13:00:00", 137, "2021-12-09 16:00:00");
+insert into Orario_Evento values (35, 22, "2021-02-03 09:30:00", 10, "2021-02-03 10:30:00");
+insert into Orario_Evento values (36, 22, "2021-02-04 12:00:00", 10, "2021-02-04 13:00:00");
+insert into Orario_Evento values (37, 23, "2020-11-29 16:30:00", 33, "2020-11-29 18:30:00");
+insert into Orario_Evento values (38, 24, "2024-01-07 11:00:00", 83, "2024-01-07 14:00:00");
+insert into Orario_Evento values (39, 24, "2024-01-08 09:30:00", 83, "2024-01-08 11:30:00");
+insert into Orario_Evento values (40, 25, "2024-09-20 15:30:00", 73, "2024-09-20 17:30:00");
+insert into Orario_Evento values (41, 26, "2021-06-27 14:30:00", 102, "2021-06-27 16:30:00");
+insert into Orario_Evento values (42, 26, "2021-06-28 11:30:00", 102, "2021-06-28 13:30:00");
+insert into Orario_Evento values (43, 26, "2021-06-29 16:00:00", 102, "2021-06-29 17:00:00");
+insert into Orario_Evento values (44, 27, "2020-12-01 09:30:00", 11, "2020-12-01 12:30:00");
+insert into Orario_Evento values (45, 28, "2024-07-09 09:00:00", 11, "2024-07-09 12:00:00");
+insert into Orario_Evento values (46, 29, "2021-10-20 12:30:00", 75, "2021-10-20 14:30:00");
+insert into Orario_Evento values (47, 30, "2023-10-21 10:30:00", 137, "2023-10-21 11:30:00");
+insert into Orario_Evento values (48, 31, "2021-09-17 17:30:00", 7, "2021-09-17 20:30:00");
+insert into Orario_Evento values (49, 31, "2021-09-18 13:00:00", 7, "2021-09-18 16:00:00");
+insert into Orario_Evento values (50, 31, "2021-09-19 12:30:00", 7, "2021-09-19 15:30:00");
+insert into Orario_Evento values (51, 32, "2023-12-22 08:00:00", 164, "2023-12-22 10:00:00");
+insert into Orario_Evento values (52, 32, "2023-12-23 14:00:00", 164, "2023-12-23 16:00:00");
+insert into Orario_Evento values (53, 33, "2025-06-06 14:30:00", 104, "2025-06-06 17:30:00");
+insert into Orario_Evento values (54, 33, "2025-06-07 17:30:00", 104, "2025-06-07 18:30:00");
+insert into Orario_Evento values (55, 34, "2025-10-17 08:00:00", 142, "2025-10-17 09:00:00");
+insert into Orario_Evento values (56, 35, "2023-10-11 09:00:00", 70, "2023-10-11 12:00:00");
+insert into Orario_Evento values (57, 36, "2023-05-15 12:30:00", 41, "2023-05-15 14:30:00");
+insert into Orario_Evento values (58, 37, "2022-03-18 11:30:00", 168, "2022-03-18 12:30:00");
+insert into Orario_Evento values (59, 38, "2023-01-08 12:00:00", 30, "2023-01-08 13:00:00");
+insert into Orario_Evento values (60, 39, "2021-07-24 13:30:00", 79, "2021-07-24 16:30:00");
+insert into Orario_Evento values (61, 40, "2026-12-21 13:30:00", 41, "2026-12-21 16:30:00");
+
+# ---------------------------------------------------------------------- #
 # Add info into "Persona"                                                #
 # ---------------------------------------------------------------------- #
 
@@ -3866,6 +3981,63 @@ insert into Professore values (256);
 insert into Professore values (257);
 
 # ---------------------------------------------------------------------- #
+# Add info into "Promotore"                                              #
+# ---------------------------------------------------------------------- #
+
+truncate table Promotore;
+
+insert into Promotore values (1, "Giovanna Piras", "giovanna.piras42@gmail.com");
+insert into Promotore values (2, "Cesare Colombo", "cesare.colombo77@yahoo.it");
+insert into Promotore values (3, "Marco Vitale", "marco.vitale4@yahoo.it");
+insert into Promotore values (4, "Nicolò Sala", "nicolò.sala70@hotmail.com");
+insert into Promotore values (5, "Francesco Napolitano", "francesco.napolitano88@hotmail.com");
+insert into Promotore values (6, "Alessandro Sorrentino", "alessandro.sorrentino64@hotmail.com");
+insert into Promotore values (7, "Marco Conti", "marco.conti13@libero.it");
+insert into Promotore values (8, "Sasha Piras", "sasha.piras55@libero.it");
+insert into Promotore values (9, "Simone Iacono", "simone.iacono62@yahoo.it");
+insert into Promotore values (10, "Carlo Iacono", "carlo.iacono28@yahoo.it");
+insert into Promotore values (11, "Domenico Fazio", "domenico.fazio0@yahoo.it");
+insert into Promotore values (12, "Celeste Ferretti", "celeste.ferretti20@hotmail.com");
+insert into Promotore values (13, "Lucia D'Amico", "lucia.d'amico99@hotmail.com");
+insert into Promotore values (14, "Davide Brambilla", "davide.brambilla26@libero.it");
+insert into Promotore values (15, "Daniele Neri", "daniele.neri54@libero.it");
+insert into Promotore values (16, "Laura Verdi", "laura.verdi25@yahoo.it");
+insert into Promotore values (17, "Patrizia Innocenti", "patrizia.innocenti47@libero.it");
+insert into Promotore values (18, "Filippo Armani", "filippo.armani36@hotmail.com");
+insert into Promotore values (19, "Claudia Testa", "claudia.testa44@libero.it");
+insert into Promotore values (20, "Lucia Gallo", "lucia.gallo5@gmail.com");
+insert into Promotore values (21, "Denis Iacono", "denis.iacono91@gmail.com");
+insert into Promotore values (22, "Lucia Caruso", "lucia.caruso52@hotmail.com");
+insert into Promotore values (23, "Roberto Ferretti", "roberto.ferretti58@yahoo.it");
+insert into Promotore values (24, "Carlo Franco", "carlo.franco47@libero.it");
+insert into Promotore values (25, "Alice Barbieri", "alice.barbieri75@hotmail.com");
+insert into Promotore values (26, "Raffaele Puglisi", "raffaele.puglisi50@libero.it");
+insert into Promotore values (27, "Antonella Gentile", "antonella.gentile88@hotmail.com");
+insert into Promotore values (28, "Riccardo Verdi", "riccardo.verdi81@gmail.com");
+insert into Promotore values (29, "Riccardo Iacono", "riccardo.iacono13@hotmail.com");
+insert into Promotore values (30, "Francesca Longo", "francesca.longo99@libero.it");
+insert into Promotore values (31, "Massimo Vitale", "massimo.vitale31@gmail.com");
+insert into Promotore values (32, "Angela Rinaldi", "angela.rinaldi27@yahoo.it");
+insert into Promotore values (33, "Matteo Ferrari", "matteo.ferrari96@gmail.com");
+insert into Promotore values (34, "Jacopo Calabrese", "jacopo.calabrese16@libero.it");
+insert into Promotore values (35, "Laura De Luca", "laura.de luca57@gmail.com");
+insert into Promotore values (36, "Nicole Romano", "nicole.romano94@yahoo.it");
+insert into Promotore values (37, "Camilla Russo", "camilla.russo27@hotmail.com");
+insert into Promotore values (38, "Angela Cavaliere", "angela.cavaliere9@gmail.com");
+insert into Promotore values (39, "Alice Fabbri", "alice.fabbri43@hotmail.com");
+insert into Promotore values (40, "Sara De Santis", "sara.de santis45@libero.it");
+insert into Promotore values (41, "Diego Ferrari", "diego.ferrari93@hotmail.com");
+insert into Promotore values (42, "Luca Romano", "luca.romano23@gmail.com");
+insert into Promotore values (43, "Giuseppe Zuccaro", "giuseppe.zuccaro84@gmail.com");
+insert into Promotore values (44, "Alex Toscano", "alex.toscano91@yahoo.it");
+insert into Promotore values (45, "Matteo Testa", "matteo.testa20@gmail.com");
+insert into Promotore values (46, "Giovanna Crespi", "giovanna.crespi14@gmail.com");
+insert into Promotore values (47, "Stefano Ventura", "stefano.ventura96@yahoo.it");
+insert into Promotore values (48, "Rebecca Piras", "rebecca.piras49@yahoo.it");
+insert into Promotore values (49, "Marta Alberti", "marta.alberti68@libero.it");
+insert into Promotore values (50, "Vincenzo Serra", "vincenzo.serra90@gmail.com");
+
+# ---------------------------------------------------------------------- #
 # Add info into "Provincia"                                              #
 # ---------------------------------------------------------------------- #
 
@@ -3922,6 +4094,63 @@ insert into Provincia values ("CT","Catania");
 insert into Provincia values ("TP","Trapani");
 insert into Provincia values ("CA","Cagliari");
 insert into Provincia values ("SS","Sassari");
+
+# ---------------------------------------------------------------------- #
+# Add info into "Rappresentano"                                                   #
+# ---------------------------------------------------------------------- #
+
+truncate table Rappresentano;
+
+insert into Rappresentano values (1, "PRSGNN08R52D491D");
+insert into Rappresentano values (2, "CLMCSR80B23H224A");
+insert into Rappresentano values (3, "VTLMRC92H28D491V");
+insert into Rappresentano values (4, "SLANCL68P11G484W");
+insert into Rappresentano values (5, "NPLFNC59M04H703E");
+insert into Rappresentano values (6, "SRRLSN74H26L219Y");
+insert into Rappresentano values (7, "CNTMRC71D08B207F");
+insert into Rappresentano values (8, "PRSSSH07M28G484G");
+insert into Rappresentano values (9, "CNISMN85T28L424I");
+insert into Rappresentano values (10, "CNICRL85T10I239T");
+insert into Rappresentano values (11, "FZADNC77B24D949G");
+insert into Rappresentano values (12, "FRRCST02E13H223W");
+insert into Rappresentano values (13, "DMCLCU91S70F205J");
+insert into Rappresentano values (14, "BRMDVD84P02A587E");
+insert into Rappresentano values (15, "NREDNL98P01A913Z");
+insert into Rappresentano values (16, "VRDLRA89B52A037W");
+insert into Rappresentano values (17, "NNCPRZ61M68H266K");
+insert into Rappresentano values (18, "RMNFPP01R05F572A");
+insert into Rappresentano values (19, "TSTCLD63L54D491W");
+insert into Rappresentano values (20, "GLLLCU94E63L424C");
+insert into Rappresentano values (21, "CNIDNS80M17D433N");
+insert into Rappresentano values (22, "CRSLCU67P42A587A");
+insert into Rappresentano values (23, "FRRRRT95E07G715D");
+insert into Rappresentano values (24, "FRNCRL07M03C365Q");
+insert into Rappresentano values (25, "BRBLCA78E65A662W");
+insert into Rappresentano values (26, "PGLRFL03M08B354B");
+insert into Rappresentano values (27, "GNTNNL66C57D276W");
+insert into Rappresentano values (28, "VRDRCR64R09D433B");
+insert into Rappresentano values (29, "CNIRCR60P07H501P");
+insert into Rappresentano values (30, "LNGFNC77S46A587K");
+insert into Rappresentano values (31, "VTLMSM83B20I386Q");
+insert into Rappresentano values (32, "RNLNGL87A67C986S");
+insert into Rappresentano values (33, "FRRMTT05L26D230G");
+insert into Rappresentano values (34, "CLBJCP02S16L219Y");
+insert into Rappresentano values (35, "DLCLRA95T45I143C");
+insert into Rappresentano values (36, "RMNNCL71A45B858H");
+insert into Rappresentano values (37, "RSSCLL81T52B889G");
+insert into Rappresentano values (38, "CVLNGL82M52A037X");
+insert into Rappresentano values (39, "FBBLCA75B52A286A");
+insert into Rappresentano values (40, "DSNSRA85A67H196I");
+insert into Rappresentano values (41, "FRRDGI02C23D525W");
+insert into Rappresentano values (42, "RMNLCU08A19B882Z");
+insert into Rappresentano values (43, "ZCCGPP02T07A390P");
+insert into Rappresentano values (44, "TSCLXA86C08D969F");
+insert into Rappresentano values (45, "TSTMTT60T09D394B");
+insert into Rappresentano values (46, "CRSGNN86S61G702C");
+insert into Rappresentano values (47, "VNTSFN74R02G715K");
+insert into Rappresentano values (48, "PRSRCC56E69L045Y");
+insert into Rappresentano values (49, "LBRMRT81A66L781O");
+insert into Rappresentano values (50, "SRRVCN59C25D027Z");
 
 # ---------------------------------------------------------------------- #
 # Add info into "Sede"                                                   #
