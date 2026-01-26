@@ -1,3 +1,9 @@
+import random
+
+# Tipi di richiesta
+TIPI = ["Inserimento", "Modifica", "Eliminazione"]
+
+# Persone e promotori
 persone = [("DMCSRN57B50F875R","Serena","D'Amico","1957-02-10","serena.d'amico36@yahoo.it",1),
 ("PRSGNN08R52D491D","Giovanna","Piras","2008-10-12","giovanna.piras42@gmail.com",4),
 ("CNITMS99C09H703L","Tommaso","Iacono","1999-03-09","tommaso.iacono94@libero.it",1),
@@ -282,159 +288,394 @@ persone = [("DMCSRN57B50F875R","Serena","D'Amico","1957-02-10","serena.d'amico36
 ("SRRCLD75B25L219F","Claudio","Serra","1975-02-25","claudio.serra92@yahoo.it",3),
 ("SRRVCN59C25D027Z","Vincenzo","Serra","1959-03-25","vincenzo.serra90@gmail.com",3)]
 
-eventi = [(1, "Workshop di Economia Aziendale", "2024-02-12", "2024-02-13", 8, "Incontro di presentazione di nuove tecnologie", "PRSRCC56E69L045Y"),
-(2, "Giornata della Creatività Digitale", "2022-05-12", "2022-05-12", 5, "Incontro di approfondimento metodologico", "RMNLCU08A19B882Z"),      
-(3, "Concorso di Startup Studentesche", "2026-04-27", "2026-04-29", 298, "Ciclo di incontri tematici interdisciplinari", "CLBJCP02S16L219Y"),  
-(4, "Workshop di Statistica", "2022-12-31", "2022-12-31", 1162, "Workshop pratico con simulazioni reali", "PGLRFL03M08B354B"),
-(5, "Laboratorio di Informatica", "2020-05-11", "2020-05-11", 3, "Incontro di approfondimento metodologico", "PGLRFL03M08B354B"),
-(6, "Giornata della Robotica", "2021-08-04", "2021-08-05", 1412, "Seminario di orientamento al lavoro", "TSTMTT60T09D394B"),
-(7, "Giornata della Creatività", "2025-10-01", "2025-10-01", 115, "Evento culturale aperto al pubblico", "NREDNL98P01A913Z"),
-(8, "Giornata della Creatività", "2023-12-02", "2023-12-02", 325, "Evento culturale aperto al pubblico", "ZCCGPP02T07A390P"),
-(9, "Laboratorio di Chimica Organica", "2022-06-29", "2022-06-30", 87, "Conferenza su tematiche di attualità", "SRRLSN74H26L219Y"),
-(10, "Evento di Innovazione Tecnologica", "2020-05-21", "2020-05-21", 238, "Evento culturale aperto al pubblico", "NNCPRZ61M68H266K"),
-(11, "Giornata della Robotica", "2026-12-27", "2026-12-29", 53, "Workshop intensivo di aggiornamento", "TSCLXA86C08D969F"),
-(12, "Torneo di Sci Universitario", "2020-06-24", "2020-06-24", 44, "Presentazione di progetti di ricerca innovativi", "PGLRFL03M08B354B"),    
-(13, "Festival della Musica Universitaria", "2022-06-19", "2022-06-19", 650, "Evento istituzionale promosso dall’ateneo", "BRMDVD84P02A587E"), 
-(14, "Evento di Innovazione Tecnologica", "2024-03-07", "2024-03-09", 109, "Giornata di sensibilizzazione e informazione", "VTLMSM83B20I386Q"),
-(15, "Saggio Teatrale Studentesco", "2026-07-01", "2026-07-02", 104, "Presentazione di progetti di ricerca innovativi", "TSCLXA86C08D969F"),   
-(16, "Giornata della Robotica", "2021-03-26", "2021-03-26", 9, "Presentazione di progetti di ricerca innovativi", "TSCLXA86C08D969F"),
-(17, "Mostra Fotografica Universitaria", "2026-09-07", "2026-09-07", 102, "Seminario avanzato per studenti magistrali", "RNLNGL87A67C986S"),
-(18, "Rassegna Cinematografica Universitaria", "2021-12-04", "2021-12-06", 10, "Evento aperto alla cittadinanza", "ZCCGPP02T07A390P"),
-(19, "Evento di Volontariato Universitario", "2025-12-06", "2025-12-07", 10, "Iniziativa di orientamento post-laurea", "FRRDGI02C23D525W"),
-(20, "Hackathon Informatica", "2024-11-30", "2024-11-30", 59, "Presentazione di progetti di ricerca innovativi", "BRMDVD84P02A587E"),
-(21, "Workshop di Economia Aziendale", "2021-12-09", "2021-12-09", 140, "Tavola rotonda con professionisti del settore", "CLMCSR80B23H224A"),
-(22, "Giornata della Creatività Digitale", "2021-02-03", "2021-02-04", 108, "Seminario avanzato per studenti magistrali", "NNCPRZ61M68H266K"),
-(23, "Workshop di Comunicazione Scientifica", "2020-11-29", "2020-11-29", 91, "Incontro di divulgazione scientifica", "CNTMRC71D08B207F"),
-(24, "Workshop di Scrittura Accademica", "2024-01-07", "2024-01-08", 1139, "Evento di formazione continua", "PRSGNN08R52D491D"),
-(25, "Conferenza Internazionale", "2024-09-20", "2024-09-20", 61, "Incontro di presentazione di nuove tecnologie", "VTLMSM83B20I386Q"),
-(26, "Laboratorio di Robotica", "2021-06-27", "2021-06-29", 102, "Workshop pratico per studenti universitari", "PGLRFL03M08B354B"),
-(27, "Laboratorio di Robotica", "2020-12-01", "2020-12-01", 325, "Laboratorio interattivo a numero chiuso", "FRRRRT95E07G715D"),
-(28, "Evento di Innovazione Tecnologica", "2024-07-09", "2024-07-09", 5, "Incontro di approfondimento metodologico", "BRMDVD84P02A587E"),
-(29, "Rassegna Cinematografica Universitaria", "2021-10-20", "2021-10-20", 99, "Giornata di studio e confronto accademico", "PRSRCC56E69L045Y"),
-(30, "Conferenza di Matematica Applicata", "2023-10-21", "2023-10-21", 10, "Giornata informativa sui servizi universitari", "CNISMN85T28L424I"),
-(31, "Torneo di Sci Universitario", "2021-09-17", "2021-09-19", 8, "Conferenza su tematiche di attualità", "DMCLCU91S70F205J"),
-(32, "Laboratorio di Informatica", "2023-12-22", "2023-12-23", 355, "Seminario introduttivo per nuovi iscritti", "SRRVCN59C25D027Z"),
-(33, "Workshop di Scrittura Accademica", "2025-06-06", "2025-06-07", 67, "Presentazione di progetti di ricerca innovativi", "CNISMN85T28L424I"),
-(34, "Giornata dell'Ingegneria", "2025-10-17", "2025-10-17", 93, "Evento di orientamento per studenti e famiglie", "CVLNGL82M52A037X"),
-(35, "Festival della Musica Universitaria", "2023-10-11", "2023-10-11", 211, "Presentazione di progetti di ricerca innovativi", "FZADNC77B24D949G"),
-(36, "Conferenza di Biotecnologie", "2023-05-15", "2023-05-15", 102, "Evento aperto alla cittadinanza", "PRSGNN08R52D491D"),
-(37, "Evento di Innovazione Tecnologica", "2022-03-18", "2022-03-18", 1365, "Giornata di studio e confronto accademico", "SRRLSN74H26L219Y"),
-(38, "Conferenza di Matematica Applicata", "2023-01-08", "2023-01-08", 6, "Conferenza su tematiche di attualità", "FBBLCA75B52A286A"),
-(39, "Giornata dell'Ingegneria", "2021-07-24", "2021-07-24", 47, "Conferenza con relatori internazionali", "GNTNNL66C57D276W"),
-(40, "Giornata delle Professioni Digitali", "2026-12-21", "2026-12-21", 210, "Evento di presentazione dei corsi di laurea", "NREDNL98P01A913Z")]
+promotori = [(1, "Celestial Minds", "celestialminds32@libero.it"),
+(2, "Radiant Minds", "radiantminds46@hotmail.com"),
+(3, "Starbound", "starbound69@gmail.com"),
+(4, "Aurora Labs", "auroralabs94@yahoo.it"),
+(5, "Pixel Pioneers", "pixelpioneers13@hotmail.com"),
+(6, "IronWolf Collective", "ironwolfcollective74@libero.it"),
+(7, "IronWolf Collective", "ironwolfcollective45@hotmail.com"),
+(8, "Neon Knights", "neonknights68@yahoo.it"),
+(9, "QuantumLeap", "quantumleap56@yahoo.it"),
+(10, "SkyBound", "skybound68@hotmail.com"),
+(11, "LumenTech", "lumentech71@yahoo.it"),
+(12, "Quantum Squad", "quantumsquad2@hotmail.com"),
+(13, "Ignite Labs", "ignitelabs8@hotmail.com"),
+(14, "Nova Titans", "novatitans64@libero.it"),
+(15, "Bright Horizon", "brighthorizon11@libero.it"),
+(16, "GoldenHive", "goldenhive58@yahoo.it"),
+(17, "Data Mavericks", "datamavericks94@yahoo.it"),
+(18, "Titan Group", "titangroup55@gmail.com"),
+(19, "Skyline Dynamics", "skylinedynamics21@hotmail.com"),
+(20, "Velocity Ventures", "velocityventures26@yahoo.it"),
+(21, "Solaris Team", "solaristeam43@hotmail.com"),
+(22, "Momentum Group", "momentumgroup40@gmail.com"),
+(23, "Bright Horizon", "brighthorizon58@yahoo.it"),
+(24, "Titanium Crew", "titaniumcrew33@libero.it"),
+(25, "Phoenix Alliance", "phoenixalliance15@hotmail.com"),
+(26, "Titan Group", "titangroup50@libero.it"),
+(27, "Emerald Hive", "emeraldhive51@hotmail.com"),
+(28, "Obsidian Circle", "obsidiancircle67@hotmail.com"),
+(29, "Momentum Group", "momentumgroup28@hotmail.com"),
+(30, "Aurora Labs", "auroralabs87@yahoo.it"),
+(31, "Ignite Labs", "ignitelabs47@libero.it"),
+(32, "Cosmic Collective", "cosmiccollective65@hotmail.com"),
+(33, "Starbound", "starbound52@yahoo.it"),
+(34, "Vortex Vision", "vortexvision4@gmail.com"),
+(35, "NextGen Innovators", "nextgeninnovators39@yahoo.it"),
+(36, "Pixel Pioneers", "pixelpioneers53@yahoo.it"),
+(37, "Lumina Crew", "luminacrew51@hotmail.com"),
+(38, "Orbis Solutions", "orbissolutions65@gmail.com"),
+(39, "Nova Crew", "novacrew62@hotmail.com"),
+(40, "NimbusTech", "nimbustech93@yahoo.it"),
+(41, "Emerald Hive", "emeraldhive8@hotmail.com"),
+(42, "SilverLine", "silverline17@hotmail.com"),
+(43, "QuantumLeap", "quantumleap60@libero.it"),
+(44, "Vortex Vision", "vortexvision81@hotmail.com"),
+(45, "Starbound", "starbound71@libero.it"),
+(46, "Alpha Nexus", "alphanexus29@yahoo.it"),
+(47, "Titanium Crew", "titaniumcrew99@yahoo.it"),
+(48, "Eclipse Syndicate", "eclipsesyndicate94@gmail.com"),
+(49, "Radiant Minds", "radiantminds2@libero.it"),
+(50, "Vanguard Labs", "vanguardlabs15@libero.it")]
 
-import random
-azienda = [
-    "NexaCore", "BlueForge", "QuantumLeap", "Skyline Dynamics", "PulseWorks",
-    "Ignite Labs", "Vertex Solutions", "LumenTech", "Stratos Innovations", "Aether Systems",
-    "FusionPoint", "NovaSphere", "Catalyst Hub", "Elevare", "ZenithWorks",
-    "Hyperion Ventures", "Orbis Solutions", "Vanguard Labs", "EchoWave", "NimbusTech",
-    "IronClad Collective", "SilverLine", "Crimson Crew", "GoldenHive", "Shadow Syndicate",
-    "Lunar Squad", "Solaris Team", "Phoenix Alliance", "Aurora Circle", "Titan Group",
-    "Alpha Nexus", "Beta Brigade", "Omega Force", "Delta Crew", "Gamma Guild",
-    "Infinite Loop", "CodeStorm", "Data Mavericks", "Neon Knights", "Quantum Squad",
-    "Pixel Pioneers", "Visionary Minds", "NextGen Innovators", "Bright Sparks", "FutureWave",
-    "SkyBound", "Blue Horizon", "RedShift", "IronWolf Collective", "Emerald Hive",
-    "Crystal Minds", "Obsidian Circle", "Titanium Crew", "Nova Titans", "Stellar Alliance",
-    "Lunar Horizon", "Cosmic Collective", "Radiant Minds", "Hypernova Team", "Infinity Guild",
-    "Velocity Ventures", "Summit Syndicate", "Epicenter Labs", "Apex Minds", "Vortex Vision",
-    "Quantum Guild", "Aurora Labs", "Strive Collective", "Fusion Guild", "NextWave",
-    "DreamForge", "Bright Horizon", "Starbound", "Lumina Crew", "Celestial Minds",
-    "Momentum Group", "Pulse Collective", "Vertex Team", "Eclipse Syndicate", "Nova Crew"
+nomi_evento = [
+    "Workshop di Matematica",
+    "Conferenza di Biotecnologie",
+    "Seminario di Economia",
+    "Laboratorio di Informatica",
+    "Torneo di Calcio Universitario",
+    "Giornata dell'Orientamento",
+    "Festival della Scienza",
+    "Fiera delle Professioni",
+    "Saggio Teatrale Studentesco",
+    "Mostra Fotografica Universitaria",
+    "Conferenza Internazionale",
+    "Workshop di Lingue Straniere",
+    "Evento di Beneficenza Studentesco",
+    "Rassegna Cinematografica Universitaria",
+    "Laboratorio di Chimica",
+    "Festival della Cultura",
+    "Hackathon Informatica",
+    "Seminario di Filosofia",
+    "Evento di Ricerca e Sviluppo",
+    "Giornata della Creatività",
+    "Incontro di Networking Accademico",
+    "Torneo di Pallavolo Universitario",
+    "Concorso di Startup Studentesche",
+    "Seminario di Storia dell'Arte",
+    "Laboratorio di Robotica",
+    "Festival della Musica Universitaria",
+    "Giornata dello Studente Internazionale",
+    "Workshop di Scrittura Accademica",
+    "Conferenza di Psicologia",
+    "Laboratorio di Chimica Organica",
+    "Evento di Innovazione Tecnologica",
+    "Torneo di Basket Universitario",
+    "Seminario di Filosofia Contemporanea",
+    "Workshop di Economia Aziendale",
+    "Laboratorio di Biologia Molecolare",
+    "Giornata della Creatività Digitale",
+    "Festival del Cinema Studentesco",
+    "Conferenza di Matematica Applicata",
+    "Laboratorio di Intelligenza Artificiale",
+    "Evento di Volontariato Universitario",
+    "Workshop di Comunicazione Scientifica",
+    "Giornata delle Professioni Digitali",
+    "Laboratorio di Design e Architettura",
+    "Torneo di Sci Universitario",
+    "Seminario di Letteratura Comparata",
+    "Festival delle Lingue Straniere",
+    "Workshop di Statistica",
+    "Laboratorio di Chimica Analitica",
+    "Evento Culturale Interfacoltà",
+    "Giornata dell'Ingegneria",
+    "Laboratorio di Fisica Sperimentale",
+    "Seminario di Economia Internazionale",
+    "Torneo di E-Sports Universitario",
+    "Festival del Teatro Studentesco",
+    "Workshop di Marketing Digitale",
+    "Conferenza di Storia Contemporanea",
+    "Laboratorio di Informatica Avanzata",
+    "Giornata della Robotica"
 ]
 
-promotori = []
-codice = 1
 
-DOMINI_GENERICI = ["gmail.com", "libero.it", "hotmail.com", "yahoo.it"]
+descrizioni = [
+    "Evento culturale aperto al pubblico",
+    "Incontro formativo con esperti del settore",
+    "Seminario di approfondimento accademico",
+    "Workshop pratico per studenti universitari",
+    "Conferenza divulgativa multidisciplinare",
+    "Evento di orientamento per studenti e famiglie",
+    "Giornata di studio e confronto accademico",
+    "Presentazione di progetti di ricerca innovativi",
+    "Attività didattica speciale con ospiti esterni",
+    "Evento istituzionale promosso dall’ateneo",
+    "Laboratorio interattivo a numero chiuso",
+    "Ciclo di incontri tematici interdisciplinari",
+    "Tavola rotonda con professionisti del settore",
+    "Evento di networking tra studenti e aziende",
+    "Seminario introduttivo per nuovi iscritti",
+    "Incontro di divulgazione scientifica",
+    "Evento formativo certificato",
+    "Conferenza su tematiche di attualità",
+    "Workshop intensivo di aggiornamento",
+    "Iniziativa di valorizzazione del territorio",
+    "Evento di presentazione dei corsi di laurea",
+    "Giornata informativa sui servizi universitari",
+    "Seminario di orientamento al lavoro",
+    "Evento di disseminazione dei risultati di ricerca",
+    "Attività laboratoriale guidata",
+    "Evento aperto alla cittadinanza",
+    "Convegno accademico annuale",
+    "Incontro di approfondimento metodologico",
+    "Evento divulgativo per le scuole",
+    "Workshop pratico con simulazioni reali",
+    "Evento di formazione continua",
+    "Incontro di presentazione di nuove tecnologie",
+    "Seminario avanzato per studenti magistrali",
+    "Giornata di sensibilizzazione e informazione",
+    "Evento collaborativo tra dipartimenti",
+    "Conferenza con relatori internazionali",
+    "Attività seminariale di supporto alla didattica",
+    "Evento di promozione culturale",
+    "Iniziativa di orientamento post-laurea",
+    "Seminario su innovazione e sostenibilità"
+]
 
-import re
+# Luoghi disponibili
+luoghi = [(0,115, "Campo Sportivo"),
+(1,95, "Spazio Cultura"),
+(2,4220, "Anfiteatro"),
+(3,450, "Palazzetto Polifunzionale"),
+(4,90, "Palasport"),
+(5,3150, "Arena Concerti"),
+(6,60, "Teatro all'Aperto"),
+(7,120, "Palasport"),
+(8,335, "Campo Sportivo"),
+(9,44150, "Sala Consiliare"),
+(10,325, "Cinema Moderno"),
+(11,540, "Arena Comunale"),
+(12,210, "Palazzo della Cultura"),
+(13,115, "Palazzetto dello Sport"),
+(14,130, "Sala Conferenze"),
+(15, 10, 'Ufficio Erasmus'),
+(16, 9, 'Ufficio Segreteria Studenti'),
+(17, 9, 'Ufficio Protocollo'),
+(18, 1278, 'Polo Didattico Lettere'),
+(19, 837, 'Polo Didattico Biotecnologie'),
+(20, 9, 'Ufficio Didattico'),
+(21, 475, 'Polo Didattico Scienze'),
+(22, 9, 'Ufficio Supporto Docenti'),
+(23, 108, 'Aula Magna'),
+(24, 10, 'Ufficio Erasmus'),
+(25, 220, 'Parco della Didattica'),
+(26, 185, 'Giardino Botanico'),
+(27, 6, 'Ufficio Ricerca e Sviluppo'),
+(28, 67, 'Aula Informatica 2'),
+(29, 8, 'Ufficio Servizi Informatici'),
+(30, 73, 'Aula Multimediale'),
+(31, 99, 'Aula Laboratorio Fisica'),
+(32, 99, 'Aula Didattica 202'),
+(33, 102, 'Aula Studio C'),
+(34, 6, 'Ufficio Servizi Informatici'),
+(35, 852, 'Polo Didattico Fisica'),
+(36, 4, 'Ufficio Orientamento'),
+(37, 101, 'Aula Seminari'),
+(38, 85, 'Aula Studio B'),
+(39, 3, 'Ufficio Placement'),
+(40, 10, 'Ufficio Placement'),
+(41, 355, 'Polo Didattico Ingegneria'),
+(42, 210, 'Giardino della Pace'),
+(43, 8, 'Ufficio Supporto Docenti'),
+(44, 61, 'Aula Didattica 202'),
+(45, 102, 'Aula Didattica 102'),
+(46, 93, 'Aula Laboratorio Matematica'),
+(47, 4, 'Ufficio Erasmus'),
+(48, 80, 'Aula Laboratorio Matematica'),
+(49, 68, 'Aula Informatica 3'),
+(50, 6, 'Ufficio Qualità'),
+(51, 87, 'Aula Informatica 1'),
+(52, 100, 'Aula Progetti'),
+(53, 7, 'Ufficio Segreteria Studenti'),
+(54, 5, 'Ufficio Risorse Umane'),
+(55, 109, 'Aula Progetti'),
+(56, 135, 'Giardino degli Studenti'),
+(57, 140, 'Giardino della Conoscenza'),
+(58, 59, 'Aula Studio C'),
+(59, 211, 'Polo Didattico Informatica'),
+(60, 96, 'Aula Informatica 2'),
+(61, 59, 'Aula Conferenze'),
+(62, 87, 'Aula Seminari'),
+(63, 83, 'Aula Studio B'),
+(64, 47, 'Aula Progetti'),
+(65, 3, 'Ufficio Comunicazione'),
+(66, 95, 'Aula Didattica 102'),
+(67, 105, 'Aula Informatica 1'),
+(68, 44, 'Aula Informatica Avanzata'),
+(69, 9, 'Ufficio Logistica'),
+(70, 211, 'Giardino delle Scienze'),
+(71, 42, 'Aula Laboratorio Chimica'),
+(72, 89, 'Aula Studio C'),
+(73, 102, 'Giardino dei Saperi'),
+(74, 43, 'Aula Studio B'),
+(75, 238, 'Giardino della Ricerca'),
+(76, 55, 'Aula Informatica 3'),
+(77, 9, 'Ufficio Didattico'),
+(78, 4, 'Ufficio Relazioni Internazionali'),
+(79, 102, 'Aula Studio A'),
+(80, 7, 'Ufficio Segreteria Studenti'),
+(81, 83, 'Aula Progetti'),
+(82, 6, 'Ufficio Segreteria Studenti'),
+(83, 1499, 'Polo Didattico Fisica'),
+(84, 250, 'Giardino delle Scienze'),
+(85, 103, 'Aula Laboratorio Biologia'),
+(86, 515, 'Polo Didattico Biotecnologie'),
+(87, 6, 'Ufficio Qualità'),
+(88, 47, 'Aula Seminari'),
+(89, 109, 'Aula Laboratorio Chimica'),
+(90, 10, 'Ufficio Segreteria Studenti'),
+(91, 56, 'Aula Laboratorio Biologia'),
+(92, 577, 'Polo Didattico Economia'),
+(93, 719, 'Polo Didattico Medicina'),
+(94, 8, 'Ufficio Protocollo'),
+(95, 9, 'Ufficio Didattico'),
+(96, 4, 'Ufficio Orientamento'),
+(97, 9, 'Ufficio Risorse Umane'),
+(98, 3, 'Ufficio Pianificazione'),
+(99, 8, 'Ufficio Didattico'),
+(100, 1139, 'Polo Didattico Comunicazione'),
+(101, 112, 'Aula Didattica 201'),
+(102, 138, 'Giardino della Pace'),
+(103, 3, 'Ufficio Tecnico'),
+(104, 1052, 'Polo Didattico Matematica'),
+(105, 3, 'Ufficio Segreteria Studenti'),
+(106, 10, 'Ufficio Placement'),
+(107, 3, 'Ufficio Logistica'),
+(108, 7, 'Ufficio Logistica'),
+(109, 466, 'Polo Didattico Biotecnologie'),
+(110, 7, 'Ufficio Servizi Informatici'),
+(111, 1412, 'Polo Didattico Biotecnologie'),
+(112, 62, 'Aula Progetti'),
+(113, 5, 'Ufficio Logistica'),
+(114, 8, 'Ufficio Servizi Informatici'),
+(115, 42, 'Aula Studio A'),
+(116, 6, 'Ufficio Ricerca e Sviluppo'),
+(117, 283, 'Giardino della Ricerca'),
+(118, 51, 'Aula Laboratorio Fisica'),
+(119, 108, 'Aula Informatica Avanzata'),
+(120, 6, 'Ufficio Qualità'),
+(121, 82, 'Aula Studio C'),
+(122, 3, 'Ufficio Affari Generali'),
+(123, 8, 'Ufficio Segreteria Studenti'),
+(124, 84, 'Aula Studio C'),
+(125, 7, 'Ufficio Tecnico'),
+(126, 45, 'Aula Informatica Avanzata'),
+(127, 5, 'Ufficio Qualità'),
+(128, 5, 'Ufficio Placement'),
+(129, 4, 'Ufficio Tirocini'),
+(130, 53, 'Aula Seminari'),
+(131, 91, 'Aula Didattica 101'),
+(132, 10, 'Ufficio Tirocini'),
+(133, 91, 'Aula Studio B'),
+(134, 7, 'Ufficio Relazioni Internazionali'),
+(135, 62, 'Aula Laboratorio Chimica'),
+(136, 5, 'Ufficio Amministrativo'),
+(137, 1162, 'Polo Didattico Comunicazione'),
+(138, 53, 'Aula Laboratorio Chimica'),
+(139, 75, 'Aula Seminari'),
+(140, 70, 'Aula Didattica 201'),
+(141, 298, 'Giardino della Cultura'),
+(142, 1105, 'Polo Didattico Matematica'),
+(143, 81, 'Aula Studio A'),
+(144, 8, 'Ufficio Servizi Informatici'),
+(145, 110, 'Aula Multimediale'),
+(146, 287, 'Parco della Didattica'),
+(147, 102, 'Aula Informatica 3'),
+(148, 59, 'Aula Conferenze'),
+(149, 104, 'Aula Progetti'),
+(150, 8, 'Ufficio Qualità'),
+(151, 117, 'Aula Didattica 201'),
+(152, 9, 'Ufficio Tirocini'),
+(153, 104, 'Giardino delle Idee'),
+(154, 101, 'Aula Studio B'),
+(155, 138, 'Giardino della Ricerca'),
+(156, 8, 'Ufficio Orientamento'),
+(157, 99, 'Aula Seminari'),
+(158, 3, 'Ufficio Qualità'),
+(159, 134, 'Giardino dei Saperi'),
+(160, 5, 'Ufficio Didattico'),
+(161, 99, 'Aula Multimediale'),
+(162, 9, 'Ufficio Tecnico'),
+(163, 78, 'Aula Studio B'),
+(164, 945, 'Polo Didattico Matematica'),
+(165, 110, 'Aula Laboratorio Matematica'),
+(166, 356, 'Polo Didattico Architettura'),
+(167, 7, 'Ufficio Relazioni Internazionali'),
+(168, 1365, 'Polo Didattico Fisica'),
+(169, 5, 'Ufficio Didattico'),
+(170, 115, 'Aula Magna'),
+(171, 250, 'Giardino degli Studenti'),
+(172, 10, 'Ufficio Tecnico'),
+(173, 42, 'Aula Seminari'),
+(174, 650, 'Polo Didattico Biotecnologie'),
+(175, 107, 'Aula Laboratorio Fisica'),
+(176, 7, 'Ufficio Placement'),
+(177, 44, 'Aula Informatica 2'),
+(178, 80, 'Aula Laboratorio Matematica'),
+(179, 8, 'Ufficio Servizi Informatici'),
+(180, 120, 'Giardino dei Saperi'),
+(181, 59, 'Aula Studio B'),
+(182, 5, 'Ufficio Didattico'),
+(183, 98, 'Aula Conferenze'),
+(184, 102, 'Aula Laboratorio Biologia')]
 
-def genera_email_normale(nome):
-    """
-    Genera una email normale con dominio casuale
-    - nome senza spazi o caratteri non validi
-    - aggiunta di numero opzionale
-    - dominio casuale
-    """
-    # Rimuove tutti i caratteri non alfanumerici
-    nome_pulito = re.sub(r'[^a-zA-Z0-9]', '', nome)
-    aggiunta_numero = str(random.randint(0, 99))
-    dominio = random.choice(DOMINI_GENERICI)
-    email = f"{nome_pulito.lower()}{aggiunta_numero}@{dominio}"
-    return email
+def genera_richieste_evento(n, ultimo_codice_evento=0):
+    insert_statements = []
+    codice_richiesta = 1  # codice della richiesta autoincrement simulato
+    codice_evento_corrente = ultimo_codice_evento
+    
+    for _ in range(n):
+        tipo = random.choice(TIPI)
+        if tipo == "Inserimento":
+            nome = random.choice(nomi_evento)
+            descrizione = random.choice(descrizioni) 
+            posti = random.randint(10, 200)
+            rappresentante = random.choice(persone)[0]
+            richiedente_inserimento = random.choice(persone)[0]
+            richiedente = "NULL"
+            codice_evento_corrente += 1
+            codice_evento = codice_evento_corrente
+            luogo = random.choice(luoghi)
 
+        elif tipo == "Modifica":
+            nome = random.choice(nomi_evento)
+            descrizione = random.choice(descrizioni)  
+            posti = random.randint(10, 200)
+            rappresentante = random.choice(persone)[0]
+            richiedente_inserimento = "NULL"
+            richiedente = "NULL"
+            codice_evento = random.randint(1, ultimo_codice_evento)
+            luogo = "NULL"
+        
+        else:  # Eliminazione
+            nome = "NULL"
+            posti = "NULL"
+            descrizione = "NULL"
+            rappresentante = "NULL"
+            richiedente_inserimento = "NULL"
+            richiedente = random.choice(persone)[0]
+            codice_evento = random.randint(1, ultimo_codice_evento)
+            luogo = "NULL"
+        
+        stmt = f'insert into Richiesta_Evento values ({codice_richiesta}, "{tipo}", "{nome}", {posti}, "{descrizione}", {codice_evento}, "{rappresentante}", "{richiedente}", "{richiedente_inserimento}");'
+        insert_statements.append(stmt)
+        codice_richiesta += 1
+    
+    return insert_statements
 
-codice_corrente = 1
-
-def codice():
-    global codice_corrente
-    val = codice_corrente
-    codice_corrente += 1
-    return val
-
-def genera_promotori(i):
-    for _ in range(i):
-        nome = random.choice(azienda)
-        print(
-            f'insert into Promotore values ({codice()}, "{nome}", "{genera_email_normale(nome)}");'
-        )
-
-genera_promotori(50)
-"""
-MAX_LIVELLO_4 = 5
-MAX_LIVELLO_1_3 = 20  # numero massimo di promotori interni livello 1,2,3
-count_liv4 = 0
-
-# separiamo i livelli 1,2,3 per fare il campionamento
-liv123 = [p for p in persone if p[5] in (1,2,3)]
-liv123_sample = random.sample(liv123, k=min(MAX_LIVELLO_1_3, len(liv123)))
-
-for cf, nome, cognome, data_nascita, email, livello in persone:
-
-    # esterni sempre inclusi
-    if livello == 0:
-        promotori.append((codice, f"{nome} {cognome}", email))
-        codice += 1
-
-    # livello 4: pochi
-    elif livello == 4 and count_liv4 < MAX_LIVELLO_4:
-        promotori.append((codice, f"{nome} {cognome}", email))
-        codice += 1
-        count_liv4 += 1
-
-    # livello 1,2,3: solo se scelti nel campione casuale
-    elif (cf, nome, cognome, data_nascita, email, livello) in liv123_sample:
-        promotori.append((codice, f"{nome} {cognome}", email))
-        codice += 1
-
-# stampa INSERT SQL con nome ed email tra virgolette
-for cod, nome_sql, email_sql in promotori:
-    print(
-        f'insert into Promotore values ({cod}, "{nome_sql}", "{email_sql}");'
-    )
-"""
-
-
-# Scegli 15 collaboratori casuali
-collaboratori = random.sample(persone, 15)
-
-# Dizionario per mappare eventi -> lista di CF
-evento_collaboratori = {evento[0]: [] for evento in eventi}
-
-# Assegna casualmente collaboratori agli eventi
-for cf, *_ in collaboratori:
-    # Ogni collaboratore lavora su 1-3 eventi casuali
-    num_eventi = random.randint(1, 3)
-    eventi_scelti = random.sample(eventi, num_eventi)
-    for evento in eventi_scelti:
-        evento_collaboratori[evento[0]].append(cf)
-
-# Genera INSERT SQL
-for evento_id, cf_list in evento_collaboratori.items():
-    # Limita il numero di collaboratori per evento a 2-3 se più di 3
-    if len(cf_list) > 3:
-        cf_list = random.sample(cf_list, random.randint(1, 3))
-    for cf in cf_list:
-        print(f'insert into Collaboratore values ({evento_id}, "{cf}");')
-
+# Esempio di utilizzo
+inserts = genera_richieste_evento(10, ultimo_codice_evento=50)
+for i in inserts:
+    print(i)

@@ -282,62 +282,79 @@ persone = [("DMCSRN57B50F875R","Serena","D'Amico","1957-02-10","serena.d'amico36
 ("SRRCLD75B25L219F","Claudio","Serra","1975-02-25","claudio.serra92@yahoo.it",3),
 ("SRRVCN59C25D027Z","Vincenzo","Serra","1959-03-25","vincenzo.serra90@gmail.com",3)]
 
+promotori = [(1, "Celestial Minds", "celestialminds32@libero.it"),
+(2, "Radiant Minds", "radiantminds46@hotmail.com"),
+(3, "Starbound", "starbound69@gmail.com"),
+(4, "Aurora Labs", "auroralabs94@yahoo.it"),
+(5, "Pixel Pioneers", "pixelpioneers13@hotmail.com"),
+(6, "IronWolf Collective", "ironwolfcollective74@libero.it"),
+(7, "IronWolf Collective", "ironwolfcollective45@hotmail.com"),
+(8, "Neon Knights", "neonknights68@yahoo.it"),
+(9, "QuantumLeap", "quantumleap56@yahoo.it"),
+(10, "SkyBound", "skybound68@hotmail.com"),
+(11, "LumenTech", "lumentech71@yahoo.it"),
+(12, "Quantum Squad", "quantumsquad2@hotmail.com"),
+(13, "Ignite Labs", "ignitelabs8@hotmail.com"),
+(14, "Nova Titans", "novatitans64@libero.it"),
+(15, "Bright Horizon", "brighthorizon11@libero.it"),
+(16, "GoldenHive", "goldenhive58@yahoo.it"),
+(17, "Data Mavericks", "datamavericks94@yahoo.it"),
+(18, "Titan Group", "titangroup55@gmail.com"),
+(19, "Skyline Dynamics", "skylinedynamics21@hotmail.com"),
+(20, "Velocity Ventures", "velocityventures26@yahoo.it"),
+(21, "Solaris Team", "solaristeam43@hotmail.com"),
+(22, "Momentum Group", "momentumgroup40@gmail.com"),
+(23, "Bright Horizon", "brighthorizon58@yahoo.it"),
+(24, "Titanium Crew", "titaniumcrew33@libero.it"),
+(25, "Phoenix Alliance", "phoenixalliance15@hotmail.com"),
+(26, "Titan Group", "titangroup50@libero.it"),
+(27, "Emerald Hive", "emeraldhive51@hotmail.com"),
+(28, "Obsidian Circle", "obsidiancircle67@hotmail.com"),
+(29, "Momentum Group", "momentumgroup28@hotmail.com"),
+(30, "Aurora Labs", "auroralabs87@yahoo.it"),
+(31, "Ignite Labs", "ignitelabs47@libero.it"),
+(32, "Cosmic Collective", "cosmiccollective65@hotmail.com"),
+(33, "Starbound", "starbound52@yahoo.it"),
+(34, "Vortex Vision", "vortexvision4@gmail.com"),
+(35, "NextGen Innovators", "nextgeninnovators39@yahoo.it"),
+(36, "Pixel Pioneers", "pixelpioneers53@yahoo.it"),
+(37, "Lumina Crew", "luminacrew51@hotmail.com"),
+(38, "Orbis Solutions", "orbissolutions65@gmail.com"),
+(39, "Nova Crew", "novacrew62@hotmail.com"),
+(40, "NimbusTech", "nimbustech93@yahoo.it"),
+(41, "Emerald Hive", "emeraldhive8@hotmail.com"),
+(42, "SilverLine", "silverline17@hotmail.com"),
+(43, "QuantumLeap", "quantumleap60@libero.it"),
+(44, "Vortex Vision", "vortexvision81@hotmail.com"),
+(45, "Starbound", "starbound71@libero.it"),
+(46, "Alpha Nexus", "alphanexus29@yahoo.it"),
+(47, "Titanium Crew", "titaniumcrew99@yahoo.it"),
+(48, "Eclipse Syndicate", "eclipsesyndicate94@gmail.com"),
+(49, "Radiant Minds", "radiantminds2@libero.it"),
+(50, "Vanguard Labs", "vanguardlabs15@libero.it")]
 
-promotori = [(1, "Giovanna Piras", "giovanna.piras42@gmail.com"),
-(2, "Cesare Colombo", "cesare.colombo77@yahoo.it"),
-(3, "Marco Vitale", "marco.vitale4@yahoo.it"),
-(4, "Nicolò Sala", "nicolò.sala70@hotmail.com"),
-(5, "Francesco Napolitano", "francesco.napolitano88@hotmail.com"),
-(6, "Alessandro Sorrentino", "alessandro.sorrentino64@hotmail.com"),
-(7, "Marco Conti", "marco.conti13@libero.it"),
-(8, "Sasha Piras", "sasha.piras55@libero.it"),
-(9, "Simone Iacono", "simone.iacono62@yahoo.it"),
-(10, "Carlo Iacono", "carlo.iacono28@yahoo.it"),
-(11, "Domenico Fazio", "domenico.fazio0@yahoo.it"),
-(12, "Celeste Ferretti", "celeste.ferretti20@hotmail.com"),
-(13, "Lucia D'Amico", "lucia.d'amico99@hotmail.com"),
-(14, "Davide Brambilla", "davide.brambilla26@libero.it"),
-(15, "Daniele Neri", "daniele.neri54@libero.it"),
-(16, "Laura Verdi", "laura.verdi25@yahoo.it"),
-(17, "Patrizia Innocenti", "patrizia.innocenti47@libero.it"),
-(18, "Filippo Armani", "filippo.armani36@hotmail.com"),
-(19, "Claudia Testa", "claudia.testa44@libero.it"),
-(20, "Lucia Gallo", "lucia.gallo5@gmail.com"),
-(21, "Denis Iacono", "denis.iacono91@gmail.com"),
-(22, "Lucia Caruso", "lucia.caruso52@hotmail.com"),
-(23, "Roberto Ferretti", "roberto.ferretti58@yahoo.it"),
-(24, "Carlo Franco", "carlo.franco47@libero.it"),
-(25, "Alice Barbieri", "alice.barbieri75@hotmail.com"),
-(26, "Raffaele Puglisi", "raffaele.puglisi50@libero.it"),
-(27, "Antonella Gentile", "antonella.gentile88@hotmail.com"),
-(28, "Riccardo Verdi", "riccardo.verdi81@gmail.com"),
-(29, "Riccardo Iacono", "riccardo.iacono13@hotmail.com"),
-(30, "Francesca Longo", "francesca.longo99@libero.it"),
-(31, "Massimo Vitale", "massimo.vitale31@gmail.com"),
-(32, "Angela Rinaldi", "angela.rinaldi27@yahoo.it"),
-(33, "Matteo Ferrari", "matteo.ferrari96@gmail.com"),
-(34, "Jacopo Calabrese", "jacopo.calabrese16@libero.it"),
-(35, "Laura De Luca", "laura.de luca57@gmail.com"),
-(36, "Nicole Romano", "nicole.romano94@yahoo.it"),
-(37, "Camilla Russo", "camilla.russo27@hotmail.com"),
-(38, "Angela Cavaliere", "angela.cavaliere9@gmail.com"),
-(39, "Alice Fabbri", "alice.fabbri43@hotmail.com"),
-(40, "Sara De Santis", "sara.de santis45@libero.it"),
-(41, "Diego Ferrari", "diego.ferrari93@hotmail.com"),
-(42, "Luca Romano", "luca.romano23@gmail.com"),
-(43, "Giuseppe Zuccaro", "giuseppe.zuccaro84@gmail.com"),
-(44, "Alex Toscano", "alex.toscano91@yahoo.it"),
-(45, "Matteo Testa", "matteo.testa20@gmail.com"),
-(46, "Giovanna Crespi", "giovanna.crespi14@gmail.com"),
-(47, "Stefano Ventura", "stefano.ventura96@yahoo.it"),
-(48, "Rebecca Piras", "rebecca.piras49@yahoo.it"),
-(49, "Marta Alberti", "marta.alberti68@libero.it"),
-(50, "Vincenzo Serra", "vincenzo.serra90@gmail.com")]
+import random
 
+insert_statements = []
 
-for cf, nome, cognome, data_nascita, email_persona, _ in persone:
-    for codice, nome_sql, email_sql in promotori:
-        if email_persona == email_sql:
-            print(
-                f'insert into Rappresentano values ({codice}, "{cf}");'
-            )
+for codice_promotore, nome, email in promotori:
+    rnd = random.random()
+    if rnd < 0.3:
+        rappresentanti = []  # nessun rappresentante
+    elif rnd < 0.6:
+        # uno solo: rappresentanti sarà lista di stringhe (CF)
+        rappresentanti = [random.choice(persone)[0]]
+    else:
+        # due o tre: rappresentanti sarà lista di stringhe (CF)
+        n = random.randint(2, min(3, len(persone)))  # sempre 2 o 3
+        rappresentanti = [p[0] for p in random.sample(persone, k=n)]
+
+    for cf in rappresentanti:  # cf è già la stringa completa
+        insert_statements.append(
+            f'insert into Rappresentano values ({codice_promotore}, "{cf}");'
+        )
+
+# stampa tutti gli INSERT
+for stmt in insert_statements:
+    print(stmt)
+
