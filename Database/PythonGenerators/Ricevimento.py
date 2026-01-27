@@ -757,7 +757,67 @@ uffici = [(0, 526, 3),
 (15, 502, 22),
 (16, 521, 28),
 (16, 511, 35),
-(16, 513, 38)]
+(16, 513, 38),
+(4, 414, 78),
+(14, 219, 80),
+(10, 504, 81),
+(9, 205, 82),
+(7, 401, 83),
+(3, 201, 84),
+(15, 517, 88),
+(14, 110, 94),
+(1, 305, 95),
+(12, 415, 96),
+(10, 418, 98),
+(0, 216, 99),
+(6, 101, 100),
+(2, 315, 101),
+(11, 400, 102),
+(5, 408, 103),
+(4, 527, 104),
+(13, 110, 106),
+(3, 515, 109),
+(1, 209, 111),
+(10, 516, 113),
+(0, 208, 116),
+(9, 222, 117),
+(8, 119, 118),
+(13, 511, 119),
+(7, 127, 123),
+(1, 109, 225),
+(11, 203, 226),
+(16, 324, 227),
+(12, 527, 228),
+(14, 412, 229),
+(11, 418, 230),
+(16, 512, 231),
+(16, 528, 232),
+(15, 417, 233),
+(5, 101, 234),
+(11, 427, 235),
+(8, 229, 236),
+(11, 223, 237),
+(5, 407, 238),
+(6, 407, 239),
+(11, 127, 240),
+(11, 128, 241),
+(14, 510, 242),
+(4, 508, 243),
+(12, 203, 244),
+(6, 323, 245),
+(10, 314, 246),
+(8, 219, 247),
+(12, 411, 248),
+(9, 318, 249),
+(10, 424, 250),
+(5, 127, 251),
+(4, 307, 252),
+(11, 220, 253),
+(6, 519, 254),
+(3, 120, 255),
+(4, 528, 256),
+(5, 113, 257)]
+
 orari = [(0, 'ECO01', 0, 1, '2020-09-11 09:00:00', 0, 508, '2020-09-11 11:00:00'),
 (1, 'ECO01', 0, 1, '2020-09-15 15:00:00', 0, 508, '2020-09-15 17:00:00'),
 (2, 'ECO01', 1, 1, '2021-09-16 09:00:00', 0, 508, '2021-09-16 11:00:00'),
@@ -3921,6 +3981,10 @@ def ricevimento_valido(prof, anno, start, end, titolari, lezioni_anno, materie_p
                 return False
     return True
 
+
+total_total = 0
+total_one = 0
+
 # -------------------------------
 # Generatore finale dei ricevimenti
 # -------------------------------
@@ -3930,6 +3994,9 @@ def genera_ricevimenti(professori, materia_anno, moduli, insegna, orari, uffici,
     lezioni_anno = lezioni_per_anno(orari, mat_anno_map)
     materie_prof = materie_prof_map(insegna)
     uffici_prof = prepara_uffici(uffici)
+
+    global total_total
+    global total_one
 
     ricevimenti = []
     codice = 0
@@ -3945,7 +4012,6 @@ def genera_ricevimenti(professori, materia_anno, moduli, insegna, orari, uffici,
         data_max = max(parse_date(m[4]).replace(year=anno) for m in moduli_prof)
 
         current = data_min
-
         while current <= data_max:
             # Inizio settimana (lunedì)
             week_start = current - timedelta(days=current.weekday())
@@ -3960,15 +4026,21 @@ def genera_ricevimenti(professori, materia_anno, moduli, insegna, orari, uffici,
             if len(giorni_settimana) < 2:
                 current += timedelta(days=7)
                 continue
+            max_days = 2
+            total_total +=1
+            if random.randint(1,2) == 1:
+                total_one += 1
+                max_days = 1
+
 
             # Due giorni distinti nella settimana
-            giorni_scelti = random.sample(giorni_settimana, 2)
+            giorni_scelti = random.sample(giorni_settimana, max_days)
 
             for giorno in giorni_scelti:
                 for _ in range(10):  # tentativi per il singolo giorno
 
                     # Slot e durata (fino a 3 ore, multipli dello slot)
-                    slot = random.choice([10, 15, 30])
+                    slot = random.choice([10, 15, 20, 30])
                     durata = random.randint(1, 180 // slot) * slot
 
                     ora_inizio = random.randint(9, 18 - durata // 60)
@@ -4018,19 +4090,31 @@ for anno in range(2025, 2027):
         uffici,
         anno
     )
-
+    """
+    ount = 0
     for r in ricevimenti:
         codice, online, start, end, n_slot, uni, stanza, prof = r
-
+        ount += 1
         print(
             f"insert into Ricevimento values ({codice_globale}, {int(online)}, '{start}', '{end}', {n_slot}, {'null' if uni is None else uni}, {'null' if stanza is None else stanza}, {prof});"
         )
-        codice_globale += 1
 
     #sleep(50)
 
-        codice_globale += 1
+       codice_globale += 1
+ 
+        if ount % 1000 == 0:
+            sleep(50)
+            """
 
-    #sleep(50)
+    #print (f" {total_total}, {total_one}, {total_total/total_one}" )
 
 
+    with open("ricevimenti.txt", "a", encoding="utf-8") as f:
+        for r in ricevimenti:
+            codice, online, start, end, n_slot, uni, stanza, prof = r
+            print(
+                    f"insert into Ricevimento values ({codice_globale}, {int(online)}, '{start}', '{end}', {n_slot}, {'null' if uni is None else uni}, {'null' if stanza is None else stanza}, {prof});"
+                    ,file = f
+                    )
+            codice_globale += 1
