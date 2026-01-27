@@ -3867,13 +3867,12 @@ from collections import defaultdict
 # -------------------------------
 # Funzioni di preparazione dati
 # -------------------------------
-
 def materie_per_anno(materia_anno):
     return {cod_mat_anno: anno for cod_mat_anno, _, anno in materia_anno}
 
 def titolari_per_anno(moduli, mat_anno_map):
     titolari = defaultdict(set)  # (prof, anno)
-    for _, cod_mat_anno, *_, mat in moduli:  # ultima colonna = Matricola_Tit
+    for _, cod_mat_anno, *_, mat in moduli:
         anno = mat_anno_map[cod_mat_anno]
         titolari[(mat, anno)].add(cod_mat_anno)
     return titolari
@@ -3881,11 +3880,10 @@ def titolari_per_anno(moduli, mat_anno_map):
 def lezioni_per_anno(orari, mat_anno_map):
     lezioni_anno = defaultdict(list)
     for _, _, cod_mat_anno, _, l_start, _, _, l_end in orari:
-        # converti in datetime se stringhe
         if isinstance(l_start, str):
-            l_start = datetime.strptime(l_start, "%Y-%m-%d %H:%M:%S")
+            l_start = datetime.strptime(l_start, "%Y-%m-%d %H:%M:%S") if ":" in l_start else datetime.strptime(l_start, "%Y-%m-%d")
         if isinstance(l_end, str):
-            l_end = datetime.strptime(l_end, "%Y-%m-%d %H:%M:%S")
+            l_end = datetime.strptime(l_end, "%Y-%m-%d %H:%M:%S") if ":" in l_end else datetime.strptime(l_end, "%Y-%m-%d")
         anno = mat_anno_map[cod_mat_anno]
         lezioni_anno[anno].append((cod_mat_anno, l_start, l_end))
     return lezioni_anno
@@ -3909,6 +3907,7 @@ def parse_date(dt_str, default_hour=9):
     if isinstance(dt_str, datetime):
         return dt_str
     return datetime.strptime(dt_str, "%Y-%m-%d").replace(hour=default_hour)
+
 # -------------------------------
 # Controllo validità ricevimento
 # -------------------------------
@@ -3920,7 +3919,6 @@ def ricevimento_valido(prof, anno, start, end, titolari, lezioni_anno, materie_p
                 if cod_mat_anno in materie_prof_map.get(prof, set()):
                     return False
             else:
-                # non titolare → nessuna sovrapposizione ammessa
                 return False
     return True
 
@@ -3939,7 +3937,7 @@ def genera_ricevimenti(professori, materia_anno, moduli, insegna, orari, uffici,
     giorni_usati = defaultdict(set)
 
     for prof in professori:
-        # 1️⃣ Trova tutti i moduli delle materie che il prof insegna
+        # Trova tutti i moduli delle materie che il prof insegna
         moduli_prof = [m for m in moduli if m[1] in materie_prof.get(prof, set())]
 
         if not moduli_prof:
@@ -3956,14 +3954,22 @@ def genera_ricevimenti(professori, materia_anno, moduli, insegna, orari, uffici,
         while tentativi < 50 and len(giorni_usati[prof]) < 2:
             tentativi += 1
 
-            # Giorno della settimana Lun-Sab
-            giorno = random.randint(0, 5)
-            ora = random.randint(9, 16)
+            # Durata casuale del ricevimento
             durata = random.choice([90, 120, 150, 180])
+            ora = random.randint(9, 16)
 
-            # Data casuale nell'intervallo modulare
-            start = data_min + timedelta(days=giorno)
-            start = start.replace(hour=ora, minute=0, second=0)
+            # Trova tutti i giorni validi (Lun-Sab) tra data_min e data_max
+            giorni_validi = []
+            current = data_min
+            while current <= data_max:
+                if current.weekday() < 6:
+                    giorni_validi.append(current)
+                current += timedelta(days=1)
+            if not giorni_validi:
+                continue
+
+            giorno_scelto = random.choice(giorni_validi)
+            start = giorno_scelto.replace(hour=ora, minute=0, second=0)
             end = start + timedelta(minutes=durata)
             if end > data_max:
                 end = data_max
@@ -3973,7 +3979,7 @@ def genera_ricevimenti(professori, materia_anno, moduli, insegna, orari, uffici,
                 continue
 
             # Online / ufficio
-            online = False # random.choice([True, False])
+            online = random.choice([True, False])
             if prof not in uffici_prof or online:
                 online = True
                 uni = None
@@ -3987,11 +3993,10 @@ def genera_ricevimenti(professori, materia_anno, moduli, insegna, orari, uffici,
             ricevimenti.append((
                 codice_globale, online, start, end, n_slot, uni, stanza, prof
             ))
-            giorni_usati[prof].add(giorno)
+            giorni_usati[prof].add(giorno_scelto.weekday())
             codice_globale += 1
 
     return ricevimenti
-
 
 from time import sleep
 
