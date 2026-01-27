@@ -3932,68 +3932,74 @@ def genera_ricevimenti(professori, materia_anno, moduli, insegna, orari, uffici,
     uffici_prof = prepara_uffici(uffici)
 
     ricevimenti = []
-    codice_globale = 0
-    giorni_usati = defaultdict(set)
+    codice = 0
 
     for prof in professori:
-        # Trova tutti i moduli delle materie che il prof insegna
+
+        # Moduli insegnati dal prof
         moduli_prof = [m for m in moduli if m[1] in materie_prof.get(prof, set())]
-
         if not moduli_prof:
-            # prof senza moduli → usa anno completo
-            data_min = datetime(anno, 1, 1)
-            data_max = datetime(anno, 12, 31)
-        else:
-            inizio_moduli = [parse_date(m[3]).replace(year=anno) for m in moduli_prof]
-            fine_moduli   = [parse_date(m[4]).replace(year=anno) for m in moduli_prof]
-            data_min = min(inizio_moduli)
-            data_max = max(fine_moduli)
+            continue
 
-        tentativi = 0
-        while tentativi < 50 and len(giorni_usati[prof]) < 2:
-            tentativi += 1
+        data_min = min(parse_date(m[3]).replace(year=anno) for m in moduli_prof)
+        data_max = max(parse_date(m[4]).replace(year=anno) for m in moduli_prof)
 
-            # Durata casuale del ricevimento
-            durata = random.choice([90, 120, 150, 180])
-            ora = random.randint(9, 16)
+        current = data_min
 
-            # Trova tutti i giorni validi (Lun-Sab) tra data_min e data_max
-            giorni_validi = []
-            current = data_min
-            while current <= data_max:
-                if current.weekday() < 6:
-                    giorni_validi.append(current)
-                current += timedelta(days=1)
-            if not giorni_validi:
+        while current <= data_max:
+            # Inizio settimana (lunedì)
+            week_start = current - timedelta(days=current.weekday())
+
+            # Giorni validi: lun–sab (domenica esclusa)
+            giorni_settimana = [
+                week_start + timedelta(days=d)
+                for d in range(6)
+                if data_min <= week_start + timedelta(days=d) <= data_max
+            ]
+
+            if len(giorni_settimana) < 2:
+                current += timedelta(days=7)
                 continue
 
-            giorno_scelto = random.choice(giorni_validi)
-            start = giorno_scelto.replace(hour=ora, minute=0, second=0)
-            end = start + timedelta(minutes=durata)
-            if end > data_max:
-                end = data_max
+            # Due giorni distinti nella settimana
+            giorni_scelti = random.sample(giorni_settimana, 2)
 
-            # Controllo sovrapposizione
-            if not ricevimento_valido(prof, anno, start, end, titolari, lezioni_anno, materie_prof):
-                continue
+            for giorno in giorni_scelti:
+                for _ in range(10):  # tentativi per il singolo giorno
 
-            # Online / ufficio
-            online = random.choice([True, False])
-            if prof not in uffici_prof or online:
-                online = True
-                uni = None
-                stanza = None
-            else:
-                uni, stanza = random.choice(uffici_prof[prof])
+                    # Slot e durata (fino a 3 ore, multipli dello slot)
+                    slot = random.choice([10, 15, 30])
+                    durata = random.randint(1, 180 // slot) * slot
 
-            slot = random.choice([10, 15, 30])
-            n_slot = durata // slot
+                    ora_inizio = random.randint(9, 18 - durata // 60)
+                    start = giorno.replace(hour=ora_inizio, minute=0, second=0)
+                    end = start + timedelta(minutes=durata)
 
-            ricevimenti.append((
-                codice_globale, online, start, end, n_slot, uni, stanza, prof
-            ))
-            giorni_usati[prof].add(giorno_scelto.weekday())
-            codice_globale += 1
+                    # Controllo sovrapposizione con lezioni
+                    if not ricevimento_valido(
+                        prof, anno, start, end,
+                        titolari, lezioni_anno, materie_prof
+                    ):
+                        continue
+
+                    # Online / in presenza
+                    online = random.choice([True, False])
+                    if online or prof not in uffici_prof:
+                        online = True
+                        uni = None
+                        stanza = None
+                    else:
+                        uni, stanza = random.choice(uffici_prof[prof])
+
+                    n_slot = durata // slot
+
+                    ricevimenti.append((
+                        codice, online, start, end, n_slot, uni, stanza, prof
+                    ))
+                    codice += 1
+                    break  # giorno valido trovato
+
+            current += timedelta(days=7)
 
     return ricevimenti
 
@@ -4019,6 +4025,9 @@ for anno in range(2025, 2027):
         print(
             f"insert into Ricevimento values ({codice_globale}, {int(online)}, '{start}', '{end}', {n_slot}, {'null' if uni is None else uni}, {'null' if stanza is None else stanza}, {prof});"
         )
+        codice_globale += 1
+
+    #sleep(50)
 
         codice_globale += 1
 

@@ -631,12 +631,12 @@ luoghi = [(0,115, "Campo Sportivo"),
 (183, 98, 'Aula Conferenze'),
 (184, 102, 'Aula Laboratorio Biologia')]
 
-def genera_richieste_evento(n, ultimo_codice_evento=0):
+def genera_richieste_evento(n):
     insert_statements = []
     codice_richiesta = 1  # codice della richiesta autoincrement simulato
-    codice_evento_corrente = ultimo_codice_evento
     
     for _ in range(n):
+        stmt = ""
         tipo = random.choice(TIPI)
         if tipo == "Inserimento":
             nome = random.choice(nomi_evento)
@@ -645,9 +645,9 @@ def genera_richieste_evento(n, ultimo_codice_evento=0):
             rappresentante = random.choice(persone)[0]
             richiedente_inserimento = random.choice(persone)[0]
             richiedente = "NULL"
-            codice_evento_corrente += 1
-            codice_evento = codice_evento_corrente
+            codice_evento = "NULL"
             luogo = random.choice(luoghi)
+            stmt = f'insert into Richiesta_Evento values ({codice_richiesta}, "{tipo}", "{nome}", {posti}, "{descrizione}", {codice_evento}, "{rappresentante}", {richiedente}, "{richiedente_inserimento}");'
 
         elif tipo == "Modifica":
             nome = random.choice(nomi_evento)
@@ -656,8 +656,9 @@ def genera_richieste_evento(n, ultimo_codice_evento=0):
             rappresentante = random.choice(persone)[0]
             richiedente_inserimento = "NULL"
             richiedente = "NULL"
-            codice_evento = random.randint(1, ultimo_codice_evento)
+            codice_evento = random.randint(1, 51)
             luogo = "NULL"
+            stmt = f'insert into Richiesta_Evento values ({codice_richiesta}, "{tipo}", "{nome}", {posti}, "{descrizione}", {codice_evento}, "{rappresentante}", "{richiedente}", "{richiedente_inserimento}");'
         
         else:  # Eliminazione
             nome = "NULL"
@@ -666,16 +667,16 @@ def genera_richieste_evento(n, ultimo_codice_evento=0):
             rappresentante = "NULL"
             richiedente_inserimento = "NULL"
             richiedente = random.choice(persone)[0]
-            codice_evento = random.randint(1, ultimo_codice_evento)
+            codice_evento = random.randint(1, 51)
             luogo = "NULL"
+            stmt = f'insert into Richiesta_Evento values ({codice_richiesta}, "{tipo}", {nome}, {posti}, {descrizione}, {codice_evento}, {rappresentante}, "{richiedente}", {richiedente_inserimento});'
         
-        stmt = f'insert into Richiesta_Evento values ({codice_richiesta}, "{tipo}", "{nome}", {posti}, "{descrizione}", {codice_evento}, "{rappresentante}", "{richiedente}", "{richiedente_inserimento}");'
         insert_statements.append(stmt)
         codice_richiesta += 1
     
     return insert_statements
 
 # Esempio di utilizzo
-inserts = genera_richieste_evento(10, ultimo_codice_evento=50)
+inserts = genera_richieste_evento(10)
 for i in inserts:
     print(i)
