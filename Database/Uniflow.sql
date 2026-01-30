@@ -124,6 +124,7 @@ create table Evento (
      Fine datetime not null,
      Posti numeric(6) not null,
      Descrizione varchar(510) not null,
+     Pubblico tinyint(1) not null,
      CF varchar(16) not null,
      constraint ID_Evento_ID primary key (Codice));
 
@@ -1020,56 +1021,56 @@ insert into Esterno values (14,"CA", "CP", 83, 14);
 
 truncate table Evento;
 
-insert into Evento values (1, "Festival del Teatro Studentesco", "2026-05-10", "2026-05-11", 945, "Evento aperto alla cittadinanza", "ZNTDNC84L11B858F");
-insert into Evento values (2, "Festival della Cultura", "2021-05-13", "2021-05-14", 8, "Evento formativo certificato", "BNCLRI99H45F883G");
-insert into Evento values (3, "Workshop di Marketing Digitale", "2025-02-20", "2025-02-20", 1365, "Giornata informativa sui servizi universitari", "RSSCRL98S28C933M");
-insert into Evento values (4, "Festival del Cinema Studentesco", "2021-06-09", "2021-06-09", 185, "Giornata informativa sui servizi universitari", "NNCMRC94M14A037S");
-insert into Evento values (5, "Laboratorio di Chimica", "2022-08-01", "2022-08-01", 577, "Evento divulgativo per le scuole", "VRDDVD64L12C520H");
-insert into Evento values (6, "Festival della Musica Universitaria", "2024-05-04", "2024-05-04", 62, "Workshop pratico con simulazioni reali", "MRCPTR72S20D969D");
-insert into Evento values (7, "Torneo di Calcio Universitario", "2025-03-24", "2025-03-25", 51, "Presentazione di progetti di ricerca innovativi", "NPLDNL78R10C724W");
-insert into Evento values (8, "Hackathon Informatica", "2023-12-26", "2023-12-26", 9, "Workshop intensivo di aggiornamento", "FRRVNC05S61F205M");
-insert into Evento values (9, "Workshop di Statistica", "2020-12-08", "2020-12-08", 10, "Seminario su innovazione e sostenibilità", "DSNSRG96C16A189M");
-insert into Evento values (10, "Laboratorio di Biologia Molecolare", "2024-01-12", "2024-01-12", 110, "Evento di disseminazione dei risultati di ricerca", "SLVJCP81D18H224Q");
-insert into Evento values (11, "Torneo di Pallavolo Universitario", "2022-02-14", "2022-02-14", 47, "Tavola rotonda con professionisti del settore", "FRRLNE61M50A037S");
-insert into Evento values (12, "Evento di Ricerca e Sviluppo", "2022-07-28", "2022-07-28", 42, "Workshop pratico per studenti universitari", "BNVPLA56B42C365I");
-insert into Evento values (13, "Seminario di Storia dell'Arte", "2022-06-02", "2022-06-02", 3, "Convegno accademico annuale", "MSSGRL64R25A348D");
-insert into Evento values (14, "Seminario di Filosofia", "2022-07-24", "2022-07-24", 51, "Seminario su innovazione e sostenibilità", "LMBMSM92P04B861X");
-insert into Evento values (15, "Conferenza di Psicologia", "2024-07-23", "2024-07-23", 120, "Evento di formazione continua", "TSCDNL06E23A348K");
-insert into Evento values (16, "Giornata dell'Orientamento", "2026-03-25", "2026-03-25", 1412, "Conferenza su tematiche di attualità", "SNTNNA07B49L424U");
-insert into Evento values (17, "Giornata della Creatività", "2022-06-18", "2022-06-19", 103, "Evento istituzionale promosso dall’ateneo", "NREVLR76C04H703O");
-insert into Evento values (18, "Evento di Ricerca e Sviluppo", "2023-07-25", "2023-07-26", 211, "Evento di presentazione dei corsi di laurea", "ZCCRNI79S64G715X");
-insert into Evento values (19, "Workshop di Lingue Straniere", "2023-11-02", "2023-11-02", 109, "Convegno accademico annuale", "FSCNCL90L01C365C");
-insert into Evento values (20, "Giornata della Creatività Digitale", "2025-11-08", "2025-11-08", 3, "Evento di disseminazione dei risultati di ricerca", "ZNTLXA08T04G224Y");
-insert into Evento values (21, "Seminario di Storia dell'Arte", "2024-09-06", "2024-09-06", 53, "Iniziativa di orientamento post-laurea", "ZCCMRA90S51F839U");
-insert into Evento values (22, "Seminario di Storia dell'Arte", "2023-03-26", "2023-03-26", 10, "Evento di orientamento per studenti e famiglie", "CRSDNL01C29G908C");
-insert into Evento values (23, "Festival del Teatro Studentesco", "2022-02-07", "2022-02-07", 51, "Evento di orientamento per studenti e famiglie", "RNLVNC81S42F205Q");
-insert into Evento values (24, "Giornata dell'Ingegneria", "2025-10-20", "2025-10-20", 5, "Incontro di presentazione di nuove tecnologie", "NPLDNL78R10C724W");
-insert into Evento values (25, "Workshop di Statistica", "2026-03-24", "2026-03-24", 9, "Incontro di presentazione di nuove tecnologie", "VRDRCR64R09D433B");
-insert into Evento values (26, "Festival del Teatro Studentesco", "2020-08-19", "2020-08-20", 87, "Evento aperto alla cittadinanza", "RSSCRS75C19A944H");
-insert into Evento values (27, "Evento Culturale Interfacoltà", "2026-05-21", "2026-05-21", 5, "Incontro di divulgazione scientifica", "BNCLRI99H45F883G");
-insert into Evento values (28, "Seminario di Economia Internazionale", "2021-11-06", "2021-11-06", 7, "Giornata di studio e confronto accademico", "MNTNCL89H70D276P");
-insert into Evento values (29, "Evento di Beneficenza Studentesco", "2021-04-08", "2021-04-08", 108, "Evento di formazione continua", "RSSFNC60H25I123N");
-insert into Evento values (30, "Workshop di Scrittura Accademica", "2023-10-25", "2023-10-25", 8, "Evento formativo certificato", "CRSDGI57H28A913F");
-insert into Evento values (31, "Workshop di Matematica", "2020-08-31", "2020-08-31", 73, "Evento di formazione continua", "RMNCST61H60D433T");
-insert into Evento values (32, "Workshop di Comunicazione Scientifica", "2025-10-27", "2025-10-29", 102, "Evento di networking tra studenti e aziende", "SRRDNC07M31H501V");
-insert into Evento values (33, "Torneo di E-Sports Universitario", "2024-03-21", "2024-03-21", 1162, "Attività seminariale di supporto alla didattica", "FRRRNN70T48G715L");
-insert into Evento values (34, "Giornata dell'Orientamento", "2020-12-17", "2020-12-17", 9, "Seminario di orientamento al lavoro", "FZADNC77B24D949G");
-insert into Evento values (35, "Laboratorio di Biologia Molecolare", "2024-05-18", "2024-05-18", 211, "Evento istituzionale promosso dall’ateneo", "FSCLNE01A51C887J");
-insert into Evento values (36, "Giornata della Creatività Digitale", "2022-12-03", "2022-12-05", 4, "Workshop pratico con simulazioni reali", "PRSGNN08R52D491D");
-insert into Evento values (37, "Workshop di Lingue Straniere", "2020-07-09", "2020-07-09", 8, "Seminario introduttivo per nuovi iscritti", "VRDGRG06T30C986J");
-insert into Evento values (38, "Giornata dello Studente Internazionale", "2020-12-28", "2020-12-28", 95, "Presentazione di progetti di ricerca innovativi", "NPLDNL78R10C724W");
-insert into Evento values (39, "Workshop di Marketing Digitale", "2022-02-23", "2022-02-23", 5, "Incontro di presentazione di nuove tecnologie", "TSTNGL71S43L390M");
-insert into Evento values (40, "Giornata delle Professioni Digitali", "2023-08-30", "2023-08-30", 99, "Conferenza con relatori internazionali", "FBBLCA75B52A286A");
-insert into Evento values (41, "Evento di Beneficenza Studentesco", "2024-03-16", "2024-03-16", 9, "Giornata di studio e confronto accademico", "LRSSFN62L01C365K");
-insert into Evento values (42, "Workshop di Marketing Digitale", "2023-02-02", "2023-02-02", 1365, "Seminario di orientamento al lavoro", "TSTMNL84P12B861F");
-insert into Evento values (43, "Laboratorio di Informatica Avanzata", "2026-10-19", "2026-10-21", 719, "Evento di orientamento per studenti e famiglie", "RMNDBR75S51A189M");
-insert into Evento values (44, "Saggio Teatrale Studentesco", "2025-06-17", "2025-06-17", 110, "Ciclo di incontri tematici interdisciplinari", "ZCCLSN99D52L219J");
-insert into Evento values (45, "Laboratorio di Chimica Analitica", "2022-03-05", "2022-03-05", 9, "Seminario introduttivo per nuovi iscritti", "ZCCCLL58B61F205H");
-insert into Evento values (46, "Workshop di Matematica", "2021-05-31", "2021-05-31", 96, "Incontro di approfondimento metodologico", "FRRNGL56T42H266K");
-insert into Evento values (47, "Torneo di Calcio Universitario", "2024-07-16", "2024-07-16", 93, "Incontro formativo con esperti del settore", "FRRVNC05S61F205M");
-insert into Evento values (48, "Conferenza di Psicologia", "2022-07-05", "2022-07-06", 325, "Giornata di studio e confronto accademico", "LBRRRT97B04B207B");
-insert into Evento values (49, "Laboratorio di Biologia Molecolare", "2020-05-13", "2020-05-13", 102, "Conferenza divulgativa multidisciplinare", "CSTSLV06H65L219T");
-insert into Evento values (50, "Giornata dell'Orientamento", "2020-06-22", "2020-06-22", 1139, "Incontro formativo con esperti del settore", "SLARTI80L65A643P");
+insert into Evento values (1, "Festival del Teatro Studentesco", "2026-05-10", "2026-05-11", 945, "Evento aperto alla cittadinanza", 1, "ZNTDNC84L11B858F");
+insert into Evento values (2, "Festival della Cultura", "2021-05-13", "2021-05-14", 8, "Evento formativo certificato", 1, "BNCLRI99H45F883G");
+insert into Evento values (3, "Workshop di Marketing Digitale", "2025-02-20", "2025-02-20", 1365, "Giornata informativa sui servizi universitari", 1, "RSSCRL98S28C933M");
+insert into Evento values (4, "Festival del Cinema Studentesco", "2021-06-09", "2021-06-09", 185, "Giornata informativa sui servizi universitari", 1, "NNCMRC94M14A037S");
+insert into Evento values (5, "Laboratorio di Chimica", "2022-08-01", "2022-08-01", 577, "Evento divulgativo per le scuole", 0, "VRDDVD64L12C520H");
+insert into Evento values (6, "Festival della Musica Universitaria", "2024-05-04", "2024-05-04", 62, "Workshop pratico con simulazioni reali", 1, "MRCPTR72S20D969D");
+insert into Evento values (7, "Torneo di Calcio Universitario", "2025-03-24", "2025-03-25", 51, "Presentazione di progetti di ricerca innovativi", 0, "NPLDNL78R10C724W");
+insert into Evento values (8, "Hackathon Informatica", "2023-12-26", "2023-12-26", 9, "Workshop intensivo di aggiornamento", 1, "FRRVNC05S61F205M");
+insert into Evento values (9, "Workshop di Statistica", "2020-12-08", "2020-12-08", 10, "Seminario su innovazione e sostenibilità", 0, "DSNSRG96C16A189M");
+insert into Evento values (10, "Laboratorio di Biologia Molecolare", "2024-01-12", "2024-01-12", 110, "Evento di disseminazione dei risultati di ricerca", 0, "SLVJCP81D18H224Q");
+insert into Evento values (11, "Torneo di Pallavolo Universitario", "2022-02-14", "2022-02-14", 47, "Tavola rotonda con professionisti del settore", 0, "FRRLNE61M50A037S");
+insert into Evento values (12, "Evento di Ricerca e Sviluppo", "2022-07-28", "2022-07-28", 42, "Workshop pratico per studenti universitari", 1, "BNVPLA56B42C365I");
+insert into Evento values (13, "Seminario di Storia dell'Arte", "2022-06-02", "2022-06-02", 3, "Convegno accademico annuale", 0, "MSSGRL64R25A348D");
+insert into Evento values (14, "Seminario di Filosofia", "2022-07-24", "2022-07-24", 51, "Seminario su innovazione e sostenibilità", 0, "LMBMSM92P04B861X");
+insert into Evento values (15, "Conferenza di Psicologia", "2024-07-23", "2024-07-23", 120, "Evento di formazione continua", 1, "TSCDNL06E23A348K");
+insert into Evento values (16, "Giornata dell'Orientamento", "2026-03-25", "2026-03-25", 1412, "Conferenza su tematiche di attualità", 1, "SNTNNA07B49L424U");
+insert into Evento values (17, "Giornata della Creatività", "2022-06-18", "2022-06-19", 103, "Evento istituzionale promosso dall’ateneo", 1, "NREVLR76C04H703O");
+insert into Evento values (18, "Evento di Ricerca e Sviluppo", "2023-07-25", "2023-07-26", 211, "Evento di presentazione dei corsi di laurea", 1, "ZCCRNI79S64G715X");
+insert into Evento values (19, "Workshop di Lingue Straniere", "2023-11-02", "2023-11-02", 109, "Convegno accademico annuale", 0, "FSCNCL90L01C365C");
+insert into Evento values (20, "Giornata della Creatività Digitale", "2025-11-08", "2025-11-08", 3, "Evento di disseminazione dei risultati di ricerca", 0, "ZNTLXA08T04G224Y");
+insert into Evento values (21, "Seminario di Storia dell'Arte", "2024-09-06", "2024-09-06", 53, "Iniziativa di orientamento post-laurea", 1, "ZCCMRA90S51F839U");
+insert into Evento values (22, "Seminario di Storia dell'Arte", "2023-03-26", "2023-03-26", 10, "Evento di orientamento per studenti e famiglie", 1, "CRSDNL01C29G908C");
+insert into Evento values (23, "Festival del Teatro Studentesco", "2022-02-07", "2022-02-07", 51, "Evento di orientamento per studenti e famiglie", 1, "RNLVNC81S42F205Q");
+insert into Evento values (24, "Giornata dell'Ingegneria", "2025-10-20", "2025-10-20", 5, "Incontro di presentazione di nuove tecnologie", 1, "NPLDNL78R10C724W");
+insert into Evento values (25, "Workshop di Statistica", "2026-03-24", "2026-03-24", 9, "Incontro di presentazione di nuove tecnologie", 0, "VRDRCR64R09D433B");
+insert into Evento values (26, "Festival del Teatro Studentesco", "2020-08-19", "2020-08-20", 87, "Evento aperto alla cittadinanza", 1, "RSSCRS75C19A944H");
+insert into Evento values (27, "Evento Culturale Interfacoltà", "2026-05-21", "2026-05-21", 5, "Incontro di divulgazione scientifica", 1, "BNCLRI99H45F883G");
+insert into Evento values (28, "Seminario di Economia Internazionale", "2021-11-06", "2021-11-06", 7, "Giornata di studio e confronto accademico", 0, "MNTNCL89H70D276P");
+insert into Evento values (29, "Evento di Beneficenza Studentesco", "2021-04-08", "2021-04-08", 108, "Evento di formazione continua", 1, "RSSFNC60H25I123N");
+insert into Evento values (30, "Workshop di Scrittura Accademica", "2023-10-25", "2023-10-25", 8, "Evento formativo certificato", 0, "CRSDGI57H28A913F");
+insert into Evento values (31, "Workshop di Matematica", "2020-08-31", "2020-08-31", 73, "Evento di formazione continua", 0, "RMNCST61H60D433T");
+insert into Evento values (32, "Workshop di Comunicazione Scientifica", "2025-10-27", "2025-10-29", 102, "Evento di networking tra studenti e aziende", 0, "SRRDNC07M31H501V");
+insert into Evento values (33, "Torneo di E-Sports Universitario", "2024-03-21", "2024-03-21", 1162, "Attività seminariale di supporto alla didattica", 1, "FRRRNN70T48G715L");
+insert into Evento values (34, "Giornata dell'Orientamento", "2020-12-17", "2020-12-17", 9, "Seminario di orientamento al lavoro", 1, "FZADNC77B24D949G");
+insert into Evento values (35, "Laboratorio di Biologia Molecolare", "2024-05-18", "2024-05-18", 211, "Evento istituzionale promosso dall’ateneo", 0, "FSCLNE01A51C887J");
+insert into Evento values (36, "Giornata della Creatività Digitale", "2022-12-03", "2022-12-05", 4, "Workshop pratico con simulazioni reali", 0, "PRSGNN08R52D491D");
+insert into Evento values (37, "Workshop di Lingue Straniere", "2020-07-09", "2020-07-09", 8, "Seminario introduttivo per nuovi iscritti", 0, "VRDGRG06T30C986J");
+insert into Evento values (38, "Giornata dello Studente Internazionale", "2020-12-28", "2020-12-28", 95, "Presentazione di progetti di ricerca innovativi", 1, "NPLDNL78R10C724W");
+insert into Evento values (39, "Workshop di Marketing Digitale", "2022-02-23", "2022-02-23", 5, "Incontro di presentazione di nuove tecnologie", 0, "TSTNGL71S43L390M");
+insert into Evento values (40, "Giornata delle Professioni Digitali", "2023-08-30", "2023-08-30", 99, "Conferenza con relatori internazionali", 1, "FBBLCA75B52A286A");
+insert into Evento values (41, "Evento di Beneficenza Studentesco", "2024-03-16", "2024-03-16", 9, "Giornata di studio e confronto accademico", 1, "LRSSFN62L01C365K");
+insert into Evento values (42, "Workshop di Marketing Digitale", "2023-02-02", "2023-02-02", 1365, "Seminario di orientamento al lavoro", 0, "TSTMNL84P12B861F");
+insert into Evento values (43, "Laboratorio di Informatica Avanzata", "2026-10-19", "2026-10-21", 719, "Evento di orientamento per studenti e famiglie", 1, "RMNDBR75S51A189M");
+insert into Evento values (44, "Saggio Teatrale Studentesco", "2025-06-17", "2025-06-17", 110, "Ciclo di incontri tematici interdisciplinari", 1, "ZCCLSN99D52L219J");
+insert into Evento values (45, "Laboratorio di Chimica Analitica", "2022-03-05", "2022-03-05", 9, "Seminario introduttivo per nuovi iscritti", 0, "ZCCCLL58B61F205H");
+insert into Evento values (46, "Workshop di Matematica", "2021-05-31", "2021-05-31", 96, "Incontro di approfondimento metodologico", 0, "FRRNGL56T42H266K");
+insert into Evento values (47, "Torneo di Calcio Universitario", "2024-07-16", "2024-07-16", 93, "Incontro formativo con esperti del settore", 1, "FRRVNC05S61F205M");
+insert into Evento values (48, "Conferenza di Psicologia", "2022-07-05", "2022-07-06", 325, "Giornata di studio e confronto accademico", 1, "LBRRRT97B04B207B");
+insert into Evento values (49, "Laboratorio di Biologia Molecolare", "2020-05-13", "2020-05-13", 102, "Conferenza divulgativa multidisciplinare", 0, "CSTSLV06H65L219T");
+insert into Evento values (50, "Giornata dell'Orientamento", "2020-06-22", "2020-06-22", 1139, "Incontro formativo con esperti del settore", 1, "SLARTI80L65A643P");
 
 # ---------------------------------------------------------------------- #
 # Add info into "Formato_Da"                                             #

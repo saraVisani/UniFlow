@@ -147,6 +147,54 @@ main {
     /* spinge il footer in basso */
 }
 
+.content {
+    display: flex;
+    gap: 20px;           /* spazio tra main e aside */
+    padding: 20px;
+    flex-wrap: wrap;      /* utile su mobile */
+}
+
+/* Main occupa più spazio */
+.content main {
+    flex: 5;              /* 5 parti su 8 */
+    min-width: 300px;     /* non troppo piccolo su mobile */
+}
+
+/* Sidebar più stretta */
+.content aside {
+    flex: 3;              /* 3 parte su 8 */
+    min-width: 200px;     /* non troppo piccolo su mobile */
+}
+
+aside > ul {
+    display: flex;
+    flex-direction: column;
+    gap: 30px; /* spazio tra Eventi e Domande */
+}
+
+aside > ul > li {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-left: 10px;
+    border-left: 2px solid #ddd;
+}
+
+aside ul li ul {
+    list-style: square;
+    padding-left: 20px;
+}
+
+/* liste interne: più rientro */
+aside > ul > li > ul {
+    padding-left: 30px;   /* aumenta o diminuisci a gusto */
+}
+
+/* eventuali liste ancora più interne */
+aside ul li ul ul {
+    padding-left: 20px;
+}
+
 /* Footer */
 .footer {
     background: #222;
