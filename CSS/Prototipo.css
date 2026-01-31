@@ -147,6 +147,50 @@ main {
     /* spinge il footer in basso */
 }
 
+/* Sezione Campus */
+
+#campus-container {
+    min-height: 120px;
+}
+
+.slide-right {
+    animation: slideRight 0.4s ease;
+}
+
+.slide-left {
+    animation: slideLeft 0.4s ease;
+}
+
+@keyframes slideRight {
+    from { transform: translateX(40px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideLeft {
+    from { transform: translateX(-40px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+#campus-dots {
+    margin-top: 12px;
+}
+
+.dot {
+    height: 10px;
+    width: 10px;
+    margin: 5px;
+    background: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.dot.active {
+    background: #333;
+}
+
+/* Contenuto principale: main + aside spaziatura */
+
 .content {
     display: flex;
     gap: 20px;           /* spazio tra main e aside */

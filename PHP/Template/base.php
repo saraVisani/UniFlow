@@ -20,9 +20,9 @@
                     Ateneo <span class="arrow">▾</span>
                 </button>
                 <ul class="dropdown-content">
-                    <li><a href="#">Web Design</a></li>
-                    <li><a href="#">SEO</a></li>
-                    <li><a href="#">Marketing</a></li>
+                    <li><a href="#">Sedi</a></li>
+                    <li><a href="#">Ambiti</a></li>
+                    <li><a href="#">Corsi</a></li>
                 </ul>
             </li>
 
@@ -31,8 +31,9 @@
                     Studiare <span class="arrow">▾</span>
                 </button>
                 <ul class="dropdown-content">
-                    <li><a href="#">Team</a></li>
-                    <li><a href="#">Storia</a></li>
+                    <li><a href="#">Virtuale</a></li>
+                    <li><a href="#">Orari</a></li>
+                    <li><a href="#">Ricevimenti</a></li>
                 </ul>
             </li>
 
@@ -41,14 +42,15 @@
                     Uniflow <span class="arrow">▾</span>
                 </button>
                 <ul class="dropdown-content">
-                    <li><a href="#">Team</a></li>
-                    <li><a href="#">Storia</a></li>
+                    <li><a href="#">Eventi</a></li>
+                    <li><a href="#">Forum</a></li>
+                    <li><a href="#">Classi Vuote</a></li>
                 </ul>
             </li>
 
-            <li><a href="#">Rubrica</a></li>
+            <li><a href="contatti.php">Rubrica</a></li>
 
-            <li><a href="#">Login</a></li>
+            <li><a href="login.php">Login</a></li>
         </ul>
     </nav>
     <div class="content">

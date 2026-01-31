@@ -3,6 +3,10 @@ require_once("Bootstrap.php");
 //prepariamo parametri template
 $templateParams["titolo"] = "Home | UniFlow";
 $templateParams["name"] = "Home";
+
+$templateParams["js"] = array("../Js/index.js");
+
+//index for normal users
 $templateParams["mainTemplate"] = "mainHomeBase.php";
 $templateParams["mainTitleOne"] = "I Nostri Campus";
 $templateParams["campus"] = $dbh->getAllCampuses();
