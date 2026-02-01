@@ -5,6 +5,13 @@
     <link rel="stylesheet" href="../CSS/Prototipo.css"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <?php
+    if(isset($templateParams["css"])) {
+        foreach($templateParams["css"] as $cssFile) {
+            echo '<link rel="stylesheet" href="'.$cssFile.'">' . PHP_EOL;
+        }
+    }
+    ?>
+    <?php
         if (isset($templateParams["js"])) {
             foreach ($templateParams["js"] as $script) {
                 echo '<script src="' . $script . '" defer></script>';

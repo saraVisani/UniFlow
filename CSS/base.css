@@ -1,0 +1,75 @@
+/* Reset di base */
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Layout flessibile per spingere il footer in basso */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Header */
+header {
+    padding: 0;
+    margin: 0;
+    background: white;
+}
+
+.page-header {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    position: relative;
+    height: 100px;
+    padding-left: 20px;
+    background: white;
+}
+
+.header-img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    grid-column: 1;
+}
+
+.page-header h1 {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    margin: 0;
+    font-size: 32px;
+}
+
+/* Footer */
+.footer {
+    background: #222;
+    padding: 40px 0;
+    flex-shrink: 0;
+}
+
+.footer-nav {
+    display: grid;
+    grid-template-columns: repeat(3, max-content);
+    gap: 12px 60px;
+    justify-content: center;
+    text-align: center;
+}
+
+.footer-nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 15px;
+}
+
+.footer-nav a:hover {
+    text-decoration: underline;
+}
+
+/* Main prende lo spazio rimanente */
+main {
+    flex: 1;
+}

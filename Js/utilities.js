@@ -4,22 +4,13 @@ function chooseHomeTemplate(user){
         return "base";
     }
 
-    if(user.role === "studente"){
-
-        if(user.level >= 2){
-            return "studentRep";
-        }
-
+    if(user.level === 1){
         return "student";
-    }
-
-    if(user.role === "professore"){
+    }else if(user.level === 2){
+        return "studentRep";
+    }else if(user.level === 3){
         return "professor";
-    }
-
-    if(user.role === "segreteria"){
+    }else{
         return "segretary";
     }
-
-    return "base";
 }
