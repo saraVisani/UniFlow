@@ -3,7 +3,6 @@
 <head>
     <title><?php echo $templateParams["titolo"];?></title>
     <link rel="stylesheet" href="../CSS/Prototipo.css"/>
-    <script src="../Js/navbar.js" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <?php
         if (isset($templateParams["js"])) {
@@ -19,46 +18,6 @@
         <h1><?php echo $templateParams["name"];?></h1>
     </header>
     <nav class="navbar">
-        <ul>
-            <li><a href="../PHP/index.php">Home</a></li>
-
-            <li class="dropdown">
-                <button class="dropbtn">
-                    Ateneo <span class="arrow">▾</span>
-                </button>
-                <ul class="dropdown-content">
-                    <li><a href="#">Sedi</a></li>
-                    <li><a href="#">Ambiti</a></li>
-                    <li><a href="#">Corsi</a></li>
-                </ul>
-            </li>
-
-            <li class="dropdown">
-                <button class="dropbtn">
-                    Studiare <span class="arrow">▾</span>
-                </button>
-                <ul class="dropdown-content">
-                    <li><a href="#">Virtuale</a></li>
-                    <li><a href="#">Orari</a></li>
-                    <li><a href="#">Ricevimenti</a></li>
-                </ul>
-            </li>
-
-            <li class="dropdown">
-                <button class="dropbtn">
-                    Uniflow <span class="arrow">▾</span>
-                </button>
-                <ul class="dropdown-content">
-                    <li><a href="#">Eventi</a></li>
-                    <li><a href="#">Forum</a></li>
-                    <li><a href="#">Classi Vuote</a></li>
-                </ul>
-            </li>
-
-            <li><a href="contatti.php">Rubrica</a></li>
-
-            <li><a href="login.php">Login</a></li>
-        </ul>
     </nav>
     <div class="content">
         <main>

@@ -4,7 +4,8 @@ require_once("Bootstrap.php");
 $templateParams["titolo"] = "Home | UniFlow";
 $templateParams["name"] = "Home";
 
-$templateParams["js"] = array("../Js/campusSlider.js", "../Js/index.js");
+$templateParams["js"][] = "../Js/campusSlider.js";
+$templateParams["js"][] = "../Js/index.js";
 
 //index for normal users
 /*$templateParams["mainTemplate"] = "mainHomeBase.php";

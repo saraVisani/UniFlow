@@ -12,6 +12,25 @@ class DatabaseHelper
         }
     }
 
+    // Funzione privata per ottenere la matricola reale a partire da email o matricola
+    private function resolveUserId($idUtente)
+    {
+        // Se è già numerico, lo consideriamo matricola
+        if (is_numeric($idUtente)) {
+            return (int)$idUtente;
+        }
+
+        // Altrimenti consideriamo che sia l'email universitaria
+        $stmt = $this->db->prepare("SELECT Matricola FROM Sistema_Universitario WHERE Email_Uni = ?");
+        $stmt->bind_param("s", $idUtente);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        $stmt->close();
+
+        return $row ? (int)$row['Matricola'] : null; // ritorna null se non trovato
+    }
+
     public function getMostRecentPublicEvents($number = 3)
     {
         $sql = "SELECT Nome AS titolo, Inizio AS data, Descrizione AS descrizione
@@ -56,6 +75,105 @@ class DatabaseHelper
         $result = $this->db->query($sql);
         $campuses = $result->fetch_all(MYSQLI_ASSOC);
         return $campuses;
+    }
+
+    public function getTimesStudent($idUtente)
+    {
+        $cf = $this->resolveUserId($idUtente);
+        if (!$cf) {
+            return []; // nessun evento se utente non trovato
+        }
+
+        
+    }
+
+    public function getReunionStudent($idUtente)
+    {
+        $cf = $this->resolveUserId($idUtente);
+        if (!$cf) {
+            return []; // nessun evento se utente non trovato
+        }
+    }
+
+    public function getTimesProfessor($idUtente)
+    {
+        $cf = $this->resolveUserId($idUtente);
+        if (!$cf) {
+            return []; // nessun evento se utente non trovato
+        }
+    }
+
+    public function getReunionProfessor($idUtente)
+    {
+        $cf = $this->resolveUserId($idUtente);
+        if (!$cf) {
+            return []; // nessun evento se utente non trovato
+        }
+    }
+
+    public function getSignInChannals($idUtente)
+    {
+        $cf = $this->resolveUserId($idUtente);
+        if (!$cf) {
+            return []; // nessun evento se utente non trovato
+        }
+    }
+
+    public function getStaffEvents($idUtente)
+    {
+        $cf = $this->resolveUserId($idUtente);
+        if (!$cf) {
+            return []; // nessun evento se utente non trovato
+        }
+    }
+
+    public function getSignInEvents($idUtente)
+    {
+        // Risolvi l'utente in CF
+        $cf = $this->resolveUserId($idUtente);
+        if (!$cf) {
+            return []; // nessun evento se utente non trovato
+        }
+
+        $sql = "
+            SELECT e.Nome, e.Inizio, e.Descrizione
+            FROM Evento e
+            INNER JOIN Segna s
+                ON e.Codice = s.Codice_Evento
+            WHERE s.CF = ?
+            ORDER BY e.Inizio ASC
+        ";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param("s", $cf);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $eventi = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $eventi;
+    }
+
+    public function getNotifications($idUtente)
+    {
+        $matricola = $this->resolveUserId($idUtente);
+        if (!$matricola) {
+            return []; // nessuna notifica se utente non trovato
+        }
+
+        $stmt = $this->db->prepare("
+            SELECT Codice, Descizione, Chiusa
+            FROM Notifica
+            WHERE Matricola = ?
+            ORDER BY Codice DESC
+        ");
+        $stmt->bind_param("i", $matricola);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $notifiche = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $notifiche;
     }
 }
 ?>
