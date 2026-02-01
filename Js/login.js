@@ -38,14 +38,14 @@ async function submitLogin(e) {
 
     if (!json.login) {
         alert(json.message);
-        location.href = "index.php";
+        location.href = "../PHP/index.php";
     }
     else if (json.success) {
         alert(
             "Login effettuato con successo" +
             (json.message ? "\n" + json.message : "")
         );
-        location.href = "index.php";
+        location.href = "../PHP/index.php";
     }
     else {
         const main = document.querySelector("main");
