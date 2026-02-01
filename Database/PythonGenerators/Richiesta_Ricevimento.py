@@ -7,11 +7,3 @@ create table Richiesta_Ricevimento (
      Ricevimento numeric(10) not null,
      constraint ID_Richiesta_Ricevimento_ID primary key (Codice));
 
-
-     allora inserimento o è vero (1) o è falso (0) anella
-     se è di anella i vuole il odie slot e odie rievimento Ricevimento
-
-     se è di inserimento solo rievimento 
-
-
-     matriola è studente he rihiede 
