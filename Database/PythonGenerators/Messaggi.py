@@ -553,6 +553,21 @@ thread= [(0, 0, 0, 0, "Riunione dipartimento", "La riunione del dipartimento si 
  (9, 2, 4, 1, "Domande esami", "Spazio per fare domande sugli esami.", "2026-01-13 11:30:00", 165, 3, 1, 0, 0, None, None),
  (10, 2, 4, 2, "Comunicazioni segreteria", "Comunicazioni importanti per tutti gli studenti.", "2026-02-01 12:00:00", 442, 130, 0, 0, 0, None, None)]
 
+canali =[(0, 0, "Comunicazioni Interne Docenti", 3, False, False),
+(0, 1, "Coordinamento Docenti–Rappresentanti", 2, False, False),
+(0, 2, "Avvisi Docenti e Rappresentanti", 2, True, True),
+(0, 3, "Avvisi Ufficiali ai Rappresentanti e Studenti", 3, True, True),
+(1, 0, "Chat Rappresentanti Studenti", 2, False, False),
+(1, 1, "Comunicazioni dei Rappresentanti", 2, True, True),
+(1, 2, "Discussioni Studentesche", 1, False, False),
+(2, 0, "Comunicazioni Interne Segreteria", 4, False, False),
+(2, 1, "Avvisi Segreteria ai Docenti", 4, True, False),
+(2, 2, "Coordinamento Segreteria–Docenti", 3, True, False),
+(2, 3, "Comunicazioni Ufficiali Generali", 3, True, True),
+(2, 4, "Informazioni e Risposte", 0, True, True)]
+
+grado_canale = {(c[0], c[1]): c[3] for c in canali}
+
 import random
 from datetime import datetime, timedelta
 
@@ -618,20 +633,20 @@ with open(output_file, "a") as f:  # 'a' per non sovrascrivere
 
         if no_reply == 1:
             continue  # Nessun messaggio
-
+        grado = grado_canale.get((cod_forum, cod_canale))
         num_messages = random.randint(2,5)
         for _ in range(num_messages):
             # Selezione matricola valida
             possibile_matricole = []
             for su in sistema_universitario:
-                cod_sicurezza, email, pwd, cf = su
+                matricola, email, pwd, cf = su
                 for p in persone:
                     if p[0] == cf:
                         livello = p[5]
-                        if cod_sicurezza == 0 and livello == 0 and cod_canale == 0:
-                            possibile_matricole.append(cf)
+                        if grado == 0 and livello == 0:
+                            possibile_matricole.append("null")
                         elif livello >= livello:  # interni possono scrivere fino al loro livello
-                            possibile_matricole.append(cf)
+                            possibile_matricole.append(matricola)
             if not possibile_matricole:
                 possibile_matricole = [p[0] for p in persone]  # fallback
 
@@ -642,7 +657,7 @@ with open(output_file, "a") as f:  # 'a' per non sovrascrivere
             data_msg = random_date(th[6])
 
             # Scrivi INSERT INTO
-            f.write(f'INSERT INTO Messaggio VALUES ({codice_counter}, {cod_unico_thread}, {cod_unico_thread}, "{testo}", "{data_msg.strftime("%Y-%m-%d %H:%M:%S")}", {likes}, {dislike}, 0, 0, NULL, "{matricola_autore}");\n')
+            f.write(f'INSERT INTO Messaggio VALUES ({codice_counter}, {cod_unico_thread}, {cod_unico_thread}, "{testo}", "{data_msg.strftime("%Y-%m-%d %H:%M:%S")}", {likes}, {dislike}, 0, 0, NULL, {matricola_autore});\n')
             codice_counter += 1
 
 print(f"Messaggi generati e salvati in {output_file}")

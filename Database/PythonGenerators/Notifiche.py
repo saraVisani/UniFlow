@@ -294,7 +294,7 @@ descriptions = [
 
 import random
 
-matricole = [studente[3] for studente in sistema_universitario]
+matricole = [studente[0] for studente in sistema_universitario]
 
 codice_counter = 1
 
@@ -305,7 +305,7 @@ with open("notifiche.sql", "a", encoding="utf-8") as file:
             chiusa = random.choice([0, 1])
 
             file.write(
-                f'INSERT INTO Notifica VALUES ({codice_counter}, "{descrizione}", {chiusa}, "{matricola}");\n'
+                f'insert into Notifica values ({codice_counter}, "{descrizione}", {chiusa}, {matricola});\n'
             )
 
             codice_counter += 1

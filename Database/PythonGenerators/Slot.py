@@ -5477,5 +5477,5 @@ with open("prenotazioni.sql", "a") as file:
                 prenotazioni_per_studente[studente_scelto].add(giorno)
 
                 # Scrive la riga SQL con CF corretto
-                cf = cf_per_studente[studente_scelto]
-                file.write(f'insert into Slot values ({codice_ric}, {slot_num}, "{cf}");\n')
+                cf = studente_scelto
+                file.write(f'insert into Slot values ({codice_ric}, {slot_num}, {cf});\n')
