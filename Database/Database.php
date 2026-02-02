@@ -57,7 +57,7 @@ class DatabaseHelper
         if ($mt === null ) {
             return false;
         }
-        
+
         $query = "SELECT Password
                     FROM Sistema_Universitario
                     WHERE Matricola = ? AND Password = ?";
@@ -260,14 +260,13 @@ class DatabaseHelper
             return []; // nessun evento se utente non trovato
         }
 
-        $sql = "
-            SELECT e.Nome, e.Inizio, e.Descrizione
+        $sql = "SELECT e.Nome as nome, e.Inizio as inizio, e.Fine as fine, e.Descrizione as descrizione
             FROM Evento e
             INNER JOIN Segna s
                 ON e.Codice = s.Codice_Evento
             WHERE s.CF = ?
-            ORDER BY e.Inizio ASC
-        ";
+            AND e.Fine > NOW()
+            ORDER BY e.Inizio ASC";
 
         $stmt = $this->db->prepare($sql);
         $stmt->bind_param("s", $cf);
@@ -286,12 +285,11 @@ class DatabaseHelper
             return []; // nessuna notifica se utente non trovato
         }
 
-        $stmt = $this->db->prepare("
-            SELECT Codice, Descizione, Chiusa
+        $stmt = $this->db->prepare("SELECT Codice as codice, Descizione as descrizione, Chiusa as chiusa
             FROM Notifica
             WHERE Matricola = ?
-            ORDER BY Codice DESC
-        ");
+            ORDER BY Codice DESC");
+
         $stmt->bind_param("i", $matricola);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -299,6 +297,162 @@ class DatabaseHelper
         $stmt->close();
 
         return $notifiche;
+    }
+
+    public function getCampusById($id){
+        $query = "SELECT sede.Nome as nome, Provincia.Nome as provincia, Citta.Nome as citta, sede.N_Civico, indirizzo.Via, indirizzo.Nome as nome_indirizzo, sede.Descrizione as descrizione
+                FROM sede
+                JOIN indirizzo ON sede.Codice_Prov = indirizzo.Codice_Prov
+                    AND sede.Codice_Citta = indirizzo.Codice_Citta
+                    AND sede.N_Civico = indirizzo.N_Civico
+                JOIN Provincia ON sede.Codice_Prov = Provincia.Codice
+                JOIN Citta ON sede.Codice_Citta = Citta.Codice
+                WHERE sede.Codice = ?";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $sede = $result->fetch_assoc();
+        $stmt->close();
+        return $sede;
+    }
+
+    public function getSpacesByCampus($id) {
+        $sql = "SELECT
+                l.Nome AS nome,
+                l.Capienza AS capienza,
+                u.Codice AS codice_stanza,
+                CASE
+                    WHEN c.Codice_Stanza IS NOT NULL THEN 'CLASSE'
+                    WHEN o.Codice_Stanza IS NOT NULL THEN 'UFFICIO'
+                    ELSE 'UNIVERSITARIO'
+                END AS tipo,
+                c.Lab AS laboratorio,
+                p.Nome AS prof_nome,
+                p.Cognome AS prof_cognome
+            FROM Universitario u
+            JOIN Luogo l ON l.Codice = u.Cod_Luogo
+            LEFT JOIN Classe c
+                ON c.Codice_Uni = u.Codice_Uni
+            AND c.Codice_Stanza = u.Codice
+            LEFT JOIN Ufficio o
+                ON o.Codice_Uni = u.Codice_Uni
+            AND o.Codice_Stanza = u.Codice
+            LEFT JOIN Sistema_Universitario su
+                ON su.Matricola = o.Matricola
+            LEFT JOIN Persona p
+                ON p.CF = su.CF
+            WHERE u.Codice_Uni = ?";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $spazzi = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $spazzi;
+    }
+
+    public function getSecretariatByCampusId($id) {
+        $sql = "SELECT p.Nome AS nome, p.Cognome AS cognome, su.Email_Uni AS email
+            FROM Segreteria s
+            JOIN Sistema_Universitario su ON s.Matricola = su.Matricola
+            JOIN Persona p ON su.CF = p.CF
+            WHERE s.Codice_Uni = ?";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $segreteria = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $segreteria;
+    }
+
+    public function getProfessorsByCampusId($id) {
+        $sql = "SELECT DISTINCT
+                pe.Nome AS nome,
+                pe.Cognome AS cognome,
+                su.Email_Uni AS email
+            FROM Professore pr
+            JOIN Sistema_Universitario su
+                ON su.Matricola = pr.Matricola
+            JOIN Persona pe
+                ON pe.CF = su.CF
+            JOIN Insegna i
+                ON i.Matricola = pr.Matricola
+            JOIN Materia_Anno ma
+                ON ma.Cod_Mat_Anno = i.Cod_Mat_Anno
+            JOIN Materia m
+                ON m.Codice = ma.Codice_Mat
+            WHERE m.Codice_Uni = ?";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $professori = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $professori;
+    }
+
+    public function getCoursesByCampusId($id) {
+        $sql = "SELECT
+                c.Codice AS codice,
+                c.Nome AS nome,
+                c.Descrizione AS descrizione,
+                COALESCE(c.Colore, a.Colore) AS colore,
+                a.Nome AS ambito
+            FROM Seguito_In si
+            JOIN Corso c
+                ON c.Codice = si.Codice_Corso
+            JOIN Ambito a
+                ON a.Nome = c.Ambito
+            WHERE si.Codice_Uni = ?
+            ORDER BY c.Nome";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $corsi = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $corsi;
+    }
+
+    public function getEventsByCampusId($id) {
+        $sql = "SELECT
+                e.Codice AS id,
+                e.Nome AS nome,
+                e.Descrizione AS descrizione,
+                e.Posti AS posti,
+                e.Pubblico AS pubblico,
+                le.Nome AS luogo,
+                oe.Inizio AS inizio,
+                oe.Fine AS fine
+            FROM Universitario u
+            JOIN Orario_Evento oe
+                ON oe.Cod_Luogo = u.Cod_Luogo
+            JOIN Evento e
+                ON e.Codice = oe.Codice_Evento
+            JOIN Luogo le
+                ON le.Codice = u.Cod_Luogo
+            WHERE u.Codice_Uni = ?
+            AND oe.Fine > NOW()
+            ORDER BY oe.Inizio ASC";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $cal = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $cal;
     }
 }
 ?>
