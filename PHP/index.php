@@ -28,6 +28,7 @@ $templateParams["name"] = "Home";
 $templateParams["css"][] = "../CSS/index.css";
 $templateParams["css"][] = "../CSS/Cartina.css";
 $templateParams["css"][] = "../CSS/indexNotification.css";
+$templateParams["css"][] = "../CSS/indexClassiRefresh.css";
 
 $templateParams["js"][] = "../Js/campusSlider.js";
 $templateParams["js"][] = "../Js/NotificationManager.js";

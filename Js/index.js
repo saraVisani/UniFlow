@@ -13,28 +13,14 @@ function renderHome(template, titles, data){
             break;
 
         case "segretary":
-            main.innerHTML = renderSegretaryHome(data);
-            aside.innerHTML = renderSegretaryHomeAside(data);
+            main.innerHTML = renderSegretaryHome(titles, data);
+            aside.innerHTML = renderSegretaryHomeAside(titles, data);
             break;
 
         default:
             main.innerHTML = renderMainHomeBase(titles);
             aside.innerHTML = renderAsideHomeBase(titles, data);
     }
-}
-
-function chooseHomeTemplate(user){
-    if(user.role == "studente"){
-        if(user.level == 2){
-            return "studentRep";
-        }
-        return "student";
-    }else if(user.role == "professore"){
-        return "professor";
-    }else if(user.role == "segreteria"){
-        return "segretary";
-    }
-    return "base";
 }
 
 function renderMainHomeBase(titles){
@@ -147,6 +133,114 @@ function renderMap(sedi){
     });
 
     setTimeout(()=> map.invalidateSize(), 0);
+}
+
+function renderSegretaryHome(titles, data){
+    let empty = true;
+    let html = ``;
+
+    // --- NOTIFICHE ---
+    if(data.notifiche && data.notifiche.length > 0){
+        empty = false;
+        html += `
+        <article class="notify">
+            <header>
+                <h2>${titles.mainTitleOne}</h2>
+                <button class="refresh-btn" data-section="notifiche">↻</button>
+            </header>
+            <ul></ul>
+        </article>`;
+    }
+
+    // --- EVENTI ---
+    if((data.eventi_staff && data.eventi_staff.length > 0) || (data.eventi_iscritto && data.eventi_iscritto.length > 0)){
+        empty = false;
+        html += `<article>
+            <header><h2>${titles.mainTitleTwo}</h2></header>`;
+
+        // Eventi staff
+        if(data.eventi_staff && data.eventi_staff.length > 0){
+            html += `<h3>${titles.mainTitleTwoS1}</h3><ul>`;
+            data.eventi_staff.forEach(item => {
+                html += `<li>
+                    <strong>${new Date(item.orario_inizio).toLocaleString()} - ${new Date(item.orario_fine).toLocaleTimeString()}</strong>
+                    <p>${item.Nome}</p>
+                    <p>Luogo: ${item.nome_luogo || "Online"} / Sede: ${item.nome_sede || "-"}</p>
+                    <p>Ruolo: ${item.ruolo}</p>
+                </li>`;
+            });
+            html += `</ul>`;
+        }
+
+        // Eventi iscritti
+        if(data.eventi_iscritto && data.eventi_iscritto.length > 0){
+            empty = false;
+            html += `<h3>${titles.mainTitleTwoS2}</h3><ul>`;
+            data.eventi_iscritto.forEach(item => {
+                html += `<li>
+                    <strong>${new Date(item.orario_inizio).toLocaleString()} - ${new Date(item.orario_fine).toLocaleTimeString()}</strong>
+                    <p>${item.Nome}</p>
+                    <p>Luogo: ${item.nome_luogo || "Online"} / Sede: ${item.nome_sede || "-"}</p>
+                    <p>Ruolo: ${item.ruolo}</p>
+                </li>`;
+            });
+            html += `</ul>`;
+        }
+        html += `</article>`;
+    }
+
+    if(empty){
+        html += `<div class="easteregg">
+        <img src="../Img/easteregg.png" alt="Sei Fortunato Nessun Impegno Oggi!"/>
+        </div>`;
+    }
+
+    // --- Classi ---
+    if(data.classiLibere && data.classiLibere.length > 0){
+        html += `
+        <article class="free-classrooms">
+            <header class="section-header">
+                <h2>Classi Libere</h2>
+                <button class="refresh-btn" data-section="classiLibere" title="Aggiorna classi libere (tempo reale)">
+                    ↻
+                </button>
+            </header>
+            <ul class="classi-list">`;
+
+        data.classiLibere.forEach(classe => {
+        html += `
+            <li class="classroom-item">
+                <div class="classroom-info">
+                    <strong>${classe.Nome}</strong>
+                    <span class="room-code">${classe.Codice_Stanza}</span>
+                </div>
+                <div class="classroom-type">
+                    ${classe.Lab ? '🧪 Laboratorio' : '📚 Aula'}
+                </div>
+            </li>`;
+        });
+        html += `</ul>
+        </article>`;
+    }
+
+    return html;
+}
+
+function renderSegretaryHomeAside(titles, data){
+    let html = ``;
+
+    if(data.canali_Seguiti && data.canali_Seguiti.length > 0){
+        html += `<h2>${titles.asideTitleOne}</h2>`;
+        data.canali_Seguiti.forEach(forum => {
+            html += `<h3>${forum.nome_forum}</h3><ul>`;
+            forum.canali.forEach(canale => {
+                html += `<li>${canale.nome_canale}</li>`;
+            });
+            html += `</ul>`;
+        });
+    }
+
+    return html;
 }
 
 function renderAsideHomeLogged(titles, data) {
@@ -344,6 +438,74 @@ function initTimeFilters() {
     yearSelect.addEventListener("change", updateSelectedDate);
 }
 
+function initRefreshButtons() {
+    document.querySelectorAll('.refresh-btn').forEach(btn => {
+        // Evita doppi event listener
+        if (btn.dataset.listenerAdded) return;
+        btn.dataset.listenerAdded = 'true';
+
+        btn.addEventListener('click', async (e) => {
+            const section = e.target.dataset.section;
+            const btn = e.target;
+
+            // Loading state
+            btn.disabled = true;
+            btn.textContent = '⏳';
+            btn.style.background = '#6c757d';
+
+            try {
+                const params = new URLSearchParams({
+                    range: timeRange,
+                    date: selectedDate,
+                    refresh: section  // specifica sezione
+                });
+
+                const res = await fetch(`./Api/api-index.php?${params.toString()}`);
+                const json = await res.json();
+
+                // Aggiorna sezione specifica
+                updateSection(section, json.data, btn);
+
+            } catch (error) {
+                console.error('Errore refresh:', error);
+                btn.textContent = '✖';
+            } finally {
+                // Reset button dopo 1.5s
+                setTimeout(() => {
+                    btn.disabled = false;
+                    btn.textContent = '↻';
+                    btn.style.background = '';
+                }, 1500);
+            }
+        });
+    });
+}
+
+function updateSection(section, data, btn) {
+    switch(section) {
+        case 'notifiche':
+            window.notificationManager?.updateNotifications(data.notifiche);
+            break;
+
+        case 'classiLibere':
+            const list = document.querySelector('.free-classrooms .classi-list');
+            if (list && data.classiLibere) {
+                list.innerHTML = data.classiLibere.map(classe => `
+                    <li class="classroom-item">
+                        <strong>${classe.Nome} (${classe.Codice_Stanza})</strong>
+                        <p>${classe.Lab ? '🧪 Laboratorio' : '📚 Aula'}</p>
+                    </li>
+                `).join('') || '<li style="padding:16px;color:#888;">Nessuna classe libera</li>';
+            }
+            break;
+
+        case 'eventi':
+            // Ricarica TUTTI i dati (o specifica logica per eventi)
+            loadHome();
+            break;
+    }
+}
+
 async function loadHome(){
     const params = new URLSearchParams({
         range: timeRange,
@@ -380,6 +542,8 @@ async function loadHome(){
     }
 
     initTimeFilters();
+
+    setTimeout(initRefreshButtons, 100);
 }
 
 loadHome();

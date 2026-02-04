@@ -3,7 +3,7 @@ class NotificationManager {
         this.notifications = Array.isArray(notifications) ? notifications : [];
         this.title = title;  // ← SALVATO QUI!
         this.apiUrl = config.apiUrl || './Api/api-index-notifiche.php';
-        this.notificationsPage = config.notificationsPage || './notifiche.php';
+        this.notificationsPage = config.notificationsPage || '../PHP/notifiche.php';
         this.notifyContainer = null;
     }
 
