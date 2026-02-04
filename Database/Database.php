@@ -260,7 +260,7 @@ class DatabaseHelper
 
     public function getAllCampuses()
     {
-        $sql = "SELECT sede.Nome as nome, sede.Codice_Prov, sede.Codice_Citta, sede.N_Civico, indirizzo.Via, indirizzo.Nome as nome_indirizzo, sede.descrizione
+        $sql = "SELECT sede.Nome as nome, sede.Codice_Prov, sede.Codice_Citta, sede.N_Civico, indirizzo.Via, indirizzo.Nome as nome_indirizzo, sede.descrizione, sede.`Path`, sede.Descrizione_Img
                 FROM sede, indirizzo
                 WHERE sede.Codice_Prov = indirizzo.Codice_Prov
                     AND sede.Codice_Citta = indirizzo.Codice_Citta

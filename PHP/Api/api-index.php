@@ -17,8 +17,8 @@ $response = [
         "asideInnerTitleOne" => "Hai una domanda?",
         "asideInnerTitleTwo" => "Domande Frequenti"
     ],
-    "data" => ["campus" => $dbh->getAllCampuses(),
-
+    "data" => [
+        "campus" => $dbh->getAllCampuses(),
         "eventi" => $dbh->getMostRecentPublicEvents(),
         "faq" => $dbh->getMostPopularFAQsByLevel()
     ]

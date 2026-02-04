@@ -14,3 +14,5 @@ function chooseHomeTemplate(user){
         return "segretary";
     }
 }
+
+const UPLOAD_DIR = '../Img/';
