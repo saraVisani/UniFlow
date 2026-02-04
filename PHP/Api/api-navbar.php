@@ -42,7 +42,7 @@ $response = [
         "UniFlow" => [
             ["label" => "Eventi", "link" => "../PHP/eventi.php"],
             ["label" => "Forum", "link" => "#"],
-            ["label" => "Classi Vuote", "link" => "#"]
+            ["label" => "Classi Vuote", "link" => "../PHP/classi-vuote.php"]
         ]
     ]
 ];
@@ -92,7 +92,7 @@ if(isUserLoggedIn()){
                 ["label" => "Eventi", "link" => "#"],
                 ["label" => "Lezioni", "link" => "#"],
                 ["label" => "Ricevimenti", "link" => "#"],
-                ["label" => "Classi Vuote", "link" => "#"]
+                ["label" => "Classi Vuote", "link" => "../PHP/classi-vuote.php"]
             ]
         ];
     } else if (isUserProfessor()){
@@ -120,7 +120,7 @@ if(isUserLoggedIn()){
                 ["label" => "Eventi", "link" => "#"],
                 ["label" => "Lezioni", "link" => "#"],
                 ["label" => "Ricevimenti", "link" => "#"],
-                ["label" => "Classi Vuote", "link" => "#"]
+                ["label" => "Classi Vuote", "link" => "../PHP/classi-vuote.php"]
             ]
         ];
     } else { // segreteria
@@ -144,7 +144,7 @@ if(isUserLoggedIn()){
             "UniFlow" => [
                 ["label" => "Eventi", "link" => "#"],
                 ["label" => "Lezioni", "link" => "#"],
-                ["label" => "Classi Vuote", "link" => "#"]
+                ["label" => "Classi Vuote", "link" => "../PHP/classi-vuote.php"]
             ]
         ];
     }
