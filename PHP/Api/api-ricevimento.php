@@ -17,7 +17,7 @@ $infoSede = $dbh->getCampusNameByCode($sede);
 
 $response = [
     "titles" => [
-        "One" => "Ricevimenti in " . $infoSede['Nome'] . " da " . $date
+        "One" => "Ricevimenti in " . $infoSede['nome'] . " da " . $date
     ],
     "data" => [
         "sede"    => $dbh->getAllCampusesWithCode(),

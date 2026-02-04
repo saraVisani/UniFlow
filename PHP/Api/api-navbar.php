@@ -40,7 +40,7 @@ $response = [
             ["label" => "Ricevimenti", "link" => "../PHP/ricevimento.php"]
         ],
         "UniFlow" => [
-            ["label" => "Eventi", "link" => "#"],
+            ["label" => "Eventi", "link" => "../PHP/eventi.php"],
             ["label" => "Forum", "link" => "#"],
             ["label" => "Classi Vuote", "link" => "#"]
         ]

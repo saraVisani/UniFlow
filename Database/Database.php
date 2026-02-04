@@ -1088,5 +1088,35 @@ class DatabaseHelper
         $campuses = $result->fetch_all(MYSQLI_ASSOC);
         return $campuses;
     }
+
+    public function getEventsByCampusIdInYear($sede, $date){
+        $sql = "SELECT
+                e.Codice AS id,
+                e.Nome AS nome,
+                e.Descrizione AS descrizione,
+                e.Posti AS posti,
+                e.Pubblico AS pubblico,
+                le.Nome AS luogo,
+                oe.Inizio AS inizio,
+                oe.Fine AS fine
+            FROM Universitario u
+            JOIN Orario_Evento oe
+                ON oe.Cod_Luogo = u.Cod_Luogo
+            JOIN Evento e
+                ON e.Codice = oe.Codice_Evento
+            JOIN Luogo le
+                ON le.Codice = u.Cod_Luogo
+            WHERE u.Codice_Uni = ?
+            AND YEAR(oe.Fine) = ?
+            ORDER BY oe.Inizio ASC";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param("ii", $sede, $date);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+        return $row;
+    }
 }
 ?>
