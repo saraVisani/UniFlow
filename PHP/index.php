@@ -1,7 +1,6 @@
 <?php
 require_once("Bootstrap.php");
 
-
 $sedi = [
     ["id" => 0,"regione" => "BO","citta" => "BO","civico" => 33,"nome" => "Palazzo Poggi","lat" => 44.49695468205003,"long" => 11.352428097135476,"descrizione" => "Cuore storico dell'Università di Bologna, ospita uffici, aule e spazi per eventi culturali.","path" => "0.jpeg","imgdesc" => ""],
     ["id" => 1,"regione" => "BO","citta" => "BO","civico" => 38,"nome" => "Palazzo Riario","lat" => 44.49714545398557,"long" => 11.351777685593056,"descrizione" => "Elegante edificio dove si svolgono corsi e seminari per diverse facoltà.","path" => "1.jpg","imgdesc" => ""],

@@ -5,10 +5,34 @@ main {
 }
 
 /* Sezione Campus */
-
 #campus-container {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 20px;
+    align-items: center;
     min-height: 120px;
 }
+
+#campus-container .campus-text {
+    flex: 6; /* 60% circa */
+    min-width: 250px;
+}
+
+#campus-container .campus-image {
+    flex: 4; /* 40% circa */
+    min-width: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#campus-container .campus-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
 
 .slide-right {
     animation: slideRight 0.4s ease;
