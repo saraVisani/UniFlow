@@ -1,0 +1,82 @@
+/* ----------------------
+   Titoli delle categorie
+   ---------------------- */
+.rubrica-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer; /* icona cliccabile */
+    background-color: #e6e4e4; /* personalizzabile */
+    padding: 0.5rem 1rem;
+    font-weight: bold;
+    border-bottom: 2px solid #999999df; /* separatore personalizzabile */
+}
+
+.rubrica-toggle-icon {
+    transition: transform 0.3s ease;
+    font-size: 1.2rem;
+}
+
+/* Ruota la freccia quando la categoria è chiusa */
+.rubrica-group.collapsed .rubrica-toggle-icon {
+    transform: rotate(-90deg);
+}
+
+/* ----------------------
+   Griglia persone
+   ---------------------- */
+.rubrica-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+}
+
+/* Scheda persona */
+.rubrica-item {
+    border: 2px solid #999999df; /* bordo personalizzabile */
+    padding: 1rem;
+    min-height: 120px; /* mantiene altezza costante anche con campi vuoti */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+/* Nome della persona */
+.rubrica-name {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+/* Email */
+.rubrica-email {
+    margin-bottom: 0.3rem;
+}
+
+.rubrica-email .label {
+    font-weight: bold; /* etichetta personalizzabile */
+}
+
+/* Campi email vuoti */
+.rubrica-email.empty {
+    opacity: 0.3;
+    height: 1.2rem;
+}
+
+/* ----------------------
+   Separatore tra categorie
+   ---------------------- */
+.rubrica-group + .rubrica-group {
+    border-top: 3px solid #ccc; /* divisore personalizzabile */
+    margin-top: 1rem;
+    padding-top: 1rem;
+}
+
+/* ----------------------
+   Responsive mobile
+   ---------------------- */
+@media (max-width: 768px) {
+    .rubrica-list {
+        grid-template-columns: 1fr; /* una persona per riga */
+    }
+}

@@ -1165,5 +1165,27 @@ class DatabaseHelper
 
         return $classi;
     }
+
+    public function getPersone(){
+        $sql = "SELECT
+                    p.Nome AS nome,
+                    p.Cognome AS cognome,
+                    p.Email AS email,
+                    su.Email_Uni AS email_uni,
+                    p.Livello_Permesso AS livello_sicurezza
+                FROM Persona p
+                JOIN Sistema_Universitario su
+                ON su.CF = p.CF
+
+            ";
+            
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $persone = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+        
+        return $persone;
+    }
 }
 ?>
