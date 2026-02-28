@@ -1172,7 +1172,7 @@ class DatabaseHelper
                     p.Cognome AS cognome,
                     p.Email AS email,
                     su.Email_Uni AS email_uni,
-                    p.Livello_Permesso AS livello_sicurezza
+                    p.Livello_Permesso AS livello
                 FROM Persona p
                 JOIN Sistema_Universitario su
                 ON su.CF = p.CF

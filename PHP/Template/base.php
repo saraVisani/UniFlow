@@ -46,7 +46,7 @@
     <footer class="footer">
         <div class="footer-top">
             <h2 class="site-name">UniFlow</h2>
-            <p class="site-subtitle">Progetto di Tecoologie WEB A.A. 2025/2026 a cura di:</p>
+            <p class="site-subtitle">Progetto di Tecnologie WEB A.A. 2025/2026 a cura di:</p>
         </div>
         <div class="footer-bottom">
             <div class="footer-cell">
