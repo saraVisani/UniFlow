@@ -1178,14 +1178,1885 @@ class DatabaseHelper
                 ON su.CF = p.CF
 
             ";
-            
+
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();
         $persone = $result->fetch_all(MYSQLI_ASSOC);
         $stmt->close();
-        
+
         return $persone;
+    }
+
+    /*private function getLevelFromUser($user) {
+        $sql = "SELECT p.Livello_Permesso
+                FROM Persona p
+                JOIN Sistema_Universitario su ON su.CF = p.CF
+                WHERE su.Matricola = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param("i", $user);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows === 0) {
+            return null; // utente non trovato
+        }
+        $row = $result->fetch_assoc();
+        $stmt->close();
+        return $row['Livello_Permesso'];
+    }
+
+    public function getForumsWithChannels($level){
+
+        $sql = "SELECT
+                    f.Codice as forumId,
+                    f.Nome as nomeForum,
+                    c.Codice as canaleId,
+                    c.Nome as nomeCanale,
+
+                    (
+                        c.Grado = 0
+                        OR c.Grado <= ?
+                    ) as canWrite,
+
+                    (
+                        c.Grado = 0
+                        OR c.Grado <= ?
+                        OR (c.Visualizzare = 1 AND ? >= c.Grado - 1)
+                        OR (c.Visualizzare_Tutti = 1 AND c.Grado > 0 AND ? >= 1)
+                    ) as canRead
+
+                FROM Forum f
+                JOIN Canale c
+                    ON c.Cod_Forum = f.Codice
+
+                HAVING canRead = 1
+
+                ORDER BY f.Nome, c.Nome";
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->bind_param(
+            "iiii",
+            $level,
+            $level,
+            $level,
+            $level
+        );
+
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $rows = $result->fetch_all(MYSQLI_ASSOC);
+
+        $stmt->close();
+
+        $forums = [];
+
+        foreach($rows as $row){
+
+            $fid = $row["forumId"];
+
+            if(!isset($forums[$fid])){
+                $forums[$fid] = [
+                    "id" => $fid,
+                    "nome" => $row["nomeForum"],
+                    "canali" => []
+                ];
+            }
+
+            $forums[$fid]["canali"][] = [
+                "id" => $row["canaleId"],
+                "nome" => $row["nomeCanale"],
+                "canWrite" => (bool)$row["canWrite"]
+            ];
+        }
+
+        return array_values($forums);
+    }
+
+    public function getThreadsByChannel($canaleId){
+        $sql = "SELECT
+                    t.Cod_Unico as id,
+                    t.Titolo,
+                    t.Testo,
+                    t.Data,
+                    t.Likes,
+                    t.Dislikes,
+                    t.Pin,
+                    (t.No_Replay = 1 OR t.Chiuso = 1) as canReply,
+                    p.Nome,
+                    p.Cognome
+                FROM Thread t
+                LEFT JOIN Sistema_Universitario su ON su.Matricola = t.Matricola
+                LEFT JOIN Persona p ON p.CF = su.CF
+                WHERE t.Cod_Canale = ?
+                ORDER BY t.Pin DESC, t.Data ASC";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param("i", $canaleId);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $data = $result->fetch_all(MYSQLI_ASSOC);
+
+        $stmt->close();
+        return $data;
+    }
+
+    public function getCommentsByThread($threadId){
+        $sql = "SELECT
+                    m.Cod_Unico as id,
+                    m.Testo,
+                    m.Data,
+                    m.Likes,
+                    m.Dislikes,
+                    m.Pin,
+                    m.Pin_Speciale,
+                    m.Messaggio_Puntato,
+                    p.Nome,
+                    p.Cognome
+                FROM Messaggio m
+                LEFT JOIN Sistema_Universitario su ON su.Matricola = m.Matricola
+                LEFT JOIN Persona p ON p.CF = su.CF
+                WHERE m.Cod_Unico_Thread = ?
+                ORDER BY
+                    m.Pin_Speciale DESC,
+                    m.Pin DESC,
+                    m.Data ASC";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param("i", $threadId);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $data = $result->fetch_all(MYSQLI_ASSOC);
+
+        $stmt->close();
+        return $data;
+    }*/
+
+    public function getEventsByPerson($idUtente, $luogo=-1, $range=-1, $date=-1) {
+        $mt = $this->resolveUserId($idUtente);
+        if ($mt === null) return [];
+        $cf = $this->getCFfromMat($mt);
+
+        if($luogo == -1 ) {
+            $where = "";
+
+        } else {
+            $where = "AND L.Codice = ?";
+        }
+
+        if($date == -1){
+            $when = $this->buildDateRangeWhere($range, date("d/m/Y"), "O.Inizio");
+        } else{
+            $when = $this->buildDateRangeWhere($range, $date, "O.Inizio");
+        }
+
+        $sql = "
+                    SELECT DISTINCT
+                        E.Codice,
+                        E.Nome,
+                        O.Inizio      AS orario_inizio,
+                        O.Fine        AS orario_fine,
+                        L.Nome        AS nome_luogo,
+                        CASE
+                            WHEN S.Codice IS NOT NULL
+                            THEN CONCAT(S.Nome, ' ', Uni.Codice)
+                        END AS nome_sede,
+                        CASE
+                            WHEN S.Codice IS NOT NULL THEN
+                                CONCAT(
+                                    ISD.Via, ' ',
+                                    ISD.Nome, ' ',
+                                    S.N_Civico, ', ',
+                                    CS.Nome, ' (', S.Codice_Prov, ')'
+                                )
+                            ELSE
+                                CONCAT(
+                                    IES.Via, ' ',
+                                    IES.Nome, ' ',
+                                    X.N_Civico, ', ',
+                                    CE.Nome, ' (', X.Codice_Prov, ')'
+                                )
+                        END AS indirizzo,
+
+                        -- ruolo dinamico
+                        CASE
+                            WHEN E.CF = ? THEN 'promotore'
+                            WHEN EXISTS (
+                                SELECT 1
+                                FROM Collaboratore C
+                                WHERE C.Codice_Evento = E.Codice
+                                AND C.CF = ?
+                            ) THEN 'collaboratore'
+                            WHEN EXISTS (
+                                SELECT 1
+                                FROM Propongono P
+                                JOIN Rappresentano R
+                                ON R.Codice_Promotore = P.Codice
+                                WHERE P.Codice_Evento = E.Codice
+                                AND R.CF = ?
+                            ) THEN 'rappresentante'
+                            WHEN EXISTS (
+                                SELECT 1
+                                FROM Segna Sg
+                                WHERE Sg.Codice_Evento = E.Codice
+                                AND Sg.CF = ?
+                            ) THEN 'iscritto'
+                        END AS ruolo
+
+                    FROM Evento E
+                    JOIN Orario_Evento O
+                        ON O.Codice_Evento = E.Codice
+
+                    -- luogo / sede
+                    LEFT JOIN Luogo L
+                        ON L.Codice = O.Cod_Luogo
+
+                    LEFT JOIN Universitario Uni
+                        ON Uni.Cod_Luogo = L.Codice
+
+                    LEFT JOIN Sede S
+                        ON S.Codice = Uni.Codice_Uni
+
+                    LEFT JOIN Esterno X
+                        ON X.Cod_Luogo = L.Codice
+
+                    LEFT JOIN Indirizzo ISD
+                        ON ISD.Codice_Prov = S.Codice_Prov
+                        AND ISD.Codice_Citta = S.Codice_Citta
+                        AND ISD.N_Civico = S.N_Civico
+
+                    LEFT JOIN Indirizzo IES
+                        ON IES.Codice_Prov = X.Codice_Prov
+                        AND IES.Codice_Citta = X.Codice_Citta
+                        AND IES.N_Civico = X.N_Civico
+
+                    LEFT JOIN Citta CS
+                        ON CS.Codice_Prov = S.Codice_Prov
+                        AND CS.Codice = S.Codice_Citta
+
+                    LEFT JOIN Citta CE
+                        ON CE.Codice_Prov = X.Codice_Prov
+                        AND CE.Codice = X.Codice_Citta
+
+                    WHERE (
+                        E.CF = ?
+                        OR EXISTS (
+                            SELECT 1
+                            FROM Collaboratore C
+                            WHERE C.Codice_Evento = E.Codice
+                            AND C.CF = ?
+                        )
+                        OR EXISTS (
+                            SELECT 1
+                            FROM Propongono P
+                            JOIN Rappresentano R
+                            ON R.Codice_Promotore = P.Codice
+                            WHERE P.Codice_Evento = E.Codice
+                            AND R.CF = ?
+                        )
+                        OR EXISTS (
+                            SELECT 1
+                            FROM Segna Sg
+                            WHERE Sg.Codice_Evento = E.Codice
+                            AND Sg.CF = ?
+                        )
+                    )
+                    AND $when
+                    $where
+                    ORDER BY O.Inizio ASC
+                ";
+
+        $stmt = $this->db->prepare($sql);
+        if ($luogo == -1) {
+            $stmt->bind_param(
+                "ssssssss",
+                $cf, $cf, $cf, $cf,
+                $cf, $cf, $cf, $cf
+            );
+        } else {
+            $stmt->bind_param(
+                "ssssssssi",
+                $cf, $cf, $cf, $cf,
+                $cf, $cf, $cf, $cf,
+                $luogo
+            );
+        }
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $eventi = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+        return $eventi;
+    }
+
+    public function getAllPlaces(){
+        $sql = "SELECT
+                    l.Codice AS codice,
+                    l.Nome AS nome,
+                    l.Capienza AS capienza,
+                    CASE
+                            WHEN S.Codice IS NOT NULL
+                            THEN CONCAT(S.Nome, ' ', Uni.Codice)
+                        END AS nome_sede,
+                        CASE
+                            WHEN S.Codice IS NOT NULL THEN
+                                CONCAT(
+                                    ISD.Via, ' ',
+                                    ISD.Nome, ' ',
+                                    S.N_Civico, ', ',
+                                    CS.Nome, ' (', S.Codice_Prov, ')'
+                                )
+                            ELSE
+                                CONCAT(
+                                    IES.Via, ' ',
+                                    IES.Nome, ' ',
+                                    X.N_Civico, ', ',
+                                    CE.Nome, ' (', X.Codice_Prov, ')'
+                                )
+                        END AS indirizzo
+                FROM Luogo l
+                LEFT JOIN Universitario Uni
+                        ON Uni.Cod_Luogo = L.Codice
+
+                    LEFT JOIN Sede S
+                        ON S.Codice = Uni.Codice_Uni
+
+                    LEFT JOIN Esterno X
+                        ON X.Cod_Luogo = L.Codice
+
+                    LEFT JOIN Indirizzo ISD
+                        ON ISD.Codice_Prov = S.Codice_Prov
+                        AND ISD.Codice_Citta = S.Codice_Citta
+                        AND ISD.N_Civico = S.N_Civico
+
+                    LEFT JOIN Indirizzo IES
+                        ON IES.Codice_Prov = X.Codice_Prov
+                        AND IES.Codice_Citta = X.Codice_Citta
+                        AND IES.N_Civico = X.N_Civico
+
+                    LEFT JOIN Citta CS
+                        ON CS.Codice_Prov = S.Codice_Prov
+                        AND CS.Codice = S.Codice_Citta
+
+                    LEFT JOIN Citta CE
+                        ON CE.Codice_Prov = X.Codice_Prov
+                        AND CE.Codice = X.Codice_Citta
+                ORDER BY l.Codice Desc";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $places = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $places;
+    }
+
+    public function getPeoples(){
+        $sql = "SELECT
+                    p.CF AS codice,
+                    p.Nome AS nome,
+                    p.Cognome AS cognome,
+                    p.Email AS email
+                FROM Persona p
+                ORDER BY p.Cognome, p.Nome";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $peoples = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $peoples;
+    }
+
+    public function getAllEvents(){
+        $sql = "SELECT
+                    e.Codice AS codice,
+                    e.Nome AS nome,
+                    e.Descrizione AS descrizione,
+                    e.Posti AS posti,
+                    e.Inizio AS inizio,
+                    e.Fine AS fine,
+                    e.CF as id_rappresentante,
+                    p.Nome AS nome_rappresentante,
+                    p.Cognome AS cognome_rappresentante,
+                    e.Pubblico
+                FROM Evento e
+                LEFT JOIN Persona p
+                ON p.CF = e.CF
+                ORDER BY e.Codice ASC";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $events = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $events;
+    }
+
+    public function getEventById($id){
+        $sql = "SELECT
+                    e.Codice AS codice,
+                    e.Nome AS nome,
+                    e.Descrizione AS descrizione,
+                    e.Posti AS posti,
+                    e.Inizio AS inizio,
+                    e.Fine AS fine,
+                    e.CF as id_rappresentante,
+                    p.Nome AS nome_rappresentante,
+                    p.Cognome AS cognome_rappresentante,
+                    e.Pubblico
+                FROM Evento e
+                LEFT JOIN Persona p
+                ON p.CF = e.CF
+                WHERE e.Codice = ?
+                LIMIT 1";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $event = $result->fetch_assoc();
+        $stmt->close();
+
+        return $event;
+    }
+
+    public function getCollaboratorsByEvent($id){
+        $sql = "SELECT
+                    c.CF AS codice,
+                    p.Nome AS nome,
+                    p.Cognome AS cognome,
+                    p.Email AS email
+                FROM Collaboratore c
+                JOIN Persona p ON p.CF = c.CF
+                WHERE c.Codice_Evento = ?
+                ORDER BY p.Cognome, p.Nome";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $collaborators = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $collaborators;
+    }
+
+    public function getPromotersComponents($id){
+        $sql = "SELECT
+                    r.CF AS codice,
+                    p.Nome AS nome,
+                    p.Cognome AS cognome,
+                    p.Email AS email
+                FROM Rappresentano r
+                JOIN Persona p ON p.CF = r.CF
+                WHERE r.Codice_Promotore = ?
+                ORDER BY p.Cognome, p.Nome";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $components = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $components;
+    }
+
+    public function getPromotersByEvent($id){
+        $sql = "SELECT
+                    r.Codice AS codice,
+                    p.Nome AS nome,
+                    p.Email AS email
+                FROM Propongono r
+                JOIN Promotore p ON p.Codice = r.Codice
+                WHERE r.Codice_Evento = ?
+                ORDER BY p.Nome";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $promoters = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        foreach ($promoters as &$promoter) {
+            $promoter["componenti"] =
+                $this->getPromotersComponents($promoter["codice"]);
+        }
+
+        return $promoters;
+    }
+
+    public function getAllPromoters(){
+        $sql = "SELECT
+                    p.Codice AS codice,
+                    p.Nome AS nome,
+                    p.Email AS email
+                FROM Promotore p
+                ORDER BY nome";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $promoters = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        foreach ($promoters as &$promoter) {
+            $promoter["componenti"] =
+                $this->getPromotersComponents($promoter["codice"]);
+        }
+
+        return $promoters;
+    }
+
+    public function getPromotersByCf($user){
+        $mat = $this->resolveUserId($user);
+        if($mat !== null){
+            $user = $this->getCFfromMat($mat);
+        }
+
+        $sql = "SELECT
+                    p.Codice AS codice,
+                    p.Nome AS nome,
+                    p.Email AS email
+                FROM Promotore p
+                JOIN Rappresentano r ON p.Codice_Promotore = p.Codice
+                AND r.CF = ?
+                ORDER BY nome";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param("s", $user);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $promoters = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        foreach ($promoters as &$promoter) {
+            $promoter["componenti"] =
+                $this->getPromotersComponents($promoter["codice"]);
+        }
+
+        return $promoters;
+    }
+
+    public function getPromotersByCode($code){
+        $sql = "SELECT
+                    p.Codice AS codice,
+                    p.Nome AS nome,
+                    p.Email AS email
+                FROM Promotore p
+                WHERE p.Codice = ?
+                ORDER BY nome";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param("i", $code);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $promoters = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        foreach ($promoters as &$promoter) {
+            $promoter["componenti"] =
+                $this->getPromotersComponents($promoter["codice"]);
+        }
+
+        return $promoters;
+    }
+
+    public function getEventDatesByEvent($id){
+        $sql = "SELECT
+                    o.Codice AS codice,
+                    o.Codice_Evento AS codice_evento,
+                    o.Inizio AS inizio,
+                    o.Fine AS fine,
+                    o.Cod_Luogo AS codice_luogo,
+                    l.Nome AS nome_luogo,
+                    CASE
+                            WHEN S.Codice IS NOT NULL
+                            THEN CONCAT(S.Nome, ' ', Uni.Codice)
+                        END AS nome_sede,
+                        CASE
+                            WHEN S.Codice IS NOT NULL THEN
+                                CONCAT(
+                                    ISD.Via, ' ',
+                                    ISD.Nome, ' ',
+                                    S.N_Civico, ', ',
+                                    CS.Nome, ' (', S.Codice_Prov, ')'
+                                )
+                            ELSE
+                                CONCAT(
+                                    IES.Via, ' ',
+                                    IES.Nome, ' ',
+                                    X.N_Civico, ', ',
+                                    CE.Nome, ' (', X.Codice_Prov, ')'
+                                )
+                        END AS indirizzo
+                FROM Orario_Evento o
+                JOIN Luogo l ON l.Codice = o.Cod_Luogo
+                    LEFT JOIN Universitario Uni
+                        ON Uni.Cod_Luogo = l.Codice
+
+                    LEFT JOIN Sede S
+                        ON S.Codice = Uni.Codice_Uni
+
+                    LEFT JOIN Esterno X
+                        ON X.Cod_Luogo = l.Codice
+
+                    LEFT JOIN Indirizzo ISD
+                        ON ISD.Codice_Prov = S.Codice_Prov
+                        AND ISD.Codice_Citta = S.Codice_Citta
+                        AND ISD.N_Civico = S.N_Civico
+
+                    LEFT JOIN Indirizzo IES
+                        ON IES.Codice_Prov = X.Codice_Prov
+                        AND IES.Codice_Citta = X.Codice_Citta
+                        AND IES.N_Civico = X.N_Civico
+
+                    LEFT JOIN Citta CS
+                        ON CS.Codice_Prov = S.Codice_Prov
+                        AND CS.Codice = S.Codice_Citta
+
+                    LEFT JOIN Citta CE
+                        ON CE.Codice_Prov = X.Codice_Prov
+                        AND CE.Codice = X.Codice_Citta
+                WHERE o.Codice_Evento = ?
+                ORDER BY o.Inizio ASC";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $dates = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $dates;
+    }
+
+    public function getEventDatesById($idEvent, $idDate){
+        $sql = "SELECT
+                    o.Codice AS codice,
+                    o.Codice_Evento AS codice_evento,
+                    o.Inizio AS inizio,
+                    o.Fine AS fine,
+                    o.Cod_Luogo AS codice_luogo,
+                    l.Nome AS nome_luogo,
+                    CASE
+                            WHEN S.Codice IS NOT NULL
+                            THEN CONCAT(S.Nome, ' ', Uni.Codice)
+                        END AS nome_sede,
+                        CASE
+                            WHEN S.Codice IS NOT NULL THEN
+                                CONCAT(
+                                    ISD.Via, ' ',
+                                    ISD.Nome, ' ',
+                                    S.N_Civico, ', ',
+                                    CS.Nome, ' (', S.Codice_Prov, ')'
+                                )
+                            ELSE
+                                CONCAT(
+                                    IES.Via, ' ',
+                                    IES.Nome, ' ',
+                                    X.N_Civico, ', ',
+                                    CE.Nome, ' (', X.Codice_Prov, ')'
+                                )
+                        END AS indirizzo
+                FROM Orario_Evento o
+                JOIN Luogo l ON l.Codice = o.Cod_Luogo
+                    LEFT JOIN Universitario Uni
+                        ON Uni.Cod_Luogo = l.Codice
+
+                    LEFT JOIN Sede S
+                        ON S.Codice = Uni.Codice_Uni
+
+                    LEFT JOIN Esterno X
+                        ON X.Cod_Luogo = l.Codice
+
+                    LEFT JOIN Indirizzo ISD
+                        ON ISD.Codice_Prov = S.Codice_Prov
+                        AND ISD.Codice_Citta = S.Codice_Citta
+                        AND ISD.N_Civico = S.N_Civico
+
+                    LEFT JOIN Indirizzo IES
+                        ON IES.Codice_Prov = X.Codice_Prov
+                        AND IES.Codice_Citta = X.Codice_Citta
+                        AND IES.N_Civico = X.N_Civico
+
+                    LEFT JOIN Citta CS
+                        ON CS.Codice_Prov = S.Codice_Prov
+                        AND CS.Codice = S.Codice_Citta
+
+                    LEFT JOIN Citta CE
+                        ON CE.Codice_Prov = X.Codice_Prov
+                        AND CE.Codice = X.Codice_Citta
+                WHERE o.Codice_Evento = ?
+                AND o.Codice = ?
+                LIMIT 1";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param("ii", $idEvent, $idDate);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $date = $result->fetch_assoc();
+        $stmt->close();
+
+        return $date;
+    }
+
+    private function insertCollaboratoriRichiesta($codiceRichiesta, $input){
+        if (!empty($input["collaboratoriDaAggiungere"])) {
+
+            $stmt = $this->db->prepare("
+                INSERT INTO Agg_Collaboratore
+                (
+                    Codice_Richiesta,
+                    CF
+                )
+                VALUES (?, ?)
+            ");
+
+            foreach ($input["collaboratoriDaAggiungere"] as $cf) {
+
+                $stmt->bind_param(
+                    "is",
+                    $codiceRichiesta,
+                    $cf
+                );
+
+                $stmt->execute();
+            }
+        }
+
+
+        if (!empty($input["collaboratoriDaRimuovere"])) {
+
+            $stmt = $this->db->prepare("
+                INSERT INTO Elim_Collaboratore
+                (
+                    Codice_Richiesta,
+                    CF
+                )
+                VALUES (?, ?)
+            ");
+
+            foreach ($input["collaboratoriDaRimuovere"] as $cf) {
+
+                $stmt->bind_param(
+                    "is",
+                    $codiceRichiesta,
+                    $cf
+                );
+
+                $stmt->execute();
+            }
+        }
+    }
+
+    private function insertPromotoriRichiesta($codiceRichiesta, $input){
+        if (!empty($input["promotoriDaAggiungere"])) {
+
+            $stmt = $this->db->prepare("
+                INSERT INTO Agg_Promotore
+                (
+                    Codice_Promotore,
+                    Codice_Richiesta
+                )
+                VALUES (?, ?)
+            ");
+
+            foreach ($input["promotoriDaAggiungere"] as $cf) {
+
+                $stmt->bind_param(
+                    "si",
+                    $cf,
+                    $codiceRichiesta
+                );
+
+                $stmt->execute();
+            }
+        }
+
+
+        if (!empty($input["promotoriDaRimuovere"])) {
+
+            $stmt = $this->db->prepare("
+                INSERT INTO Elim_Promotore
+                (
+                    Codice_Promotore,
+                    Codice_Richiesta
+                )
+                VALUES (?, ?)
+            ");
+
+            foreach ($input["promotoriDaRimuovere"] as $cf) {
+
+                $stmt->bind_param(
+                    "si",
+                    $cf,
+                    $codiceRichiesta
+                );
+
+                $stmt->execute();
+            }
+        }
+    }
+
+    private function getNextCode($classe, $attributo){
+        $sql = "SELECT $attributo
+                FROM $classe
+                ORDER BY $attributo ASC
+                FOR UPDATE";
+
+        $result = $this->db->query($sql);
+
+        $codice = 0;
+
+        while ($row = $result->fetch_assoc()) {
+            if ((int)$row[$attributo] === $codice) {
+                $codice++;
+            } else if ((int)$row[$attributo] > $codice) {
+                break;
+            }
+        }
+
+        return $codice;
+    }
+
+    private function insertCambioOrario($codiceRichiesta, $codiceOrario, $inizio, $fine, $luogo){
+
+        $codice = $this->getNextCode(
+            "Cambiare_Orario",
+            "Codice"
+        );
+
+        $stmt = $this->db->prepare("
+            INSERT INTO Cambiare_Orario
+            (
+                Codice,
+                Codice_Ric,
+                Codice_Orario,
+                Nuovo_Inizio,
+                Nuova_Fine,
+                Codice_Luogo
+            )
+            VALUES (?, ?, ?, ?, ?, ?)
+        ");
+
+        $stmt->bind_param(
+            "iiissi",
+            $codice,
+            $codiceRichiesta,
+            $codiceOrario,
+            $inizio,
+            $fine,
+            $luogo
+        );
+
+        $stmt->execute();
+    }
+
+    private function insertOrariRichiesta($codiceRichiesta, $input){
+        // rimozioni
+        if (!empty($input["orariDaRimuovere"])) {
+
+            foreach ($input["orariDaRimuovere"] as $orario) {
+
+                $this->insertCambioOrario(
+                    $codiceRichiesta,
+                    $orario["codice"],
+                    null,
+                    null,
+                    null
+                );
+            }
+        }
+
+
+        // aggiunte
+        if (!empty($input["orariDaAggiungere"])) {
+
+            foreach ($input["orariDaAggiungere"] as $orario) {
+
+                $this->insertCambioOrario(
+                    $codiceRichiesta,
+                    NULL,
+                    $orario["inizio"],
+                    $orario["fine"],
+                    $orario["luogo"]
+                );
+            }
+        }
+
+
+        // modifiche
+        if (!empty($input["orariModificati"])) {
+
+            foreach ($input["orariModificati"] as $orario) {
+
+                $inizio = $orario["inizio"] ?? null;
+                $fine = $orario["fine"] ?? null;
+                $luogo = $orario["luogo"] ?? null;
+
+
+                $this->insertCambioOrario(
+                    $codiceRichiesta,
+                    $orario["codice"],
+                    $inizio,
+                    $fine,
+                    $luogo
+                );
+            }
+        }
+    }
+
+    private function updateEvento($input){
+
+        $campi = [];
+        $valori = [];
+        $tipi = "";
+
+        if ($input["nome"] !== null) {
+            $campi[] = "Nome = ?";
+            $valori[] = $input["nome"];
+            $tipi .= "s";
+        }
+
+        if ($input["descrizione"] !== null) {
+            $campi[] = "Descrizione = ?";
+            $valori[] = $input["descrizione"];
+            $tipi .= "s";
+        }
+
+        if ($input["posti"] !== null) {
+            $campi[] = "Posti = ?";
+            $valori[] = $input["posti"];
+            $tipi .= "i";
+        }
+
+        if ($input["rappresentante"] !== null) {
+            $campi[] = "Rappresentante = ?";
+            $valori[] = $input["rappresentante"];
+            $tipi .= "s";
+        }
+
+        // nessuna modifica ai campi principali
+        if (count($campi) == 0) {
+            return;
+        }
+
+        $sql = "
+            UPDATE Evento
+            SET " . implode(", ", $campi) . "
+            WHERE Codice = ?
+        ";
+
+        $valori[] = $input["idEvento"];
+        $tipi .= "i";
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->bind_param(
+            $tipi,
+            ...$valori
+        );
+
+        $stmt->execute();
+    }
+
+    private function updateCollaboratori($input){
+
+        if (!empty($input["collaboratoriDaAggiungere"])) {
+
+            $stmt = $this->db->prepare("
+                INSERT INTO Collaboratore
+                (
+                    Codice_Evento,
+                    CF
+                )
+                VALUES (?, ?)
+            ");
+
+            foreach ($input["collaboratoriDaAggiungere"] as $cf) {
+
+                $stmt->bind_param(
+                    "is",
+                    $input["idEvento"],
+                    $cf
+                );
+
+                $stmt->execute();
+            }
+        }
+
+
+        if (!empty($input["collaboratoriDaRimuovere"])) {
+
+            $stmt = $this->db->prepare("
+                DELETE FROM Collaboratore
+                WHERE Codice_Evento = ?
+                AND CF = ?
+            ");
+
+            foreach ($input["collaboratoriDaRimuovere"] as $cf) {
+
+                $stmt->bind_param(
+                    "is",
+                    $input["idEvento"],
+                    $cf
+                );
+
+                $stmt->execute();
+            }
+        }
+    }
+
+    private function updatePromotori($input){
+
+        if (!empty($input["promotoriDaAggiungere"])) {
+
+            $stmt = $this->db->prepare("
+                INSERT INTO Propongono
+                (
+                    Codice_Evento,
+                    CF
+                )
+                VALUES (?, ?)
+            ");
+
+            foreach ($input["promotoriDaAggiungere"] as $cf) {
+
+                $stmt->bind_param(
+                    "is",
+                    $input["idEvento"],
+                    $cf
+                );
+
+                $stmt->execute();
+            }
+        }
+
+
+        if (!empty($input["promotoriDaRimuovere"])) {
+
+            $stmt = $this->db->prepare("
+                DELETE FROM Propongono
+                WHERE Codice_Evento = ?
+                AND CF = ?
+            ");
+
+            foreach ($input["promotoriDaRimuovere"] as $cf) {
+
+                $stmt->bind_param(
+                    "is",
+                    $input["idEvento"],
+                    $cf
+                );
+
+                $stmt->execute();
+            }
+        }
+    }
+
+    private function updateOrari($input){
+         // elimina
+        if (!empty($input["orariDaRimuovere"])) {
+            $stmt = $this->db->prepare("
+                DELETE FROM Orario_Evento
+                WHERE Codice = ?
+                AND Codice_Evento = ?
+            ");
+
+            foreach ($input["orariDaRimuovere"] as $orario) {
+
+                $codice = $orario["codice"];
+
+                $stmt->bind_param(
+                    "ii",
+                    $codice,
+                    $input["idEvento"]
+                );
+
+                $stmt->execute();
+            }
+        }
+
+        // aggiungi
+        if (!empty($input["orariDaAggiungere"])) {
+            $stmt = $this->db->prepare("
+                INSERT INTO Orario_Evento
+                (
+                    Codice,
+                    Codice_Evento,
+                    Inizio,
+                    Cod_Luogo,
+                    Fine
+                )
+                VALUES (?, ?, ?, ?, ?)
+            ");
+
+            foreach ($input["orariDaAggiungere"] as $orario) {
+
+                $codice = $this->getNextCode(
+                    "Orario_Evento",
+                    "Codice"
+                );
+
+                $inizio = $orario["inizio"];
+                $fine = $orario["fine"];
+                $luogo = $orario["luogo"];
+
+                $stmt->bind_param(
+                    "iisis",
+                    $codice,
+                    $input["idEvento"],
+                    $inizio,
+                    $luogo,
+                    $fine
+                );
+
+                $stmt->execute();
+            }
+        }
+
+        // modifica
+        if (!empty($input["orariModificati"])) {
+            foreach ($input["orariModificati"] as $orario) {
+
+                $campi = [];
+                $valori = [];
+                $tipi = "";
+
+
+                if ($orario["inizio"] !== null) {
+                    $campi[] = "Inizio = ?";
+                    $valori[] = $orario["inizio"];
+                    $tipi .= "s";
+                }
+
+
+                if ($orario["fine"] !== null) {
+                    $campi[] = "Fine = ?";
+                    $valori[] = $orario["fine"];
+                    $tipi .= "s";
+                }
+
+
+                if ($orario["luogo"] !== null) {
+                    $campi[] = "Cod_Luogo = ?";
+                    $valori[] = $orario["luogo"];
+                    $tipi .= "i";
+                }
+
+
+                // nessuna modifica reale
+                if (count($campi) == 0) {
+                    continue;
+                }
+
+
+                $sql = "
+                    UPDATE Orario_Evento
+                    SET " . implode(", ", $campi) . "
+                    WHERE Codice = ?
+                    AND Codice_Evento = ?
+                ";
+
+
+                $valori[] = $orario["codice"];
+                $valori[] = $input["idEvento"];
+
+                $tipi .= "ii";
+
+
+                $stmt = $this->db->prepare($sql);
+
+
+                $stmt->bind_param(
+                    $tipi,
+                    ...$valori
+                );
+
+
+                $stmt->execute();
+            }
+        }
+    }
+
+    function addNewEvent($input, &$message, &$success){
+        $this->db->begin_transaction();
+
+        try {
+
+            $input["idEvento"] = $this->getNextCode(
+                "Evento",
+                "Codice"
+            );
+
+            $stmt = $this->db->prepare("
+                INSERT INTO Evento
+                (
+                    Codice,
+                    Nome,
+                    Descrizione,
+                    Posti,
+                    Rappresentante
+                )
+                VALUES (?, ?, ?, ?, ?)
+            ");
+
+            $stmt->bind_param(
+                "issis",
+                $input["idEvento"],
+                $input["nome"],
+                $input["descrizione"],
+                $input["posti"],
+                $input["rappresentante"]
+            );
+
+            $stmt->execute();
+
+            // modifica collaboratori
+            $this->updateCollaboratori($input);
+
+            // modifica promotori
+            $this->updatePromotori($input);
+
+            // modifica orari
+            $this->updateOrari($input);
+
+            $this->db->commit();
+
+            $success = true;
+            $message = "Evento inserito.";
+
+        } catch(Exception $e){
+
+            $this->db->rollback();
+
+            $success = false;
+            $message = $e->getMessage();
+        }
+    }
+
+    function addNewRequestEvent($input, &$message, &$success){
+        $this->db->begin_transaction();
+
+        try {
+            $codiceRichiesta = $this->getNextCode(
+                "Richiesta_Evento",
+                "Codice"
+            );
+
+            $nome = $input["nome"];
+            $descrizione = $input["descrizione"];
+            $posti = $input["posti"];
+            $rappresentante = $input["rappresentante"];
+            $richiedente = $input["richiedente"];
+
+            $stmt = $this->db->prepare("
+                INSERT INTO Richiesta_Evento
+                (
+                    Codice,
+                    Tipo,
+                    Nome,
+                    Descrizione,
+                    Posti,
+                    Codice_Evento,
+                    Rappresentante,
+                    Richiedente,
+                    Richiedente_Inserimento
+                )
+                VALUES (?, 'Inserimento', ?, ?, ?, NULL, ?, NULL, ?)
+            ");
+
+            $stmt->bind_param(
+                "issisi",
+                $codiceRichiesta,
+                $nome,
+                $descrizione,
+                $posti,
+                $rappresentante,
+                $richiedente
+            );
+
+            $stmt->execute();
+
+            $this->insertCollaboratoriRichiesta(
+                $codiceRichiesta,
+                $input
+            );
+
+            $this->insertPromotoriRichiesta(
+                $codiceRichiesta,
+                $input
+            );
+
+            $this->insertOrariRichiesta(
+                $codiceRichiesta,
+                $input
+            );
+
+            $this->db->commit();
+
+            $success = true;
+            $message = "Richiesta di inserimento inviata.";
+
+        } catch (Exception $e) {
+
+            $this->db->rollback();
+
+            $success = false;
+            $message = $e->getMessage();
+        }
+    }
+
+    function editNewEvent($input, &$message, &$success){
+        $this->db->begin_transaction();
+
+        try {
+
+            // blocca evento
+            $stmt = $this->db->prepare("
+                SELECT Codice
+                FROM Evento
+                WHERE Codice = ?
+                FOR UPDATE
+            ");
+
+            $stmt->bind_param("i", $input["idEvento"]);
+            $stmt->execute();
+
+            // modifica dati principali
+            $this->updateEvento($input);
+
+            // modifica collaboratori
+            $this->updateCollaboratori($input);
+
+            // modifica promotori
+            $this->updatePromotori($input);
+
+            // modifica orari
+            $this->updateOrari($input);
+
+            $this->db->commit();
+
+            $success = true;
+            $message = "Evento modificato.";
+
+        } catch(Exception $e){
+
+            $this->db->rollback();
+
+            $success = false;
+            $message = $e->getMessage();
+        }
+    }
+
+    function editNewRequestEvent($input, &$message, &$success){
+
+        $this->db->begin_transaction();
+
+        try {
+            $stmt = $this->db->prepare("
+                SELECT Codice
+                FROM Evento
+                WHERE Codice = ?
+                FOR UPDATE
+            ");
+            $stmt->bind_param("i", $input["idEvento"]);
+            $stmt->execute();
+
+            $codiceRichiesta = $this->getNextCode(
+                "Richiesta_Evento",
+                "Codice"
+            );
+
+            $nome = $input["nome"];
+            $descrizione = $input["descrizione"];
+            $posti = $input["posti"];
+            $rappresentante = $input["rappresentante"];
+            $idEvento = $input["idEvento"];
+            $richiedente = $input["richiedente"];
+
+            $stmt = $this->db->prepare("
+                INSERT INTO Richiesta_Evento
+                (
+                    Codice,
+                    Tipo,
+                    Nome,
+                    Descrizione,
+                    Posti,
+                    Codice_Evento,
+                    Rappresentante,
+                    Richiedente,
+                    Richiedente_Inserimento
+                )
+                VALUES (?, 'Modifica', ?, ?, ?, ?, ?, ?, NULL)
+            ");
+
+            $stmt->bind_param(
+                "issiiss",
+                $codiceRichiesta,
+                $nome,
+                $descrizione,
+                $posti,
+                $idEvento,
+                $rappresentante,
+                $richiedente
+            );
+
+            $stmt->execute();
+
+            $this->insertCollaboratoriRichiesta(
+                $codiceRichiesta,
+                $input
+            );
+
+            $this->insertPromotoriRichiesta(
+                $codiceRichiesta,
+                $input
+            );
+
+            $this->insertOrariRichiesta(
+                $codiceRichiesta,
+                $input
+            );
+
+            $this->db->commit();
+
+            $success = true;
+            $message = "Richiesta di modifica inviata.";
+
+        } catch (Exception $e) {
+
+            $this->db->rollback();
+
+            $success = false;
+            $message = $e->getMessage();
+        }
+    }
+
+    function deleteNewEvent($input, &$message, &$success){
+
+        $this->db->begin_transaction();
+
+        try {
+
+            // Blocca l'evento
+            $stmt = $this->db->prepare("
+                SELECT Codice
+                FROM Evento
+                WHERE Codice = ?
+                FOR UPDATE
+            ");
+            $stmt->bind_param("i", $input["idEvento"]);
+            $stmt->execute();
+
+            // Blocca gli orari
+            $stmt = $this->db->prepare("
+                SELECT Codice
+                FROM Orario_Evento
+                WHERE Codice_Evento = ?
+                FOR UPDATE
+            ");
+            $stmt->bind_param("i", $input["idEvento"]);
+            $stmt->execute();
+
+            // Blocca SEGNA
+            $stmt = $this->db->prepare("
+                SELECT CF
+                FROM Segna
+                WHERE Codice_Evento = ?
+                FOR UPDATE
+            ");
+            $stmt->bind_param("i", $input["idEvento"]);
+            $stmt->execute();
+
+            // Blocca Propongono
+            $stmt = $this->db->prepare("
+                SELECT Codice
+                FROM Propongono
+                WHERE Codice_Evento = ?
+                FOR UPDATE
+            ");
+            $stmt->bind_param("i", $input["idEvento"]);
+            $stmt->execute();
+
+            // Blocca Collaboratore
+            $stmt = $this->db->prepare("
+                SELECT CF
+                FROM Collaboratore
+                WHERE Codice_Evento = ?
+                FOR UPDATE
+            ");
+            $stmt->bind_param("i", $input["idEvento"]);
+            $stmt->execute();
+
+            // Elimina l'evento (le tabelle figlie vengono eliminate automaticamente)
+            $stmt = $this->db->prepare("
+                DELETE
+                FROM Evento
+                WHERE Codice = ?
+            ");
+            $stmt->bind_param("i", $input["idEvento"]);
+            $stmt->execute();
+
+            $this->db->commit();
+            $success = true;
+            $message = "Evento eliminato.";
+
+        } catch (Exception $e) {
+
+            $this->db->rollback();
+            $success = false;
+            $message = $e->getMessage();
+        }
+    }
+
+    function deleteNewRequestEvent($input, &$message, &$success){
+
+        $this->db->begin_transaction();
+
+        try {
+            $stmt = $this->db->prepare("
+                SELECT Codice
+                FROM Evento
+                WHERE Codice = ?
+                FOR UPDATE
+            ");
+            $stmt->bind_param("i", $input["idEvento"]);
+            $stmt->execute();
+
+            $codiceRichiesta = $this->getNextCode(
+                "Richiesta_Evento",
+                "Codice"
+            );
+
+            $stmt = $this->db->prepare("
+                INSERT INTO Richiesta_Evento
+                (
+                    Codice,
+                    Tipo,
+                    Nome,
+                    Descrizione,
+                    Posti,
+                    Codice_Evento,
+                    Rappresentante,
+                    Richiedente,
+                    Richiedente_Inserimento
+                )
+                VALUES (?, 'Eliminazione', NULL, NULL, NULL, ?, NULL, ?, NULL)
+            ");
+
+            $stmt->bind_param(
+                "iis",
+                $codiceRichiesta,
+                $input["idEvento"],
+                $input["richiedente"]
+            );
+
+            $stmt->execute();
+
+            $this->db->commit();
+
+            $success = true;
+            $message = "Richiesta di eliminazione inviata.";
+
+        } catch (Exception $e) {
+
+            $this->db->rollback();
+
+            $success = false;
+            $message = $e->getMessage();
+        }
+    }
+
+    private function generateEmptyEvent($tipo, $cf, $id_Evento){
+
+        $codiceRichiesta = $this->getNextCode(
+            "Richiesta_Evento",
+            "Codice"
+        );
+
+        $stmt = $this->db->prepare("
+            INSERT INTO Richiesta_Evento
+            (
+                Codice,
+                Tipo,
+                Nome,
+                Descrizione,
+                Posti,
+                Codice_Evento,
+                Rappresentante,
+                Richiedente,
+                Richiedente_Inserimento
+            )
+            VALUES (?, ?, NULL, NULL, NULL, ?, NULL, ?, NULL)
+        ");
+
+        $stmt->bind_param(
+            "isis",
+            $codiceRichiesta,
+            $tipo,
+            $id_Evento,
+            $cf
+        );
+
+        $stmt->execute();
+
+        return $codiceRichiesta;
+    }
+
+    function addNewEventDate($input, &$message, &$success){
+        $this->db->begin_transaction();
+        try{
+            // blocca evento
+            $stmt = $this->db->prepare("
+                SELECT Codice
+                FROM Evento
+                WHERE Codice = ?
+                FOR UPDATE
+            ");
+
+            $stmt->bind_param("i", $input["idEvento"]);
+            $stmt->execute();
+
+            // modifica orari
+            $this->updateOrari($input);
+
+            $this->db->commit();
+
+            $success = true;
+            $message = "Orari dell'evento aggiunti.";
+
+        } catch (Exception $e) {
+
+            $this->db->rollback();
+
+            $success = false;
+            $message = $e->getMessage();
+        }
+    }
+
+    function addNewRequestEventDate($input, &$message, &$success){
+        $this->db->begin_transaction();
+        try{
+            $codice_Richiesta = $this->generateEmptyEvent("Inserimento", $input["richiedente"], $input["idEvento"]);
+            $this->insertOrariRichiesta(
+                $codice_Richiesta,
+                $input
+            );
+            $this->db->commit();
+
+            $success = true;
+            $message = "Richiesta di inserimento inviata.";
+
+        } catch (Exception $e) {
+
+            $this->db->rollback();
+
+            $success = false;
+            $message = $e->getMessage();
+        }
+    }
+
+    function editNewEventDate($input, &$message, &$success){
+        $this->db->begin_transaction();
+        try{
+            // blocca evento
+            $stmt = $this->db->prepare("
+                SELECT Codice
+                FROM Evento
+                WHERE Codice = ?
+                FOR UPDATE
+            ");
+
+            $stmt->bind_param("i", $input["idEvento"]);
+            $stmt->execute();
+
+            // modifica orari
+            $this->updateOrari($input);
+
+            $this->db->commit();
+
+            $success = true;
+            $message = "Orari dell'evento modificati.";
+
+        } catch (Exception $e) {
+
+            $this->db->rollback();
+
+            $success = false;
+            $message = $e->getMessage();
+        }
+    }
+
+    function editNewRequestEventDate($input, &$message, &$success){
+        $this->db->begin_transaction();
+        try{
+            $codice_Richiesta = $this->generateEmptyEvent("Modifica", $input["richiedente"], $input["idEvento"]);
+            $this->insertOrariRichiesta(
+                $codice_Richiesta,
+                $input
+            );
+            $this->db->commit();
+
+            $success = true;
+            $message = "Richiesta di modifica inviata.";
+
+        } catch (Exception $e) {
+
+            $this->db->rollback();
+
+            $success = false;
+            $message = $e->getMessage();
+        }
+    }
+
+    function deleteNewEventDate($input, &$message, &$success){
+        $this->db->begin_transaction();
+        try{
+            // Blocca l'evento
+            $stmt = $this->db->prepare("
+                SELECT Codice
+                FROM Evento
+                WHERE Codice = ?
+                FOR UPDATE
+            ");
+            $stmt->bind_param("i", $input["idEvento"]);
+            $stmt->execute();
+
+            // Blocca gli orari
+            $stmt = $this->db->prepare("
+                SELECT Codice
+                FROM Orario_Evento
+                WHERE Codice_Evento = ?
+                FOR UPDATE
+            ");
+            $stmt->bind_param("i", $input["idEvento"]);
+            $stmt->execute();
+
+            $stmt = $this->db->prepare("
+                DELETE
+                FROM Orario_Evento
+                WHERE Codice = ?
+                AND Codice_Evento = ?
+            ");
+
+            foreach ($input["orariDaRimuovere"] as $orario){
+                $stmt->bind_param("ii", $orario["codice"], $input["idEvento"]);
+                $stmt->execute();
+            }
+
+            $this->db->commit();
+            $success = true;
+            $message = "Orari dell'evento eliminati.";
+
+        } catch (Exception $e) {
+
+            $this->db->rollback();
+
+            $success = false;
+            $message = $e->getMessage();
+        }
+    }
+
+    function deleteNewRequestEventDate($input, &$message, &$success){
+        $this->db->begin_transaction();
+        try{
+            $codice_Richiesta = $this->generateEmptyEvent("Eliminazione", $input["richiedente"], $input["idEvento"]);
+            $this->insertOrariRichiesta(
+                $codice_Richiesta,
+                $input
+            );
+            $this->db->commit();
+
+            $success = true;
+            $message = "Richiesta di eliminazione inviata.";
+
+        } catch (Exception $e) {
+
+            $this->db->rollback();
+
+            $success = false;
+            $message = $e->getMessage();
+        }
+    }
+
+    function acceptRequests($classe, $tipo, $input, &$message, &$success){
+        switch($classe){
+            case "Evento":
+                switch($tipo){
+                    case "Inserimento":
+                        $this->addNewEvent($input, $message, $success);
+                        break;
+                    case "Modifica":
+                        $this->editNewEvent($input, $message, $success);
+                        break;
+                    case "Eliminazione":
+                        $this->deleteNewEvent($input, $message, $success);
+                        break;
+                }
+                break;
+            case "Orario":
+                switch($tipo){
+                    case "Inserimento":
+                        $this->addNewEventDate($input, $message, $success);
+                        break;
+                    case "Modifica":
+                        $this->editNewEventDate($input, $message, $success);
+                        break;
+                    case "Eliminazione":
+                        $this->deleteNewEventDate($input, $message, $success);
+                        break;
+                }
+                break;
+        }
+    }
+
+    function giveIdRichiedente($classe, $id, $input, &$message, &$success){
+        $cf = "";
+        $mat = $this->resolveUserId($id);
+        if($mat==null){
+            return $input["richiedente"];
+        }else{
+            $cf = $this->getCFfromMat($mat);
+
+            $sql = $this->db->prepare(
+                "Select p.Codice as codice
+                    From Promotore p
+                    Join Rappresentano r on p.Codice = r.Codice_Promotore
+                    Join Persone u on u.CF = r.CF
+                    And u.CF = ?");
+
+            switch($classe){
+                case "Inserimento_Evento":
+                    $sql->bind_param("s", $cf);
+                    $sql->execute();
+
+                    $result = $sql->get_result();
+
+                    while ($row = $result->fetch_assoc()) {
+
+                        foreach ($input["promotoriDaAggiungere"] as $promotore) {
+
+                            if ($promotore["codice"] == $row["codice"]) {
+                                return $cf;
+                            }
+                        }
+                    }
+                    $success = false;
+                    $message = "Non rappresenti nessun dei promotori inseriti per l'evento che vuoi inserire.";
+                    return null;
+                case "Other_Evento":
+                    return $cf;
+                default: return $mat;
+            }
+        }
     }
 }
 ?>

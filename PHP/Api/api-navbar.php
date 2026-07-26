@@ -86,10 +86,10 @@ if(isUserLoggedIn()){
             ],
             "Richieste" => [
                 ["label" => "Ricevimento", "link" => "#"],
-                ["label" => "Evento", "link" => "#"]
+                ["label" => "Evento", "link" => "../PHP/azioniEvento.php"]
             ],
             "UniFlow" => [
-                ["label" => "Eventi", "link" => "#"],
+                ["label" => "Eventi", "link" => "../PHP/eventiPersona.php"],
                 ["label" => "Lezioni", "link" => "#"],
                 ["label" => "Ricevimenti", "link" => "#"],
                 ["label" => "Classi Vuote", "link" => "../PHP/classi-vuote.php"]
@@ -114,10 +114,10 @@ if(isUserLoggedIn()){
             ],
             "Richieste" => [
                 ["label" => "Orario", "link" => "#"],
-                ["label" => "Evento", "link" => "#"]
+                ["label" => "Evento", "link" => "../PHP/azioniEvento.php"]
             ],
             "UniFlow" => [
-                ["label" => "Eventi", "link" => "#"],
+                ["label" => "Eventi", "link" => "../PHP/eventiPersona.php"],
                 ["label" => "Lezioni", "link" => "#"],
                 ["label" => "Ricevimenti", "link" => "#"],
                 ["label" => "Classi Vuote", "link" => "../PHP/classi-vuote.php"]
@@ -139,10 +139,10 @@ if(isUserLoggedIn()){
             "Richieste" => [
                 ["label" => "Lezioni", "link" => "#"],
                 ["label" => "Ricevimenti", "link" => "#"],
-                ["label" => "Eventi", "link" => "#"]
+                ["label" => "Eventi", "link" => "../PHP/azioniEvento.php"]
             ],
             "UniFlow" => [
-                ["label" => "Eventi", "link" => "#"],
+                ["label" => "Eventi", "link" => "../PHP/eventiPersona.php"],
                 ["label" => "Lezioni", "link" => "#"],
                 ["label" => "Classi Vuote", "link" => "../PHP/classi-vuote.php"]
             ]

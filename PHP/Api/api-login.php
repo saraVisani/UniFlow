@@ -38,7 +38,8 @@ if (!$dbh->usernameOk($username) || !$dbh->passwordOk($username, $password)) {
 
     $_SESSION['user'] = [
         'username' => $username,
-        'livello_accesso' => $correctLevel
+        'livello_accesso' => $correctLevel,
+        'lavoro' => $dbh->getUserJob($username),
     ];
 
     $response['success'] = true;
