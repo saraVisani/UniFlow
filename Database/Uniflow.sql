@@ -220,7 +220,7 @@ create table Notifica (
      Descrizione varchar(510) not null,
      Chiusa TINYINT(1) not null,
      Matricola numeric(10) not null,
-     constraint ID_Notifica_ID primary key (Codice)); 
+     constraint ID_Notifica_ID primary key (Codice));
 
 create table Orario (
      Codice numeric(10) not null,
@@ -415,12 +415,12 @@ create table Universitario (
      Cod_Luogo numeric(10) not null,
      constraint ID_Universitario_ID primary key (Codice_Uni, Codice),
      constraint SID_Unive_Luogo_ID unique (Cod_Luogo));
- 
+
 # ---------------------------------------------------------------------- #
 # Add info into "Agg_Collaboratore"                                      #
 # ---------------------------------------------------------------------- #
 
-truncate table Agg_Collaboratore;        
+truncate table Agg_Collaboratore;
 
 insert into Agg_Collaboratore values (3, "FRNCRL07M03C365Q");
 insert into Agg_Collaboratore values (1, "TSCLNZ75B02H223Z");
@@ -430,7 +430,7 @@ insert into Agg_Collaboratore values (5, "TSCDNL06E23A348K");
 # Add info into "Agg_Promotore"                                          #
 # ---------------------------------------------------------------------- #
 
-truncate table Agg_Promotore;        
+truncate table Agg_Promotore;
 
 insert into Agg_Promotore values (33, 10);
 insert into Agg_Promotore values (36, 15);
@@ -482,10 +482,10 @@ truncate table Canale;
 
 insert into Canale values (0, 0, "Comunicazioni Interne Docenti", 3, false, false);
 insert into Canale values (0, 1, "Coordinamento Docenti–Rappresentanti", 2, false, false);
-insert into Canale values (0, 2, "Avvisi Docenti e Rappresentanti", 2, true, true);
+insert into Canale values (0, 2, "Avvisi Docenti e Rappresentanti", 2, true, false);
 insert into Canale values (0, 3, "Avvisi Ufficiali ai Rappresentanti e Studenti", 3, true, true);
 insert into Canale values (1, 0, "Chat Rappresentanti Studenti", 2, false, false);
-insert into Canale values (1, 1, "Comunicazioni dei Rappresentanti", 2, true, true);
+insert into Canale values (1, 1, "Comunicazioni dei Rappresentanti", 2, true, false);
 insert into Canale values (1, 2, "Discussioni Studentesche", 1, false, false);
 insert into Canale values (2, 0, "Comunicazioni Interne Segreteria", 4, false, false);
 insert into Canale values (2, 1, "Avvisi Segreteria ai Docenti", 4, true, false);
@@ -12379,7 +12379,7 @@ insert into Richiesta_Evento values (14, "Inserimento", "Torneo di E-Sports Univ
 insert into Richiesta_Evento values (15, "Modifica", "Seminario di Letteratura Comparata", 158, "Laboratorio interattivo a numero chiuso", 1, "DNTTRS06S69A643J", "ZNTDNC84L11B858F", NULL);
 insert into Richiesta_Evento values (16, "Eliminazione", NULL, NULL, NULL, 36, NULL, "PRSGNN08R52D491D", NULL);
 insert into Richiesta_Evento values (17, "Eliminazione", NULL, NULL, NULL, 35, NULL, "FSCLNE01A51C887J", NULL);
-insert into Richiesta_Evento values (18, "Modifica", "Torneo di Sci Universitario", 78, "Seminario introduttivo per nuovi iscritti", 29, "CNIDNS80M17D433N", "RSSFNC60H25I123N", NULL);     
+insert into Richiesta_Evento values (18, "Modifica", "Torneo di Sci Universitario", 78, "Seminario introduttivo per nuovi iscritti", 29, "CNIDNS80M17D433N", "RSSFNC60H25I123N", NULL);
 insert into Richiesta_Evento values (19, "Modifica", "Laboratorio di Fisica Sperimentale", 186, "Giornata di sensibilizzazione e informazione", 7, "LNGDNL79H11H266B", "NPLDNL78R10C724W", NULL);
 insert into Richiesta_Evento values (20, "Inserimento", "Torneo di Pallavolo Universitario", 99, "Attività laboratoriale guidata", NULL, "CVLNGL82M52A037X", NULL, "DLCLRA95T45I143C");
 
@@ -35788,21 +35788,21 @@ insert into Thread values
  "2026-01-17 07:30:00",
  50, 0, 1, 1, 1, null, 1);
 insert into Thread values
-(8, 2, 4, 0, 
+(8, 2, 4, 0,
 "Aggiornamenti sull'orario settimanale",
-"In questo thread trovate tutte le modifiche e gli aggiornamenti agli orari delle lezioni di questa settimana.", 
-"2026-02-01 10:00:00", 
+"In questo thread trovate tutte le modifiche e gli aggiornamenti agli orari delle lezioni di questa settimana.",
+"2026-02-01 10:00:00",
 100, 20, 0, 0, 0, null, null);
 insert into Thread values
-(9, 2, 4, 1, 
-"Domande esami", 
-"Spazio per fare domande sugli esami.", 
-"2026-01-13 11:30:00", 
+(9, 2, 4, 1,
+"Domande esami",
+"Spazio per fare domande sugli esami.",
+"2026-01-13 11:30:00",
 165, 3, 1, 0, 0, null, null);
 insert into Thread values
-(10, 2, 4, 2, "Comunicazioni segreteria", 
-"Comunicazioni importanti per tutti gli studenti.", 
-"2026-02-01 12:00:00", 
+(10, 2, 4, 2, "Comunicazioni segreteria",
+"Comunicazioni importanti per tutti gli studenti.",
+"2026-02-01 12:00:00",
 442, 130, 0, 0, 0, null, null);
 
 # ---------------------------------------------------------------------- #
@@ -36175,71 +36175,105 @@ insert into Universitario values (5, 113, 243);
 
 alter table Agg_Collaboratore add constraint REF_Agg_C_Perso_FK
      foreign key (CF)
-     references Persona(CF);
+     references Persona(CF)
+     on delete cascade
+     on update cascade;
 
 alter table Agg_Collaboratore add constraint REF_Agg_C_Richi
      foreign key (Codice_Richiesta)
-     references Richiesta_Evento(Codice);
+     references Richiesta_Evento(Codice)
+     on delete cascade
+     on update cascade;
 
 alter table Agg_Promotore add constraint REF_Agg_P_Richi_FK
      foreign key (Codice_Richiesta)
-     references Richiesta_Evento(Codice);
+     references Richiesta_Evento(Codice)
+     on delete cascade
+     on update cascade;
 
 alter table Agg_Promotore add constraint REF_Agg_P_Promo
      foreign key (Codice_Promotore)
-     references Promotore(Codice);
+     references Promotore(Codice)
+     on delete cascade
+     on update cascade;
 
 alter table Cambiare_Orario add constraint REF_Cambi_Luogo_FK
      foreign key (Codice_Luogo)
-     references Luogo(Codice);
+     references Luogo(Codice)
+     on delete cascade
+     on update cascade;
 
 alter table Cambiare_Orario add constraint REF_Cambi_Richi_FK
      foreign key (Codice_Ric)
-     references Richiesta_Evento(Codice);
+     references Richiesta_Evento(Codice)
+     on delete cascade
+     on update cascade;
 
 alter table Cambiare_Orario add constraint REF_Cambi_Orari
      foreign key (Codice_Orario)
-     references Orario_Evento(Codice);
+     references Orario_Evento(Codice)
+     on delete cascade
+     on update cascade;
 
 alter table Canale add constraint REF_Canal_Forum
      foreign key (Cod_Forum)
-     references Forum(Codice);
+     references Forum(Codice)
+     on delete cascade
+     on update cascade;
 
 alter table Citta add constraint REF_Citta_Provi
      foreign key (Codice_Prov)
-     references Provincia(Codice);
+     references Provincia(Codice)
+     on delete cascade
+     on update cascade;
 
 alter table Classe add constraint ID_Class_Unive_FK
      foreign key (Codice_Uni, Codice_Stanza)
-     references Universitario(Codice_Uni, Codice);
+     references Universitario(Codice_Uni, Codice)
+     on delete cascade
+     on update cascade;
 
 alter table Collaboratore add constraint REF_Colla_Perso_FK
      foreign key (CF)
-     references Persona(CF);
+     references Persona(CF)
+     on delete cascade
+     on update cascade;
 
 alter table Collaboratore add constraint REF_Colla_Event
      foreign key (Codice_Evento)
-     references Evento(Codice);
+     references Evento(Codice)
+     on delete cascade
+     on update cascade;
 
 alter table Composto_Da add constraint REF_Compo_Mater
      foreign key (Cod_Mat_Anno)
-     references Materia_Anno(Cod_Mat_Anno);
+     references Materia_Anno(Cod_Mat_Anno)
+     on delete cascade
+     on update cascade;
 
 alter table Composto_Da add constraint REF_Compo_Piano_FK
      foreign key (Codice_PianoDid)
-     references Piano_Didattico(Codice_PianoDid);
+     references Piano_Didattico(Codice_PianoDid)
+     on delete cascade
+     on update cascade;
 
 alter table Corso add constraint REF_Corso_Ambit_FK
      foreign key (Ambito)
-     references Ambito(Nome);
+     references Ambito(Nome)
+     on delete cascade
+     on update cascade;
 
 alter table Elemento add constraint REF_Eleme_Threa_FK
      foreign key (Cod_Unico_Thread)
-     references Thread(Cod_Unico);
+     references Thread(Cod_Unico)
+     on delete cascade
+     on update cascade;
 
 alter table Elemento add constraint REF_Eleme_Messa_FK
      foreign key (Cod_Unico_Messaggio)
-     references Messaggio(Cod_Unico);
+     references Messaggio(Cod_Unico)
+     on delete cascade
+     on update cascade;
 
 alter table Elemento add constraint EXTONE_Elemento
      check((Cod_Unico_Thread is not null and Cod_Unico_Messaggio is null)
@@ -36247,151 +36281,225 @@ alter table Elemento add constraint EXTONE_Elemento
 
 alter table Elim_Collaboratore add constraint REF_Elim__Perso_FK
      foreign key (CF)
-     references Persona(CF);
+     references Persona(CF)
+     on delete cascade
+     on update cascade;
 
 alter table Elim_Collaboratore add constraint REF_Elim__Richi_1
      foreign key (Codice_Richiesta)
-     references Richiesta_Evento(Codice);
+     references Richiesta_Evento(Codice)
+     on delete cascade
+     on update cascade;
 
 alter table Elim_Promotore add constraint REF_Elim__Richi_FK
      foreign key (Codice_Richiesta)
-     references Richiesta_Evento(Codice);
+     references Richiesta_Evento(Codice)
+     on delete cascade
+     on update cascade;
 
 alter table Elim_Promotore add constraint REF_Elim__Promo
      foreign key (Codice_Promotore)
-     references Promotore(Codice);
+     references Promotore(Codice)
+     on delete cascade
+     on update cascade;
 
 alter table Esterno add constraint SID_Ester_Indir_FK
      foreign key (Codice_Prov, Codice_Citta, N_Civico)
-     references Indirizzo(Codice_Prov, Codice_Citta, N_Civico);
+     references Indirizzo(Codice_Prov, Codice_Citta, N_Civico)
+     on delete cascade
+     on update cascade;
 
 alter table Esterno add constraint SID_Ester_Luogo_FK
      foreign key (Cod_Luogo)
-     references Luogo(Codice);
+     references Luogo(Codice)
+     on delete cascade
+     on update cascade;
 
 alter table Evento add constraint REF_Event_Perso_FK
      foreign key (CF)
-     references Persona(CF);
+     references Persona(CF)
+     on delete cascade
+     on update cascade;
 
 alter table Formato_Da add constraint REF_Forma_Corso_FK
      foreign key (Codice_Corso)
-     references Corso(Codice);
+     references Corso(Codice)
+     on delete cascade
+     on update cascade;
 
 alter table Formato_Da add constraint REF_Forma_Mater
      foreign key (Codice_Mat)
-     references Materia(Codice);
+     references Materia(Codice)
+     on delete cascade
+     on update cascade;
 
 alter table Indirizzo add constraint REF_Indir_Citta
      foreign key (Codice_Prov, Codice_Citta)
-     references Citta(Codice_Prov, Codice);
+     references Citta(Codice_Prov, Codice)
+     on delete cascade
+     on update cascade;
 
 alter table Inoltrare_Messaggio add constraint REF_Inolt_Immag_1
      foreign key (`Path`)
-     references Immagine(`Path`);
+     references Immagine(`Path`)
+     on delete cascade
+     on update cascade;
 
 alter table Inoltrare_Messaggio add constraint REF_Inolt_Messa_FK
      foreign key (Cod_Unico)
-     references Messaggio(Cod_Unico);
+     references Messaggio(Cod_Unico)
+     on delete cascade
+     on update cascade;
 
 alter table Inoltrare_Thread add constraint REF_Inolt_Immag_FK
      foreign key (`Path`)
-     references Immagine(`Path`);
+     references Immagine(`Path`)
+     on delete cascade
+     on update cascade;
 
 alter table Inoltrare_Thread add constraint REF_Inolt_Threa
      foreign key (Cod_Unico)
-     references Thread(Cod_Unico);
+     references Thread(Cod_Unico)
+     on delete cascade
+     on update cascade;
 
 alter table Insegna add constraint REF_Inseg_Profe_FK
      foreign key (Matricola)
-     references Professore(Matricola);
+     references Professore(Matricola)
+     on delete cascade
+     on update cascade;
 
 alter table Insegna add constraint REF_Inseg_Mater
      foreign key (Cod_Mat_Anno)
-     references Materia_Anno(Cod_Mat_Anno);
+     references Materia_Anno(Cod_Mat_Anno)
+     on delete cascade
+     on update cascade;
 
 alter table Materia add constraint REF_Mater_Sede_FK
      foreign key (Codice_Uni)
-     references Sede(Codice);
+     references Sede(Codice)
+     on delete cascade
+     on update cascade;
 
 alter table Materia_Anno add constraint REF_Mater_Mater
      foreign key (Codice_Mat)
-     references Materia(Codice);
+     references Materia(Codice)
+     on delete cascade
+     on update cascade;
 
 alter table Messaggio add constraint REF_Messa_Threa
      foreign key (Cod_Unico_Thread)
-     references Thread(Cod_Unico);
+     references Thread(Cod_Unico)
+     on delete cascade
+     on update cascade;
 
 alter table Messaggio add constraint REF_Messa_Messa_FK
      foreign key (Messaggio_Puntato)
-     references Messaggio(Cod_Unico);
+     references Messaggio(Cod_Unico)
+     on delete cascade
+     on update cascade;
 
 alter table Messaggio add constraint REF_Messa_Siste_FK
      foreign key (Matricola)
-     references Sistema_Universitario(Matricola);
+     references Sistema_Universitario(Matricola)
+     on delete cascade
+     on update cascade;
 
 alter table Modulo add constraint EQU_Modul_Corso
-	 foreign key (Codice_Corso)
-     references Corso(Codice);
+     foreign key (Codice_Corso)
+     references Corso(Codice)
+     on delete cascade
+     on update cascade;
 
 alter table Modulo add constraint EQU_Modul_Mater
      foreign key (Cod_Mat_Anno)
-     references Materia_Anno(Cod_Mat_Anno);
+     references Materia_Anno(Cod_Mat_Anno)
+     on delete cascade
+     on update cascade;
 
 alter table Modulo add constraint REF_Modul_Profe_FK
      foreign key (Matricola_Tit)
-     references Professore(Matricola);
+     references Professore(Matricola)
+     on delete cascade
+     on update cascade;
 
 alter table Notifica add constraint REF_Notif_Siste_FK
      foreign key (Matricola)
-     references Sistema_Universitario(Matricola);
+     references Sistema_Universitario(Matricola)
+     on delete cascade
+     on update cascade;
 
 alter table Orario add constraint REF_Orari_Modul
      foreign key (Codice_Corso, Cod_Mat_Anno, Codice_Modulo)
-     references Modulo(Codice_Corso, Cod_Mat_Anno, Codice);
+     references Modulo(Codice_Corso, Cod_Mat_Anno, Codice)
+     on delete cascade
+     on update cascade;
 
 alter table Orario add constraint REF_Orari_Class
      foreign key (Codice_Uni, Codice_Stanza)
-     references Classe(Codice_Uni, Codice_Stanza);
+     references Classe(Codice_Uni, Codice_Stanza)
+     on delete cascade
+     on update cascade;
 
 alter table Orario_Evento add constraint REF_Orari_Luogo
      foreign key (Cod_Luogo)
-     references Luogo(Codice);
+     references Luogo(Codice)
+     on delete cascade
+     on update cascade;
 
 alter table Orario_Evento add constraint REF_Orari_Event
      foreign key (Codice_Evento)
-     references Evento(Codice);
+     references Evento(Codice)
+     on delete cascade
+     on update cascade;
 
 alter table Piano_Didattico add constraint REF_Piano_Corso_FK
      foreign key (Codice_Corso)
-     references Corso(Codice);
+     references Corso(Codice)
+     on delete cascade
+     on update cascade;
 
 alter table Piano_Didattico add constraint SID_Piano_Stude_FK
      foreign key (Matricola)
-     references Studente(Matricola);
+     references Studente(Matricola)
+     on delete cascade
+     on update cascade;
 
 alter table Professore add constraint ID_Profe_Siste_FK
      foreign key (Matricola)
-     references Sistema_Universitario(Matricola);
+     references Sistema_Universitario(Matricola)
+     on delete cascade
+     on update cascade;
 
 alter table Propongono add constraint REF_Propo_Promo_FK
      foreign key (Codice)
-     references Promotore(Codice);
+     references Promotore(Codice)
+     on delete cascade
+     on update cascade;
 
 alter table Propongono add constraint EQU_Propo_Event
      foreign key (Codice_Evento)
-     references Evento(Codice);
+     references Evento(Codice)
+     on delete cascade
+     on update cascade;
 
 alter table Rappresentano add constraint REF_Rappr_Perso_FK
      foreign key (CF)
-     references Persona(CF);
+     references Persona(CF)
+     on delete cascade
+     on update cascade;
 
 alter table Rappresentano add constraint REF_Rappr_Promo
      foreign key (Codice_Promotore)
-     references Promotore(Codice);
+     references Promotore(Codice)
+     on delete cascade
+     on update cascade;
 
 alter table Ricevimento add constraint REF_Ricev_Uffic_FK
      foreign key (Codice_Uni, Codice_Stanza)
-     references Ufficio(Codice_Uni, Codice_Stanza);
+     references Ufficio(Codice_Uni, Codice_Stanza)
+     on delete cascade
+     on update cascade;
 
 alter table Ricevimento add constraint REF_Ricev_Uffic_CHK
      check((Codice_Uni is not null and Codice_Stanza is not null)
@@ -36399,31 +36507,45 @@ alter table Ricevimento add constraint REF_Ricev_Uffic_CHK
 
 alter table Ricevimento add constraint REF_Ricev_Profe_FK
      foreign key (Matricola)
-     references Professore(Matricola);
+     references Professore(Matricola)
+     on delete cascade
+     on update cascade;
 
 alter table Richiesta_Evento add constraint REF_Richi_Event_FK
      foreign key (Codice_Evento)
-     references Evento(Codice);
+     references Evento(Codice)
+     on delete cascade
+     on update cascade;
 
 alter table Richiesta_Evento add constraint REF_Richi_Perso_1_FK
      foreign key (Rappresentante)
-     references Persona(CF);
+     references Persona(CF)
+     on delete cascade
+     on update cascade;
 
 alter table Richiesta_Evento add constraint REF_Richi_Perso_FK
      foreign key (Richiedente)
-     references Persona(CF);
+     references Persona(CF)
+     on delete cascade
+     on update cascade;
 
 alter table Richiesta_Evento add constraint REF_Richi_Promo_FK
      foreign key (Richiedente_Inserimento)
-     references Promotore(Codice);
+     references Promotore(Codice)
+     on delete cascade
+     on update cascade;
 
 alter table Richiesta_Orario add constraint REF_Richi_Orari_FK
      foreign key (Codice_Orario)
-     references Orario(Codice);
+     references Orario(Codice)
+     on delete cascade
+     on update cascade;
 
 alter table Richiesta_Orario add constraint REF_Richi_Modul_FK
      foreign key (Codice_Corso, Cod_Mat_Anno, Codice_Modulo)
-     references Modulo(Codice_Corso, Cod_Mat_Anno, Codice);
+     references Modulo(Codice_Corso, Cod_Mat_Anno, Codice)
+     on delete cascade
+     on update cascade;
 
 alter table Richiesta_Orario add constraint REF_Richi_Modul_CHK
      check((Cod_Mat_Anno is not null and Codice_Modulo is not null)
@@ -36431,7 +36553,9 @@ alter table Richiesta_Orario add constraint REF_Richi_Modul_CHK
 
 alter table Richiesta_Orario add constraint REF_Richi_Class_FK
      foreign key (Codice_Uni, Codice_Stanza)
-     references Classe(Codice_Uni, Codice_Stanza);
+     references Classe(Codice_Uni, Codice_Stanza)
+     on delete cascade
+     on update cascade;
 
 alter table Richiesta_Orario add constraint REF_Richi_Class_CHK
      check((Codice_Uni is not null and Codice_Stanza is not null)
@@ -36439,15 +36563,21 @@ alter table Richiesta_Orario add constraint REF_Richi_Class_CHK
 
 alter table Richiesta_Orario add constraint REF_Richi_Profe_FK
      foreign key (Matricola)
-     references Professore(Matricola);
+     references Professore(Matricola)
+     on delete cascade
+     on update cascade;
 
 alter table Richiesta_Ricevimento add constraint REF_Richi_Stude_FK
      foreign key (Matricola)
-     references Studente(Matricola);
+     references Studente(Matricola)
+     on delete cascade
+     on update cascade;
 
 alter table Richiesta_Ricevimento add constraint REF_Richi_Slot_FK
      foreign key (Codice_Ric, N_Slot)
-     references Slot(Codice_Ric, N_Slot);
+     references Slot(Codice_Ric, N_Slot)
+     on delete cascade
+     on update cascade;
 
 alter table Richiesta_Ricevimento add constraint REF_Richi_Slot_CHK
      check((Codice_Ric is not null and N_Slot is not null)
@@ -36455,87 +36585,129 @@ alter table Richiesta_Ricevimento add constraint REF_Richi_Slot_CHK
 
 alter table Richiesta_Ricevimento add constraint REF_Richi_Ricev_FK
      foreign key (Ricevimento)
-     references Ricevimento(Codice);
+     references Ricevimento(Codice)
+     on delete cascade
+     on update cascade;
 
 alter table Sede add constraint SID_Sede_Indir_FK
      foreign key (Codice_Prov, Codice_Citta, N_Civico)
-     references Indirizzo(Codice_Prov, Codice_Citta, N_Civico);
+     references Indirizzo(Codice_Prov, Codice_Citta, N_Civico)
+     on delete cascade
+     on update cascade;
 
 alter table Segna add constraint REF_Segna_Perso_FK
      foreign key (CF)
-     references Persona(CF);
+     references Persona(CF)
+     on delete cascade
+     on update cascade;
 
 alter table Segna add constraint REF_Segna_Event
      foreign key (Codice_Evento)
-     references Evento(Codice);
+     references Evento(Codice)
+     on delete cascade
+     on update cascade;
 
 alter table Segreteria add constraint ID_Segre_Siste_FK
      foreign key (Matricola)
-     references Sistema_Universitario(Matricola);
+     references Sistema_Universitario(Matricola)
+     on delete cascade
+     on update cascade;
 
 alter table Segreteria add constraint REF_Segre_Sede_FK
      foreign key (Codice_Uni)
-     references Sede(Codice);
+     references Sede(Codice)
+     on delete cascade
+     on update cascade;
 
 alter table Seguito_In add constraint REF_Segui_Sede
      foreign key (Codice_Uni)
-     references Sede(Codice);
+     references Sede(Codice)
+     on delete cascade
+     on update cascade;
 
 alter table Seguito_In add constraint EQU_Segui_Corso_FK
      foreign key (Codice_Corso)
-     references Corso(Codice);
+     references Corso(Codice)
+     on delete cascade
+     on update cascade;
 
 alter table Sistema_Universitario add constraint REF_Siste_Perso_FK
      foreign key (CF)
-     references Persona(CF);
+     references Persona(CF)
+     on delete cascade
+     on update cascade;
 
 alter table Slot add constraint REF_Slot_Ricev
      foreign key (Codice_Ric)
-     references Ricevimento(Codice);
+     references Ricevimento(Codice)
+     on delete cascade
+     on update cascade;
 
 alter table Slot add constraint REF_Slot_Stude_FK
      foreign key (Matricola)
-     references Studente(Matricola);
+     references Studente(Matricola)
+     on delete cascade
+     on update cascade;
 
 alter table Studente add constraint ID_Stude_Siste_FK
      foreign key (Matricola)
-     references Sistema_Universitario(Matricola);
+     references Sistema_Universitario(Matricola)
+     on delete cascade
+     on update cascade;
 
 alter table Thread add constraint REF_Threa_Canal
      foreign key (Cod_Forum, Cod_Canale)
-     references Canale(Cod_Forum, Codice);
+     references Canale(Cod_Forum, Codice)
+     on delete cascade
+     on update cascade;
 
 alter table Thread add constraint REF_Threa_Threa_FK
      foreign key (Thread_Puntato)
-     references Thread(Cod_Unico);
+     references Thread(Cod_Unico)
+     on delete cascade
+     on update cascade;
 
 alter table Thread add constraint REF_Threa_Siste_FK
      foreign key (Matricola)
-     references Sistema_Universitario(Matricola);
+     references Sistema_Universitario(Matricola)
+     on delete cascade
+     on update cascade;
 
 alter table Tutor add constraint REF_Tutor_Stude_FK
      foreign key (Matricola)
-     references Studente(Matricola);
+     references Studente(Matricola)
+     on delete cascade
+     on update cascade;
 
 alter table Tutor add constraint REF_Tutor_Mater
      foreign key (Cod_Mat_Anno)
-     references Materia_Anno(Cod_Mat_Anno);
+     references Materia_Anno(Cod_Mat_Anno)
+     on delete cascade
+     on update cascade;
 
 alter table Ufficio add constraint ID_Uffic_Unive_FK
      foreign key (Codice_Uni, Codice_Stanza)
-     references Universitario(Codice_Uni, Codice);
+     references Universitario(Codice_Uni, Codice)
+     on delete cascade
+     on update cascade;
 
 alter table Ufficio add constraint REF_Uffic_Profe_FK
      foreign key (Matricola)
-     references Professore(Matricola);
+     references Professore(Matricola)
+     on delete cascade
+     on update cascade;
 
 alter table Universitario add constraint REF_Unive_Sede
      foreign key (Codice_Uni)
-     references Sede(Codice);
+     references Sede(Codice)
+     on delete cascade
+     on update cascade;
 
 alter table Universitario add constraint SID_Unive_Luogo_FK
      foreign key (Cod_Luogo)
-     references Luogo(Codice);
+     references Luogo(Codice)
+     on delete cascade
+     on update cascade;
 
 
 -- Index Section
