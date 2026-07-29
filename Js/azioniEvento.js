@@ -11,6 +11,7 @@ function formatDateTimeForView(value) {
     return `${day}/${month}/${year}${ora ? " " + ora.slice(0,5) : ""}`;
 }
 
+let typeOrario = "";
 let openBozza = false;
 let originaleEvento = null;
 let totIdEvento = [];
@@ -30,6 +31,7 @@ let orariModificati = [];
 
 function resetEvento() {
 
+    typeOrario = "";
     openBozza = false;
     originaleEvento = null;
     totIdEvento = [];
@@ -294,9 +296,9 @@ function renderForum(json) {
                 Aggiungi Luoghi Fuori Lista
             </button>
 
-            <br></br>
+            <br>
 
-            <button type="submit" onclick="saveAllChanges()">
+            <button type="button" onclick="saveAllChanges()">
                 Invia richiesta
             </button>
         `;
@@ -336,7 +338,7 @@ function renderEventoDetails(json) {
         case "delete":
             return `${renderUnlogged(json.logged, action, personeOptions)}
 
-                    <button type="submit" id="btnDeleteEvento" onclick="saveAllChanges()">
+                    <button type="button" id="btnDeleteEvento" onclick="saveAllChanges()">
                         Elimina evento
                     </button>`
 
@@ -482,9 +484,9 @@ function renderEventoDetails(json) {
                         Aggiungi Luoghi Fuori Lista
                     </button>
 
-                    <br></br>
+                    <br>
 
-                    <button type="submit" id="save-edit-evento" onclick="saveAllChanges()">
+                    <button type="button" id="save-edit-evento" onclick="saveAllChanges()">
                         Salva modifiche
                     </button>
 
@@ -539,9 +541,9 @@ function renderEventoDetails(json) {
                         Aggiungi Luoghi Fuori Lista
                     </button>
 
-                    <br></br>
+                    <br>
 
-                    <button type="submit" onclick="saveAllChanges()">
+                    <button type="button" onclick="saveAllChanges()">
                         Invia richiesta
                     </button>`
                 break;
@@ -594,9 +596,9 @@ function renderEventoDetails(json) {
                         Aggiungi Luoghi Fuori Lista
                     </button>
 
-                    <br></br>
+                    <br>
 
-                    <button type="submit" id="save-edit-evento" onclick="saveAllChanges()">
+                    <button type="button" id="save-edit-evento" onclick="saveAllChanges()">
                         Salva modifiche
                     </button>`
             break;
@@ -612,7 +614,7 @@ function renderEventoDetails(json) {
                         ${renderListaOrari("delete")}
                     </ul>
 
-                    <button type="submit" id="save-edit-evento" onclick="saveAllChanges()">
+                    <button type="button" id="save-edit-evento" onclick="saveAllChanges()">
                         Salva modifiche
                     </button>`
         }
@@ -766,13 +768,8 @@ function restorePerson(tipo, cf) {
 
 function renderListaOrari(tipo) {
 
+    typeOrario = tipo;
     const lista = orariOriginali
-        .filter(o =>
-            !orariDaRimuovere.some(r =>
-                r.codice === o.codice &&
-                r.codice_evento === o.codice_evento
-            )
-        )
         .map(o =>
             orariModificati.find(m =>
                 m.codice === o.codice &&
@@ -828,7 +825,7 @@ function renderListaOrari(tipo) {
         }
 
         return `
-            <div id="orario-${o.codice}-${o.codice_evento}" class="${eliminato ? "pending-delete" : ""}">
+            <li id="orario-${o.codice}-${o.codice_evento}" class="${eliminato ? "pending-delete" : ""}">
 
                 <p>Inizio: ${formatDateTimeForView(o.inizio)}</p>
                 <p>Fine: ${formatDateTimeForView(o.fine)}</p>
@@ -841,7 +838,7 @@ function renderListaOrari(tipo) {
                 </p>
 
                 ${bottoni}
-            </div>
+            </li>
         `;
     }).join("");
 }
@@ -942,15 +939,15 @@ function addOrario() {
 
 function refreshOrari() {
     document.getElementById("lista-orari").innerHTML =
-        renderListaOrari();
+        renderListaOrari(typeOrario);
 }
 
 function removeOrario(codice, codiceEvento){
 
     if(orariDaAggiungere.some(r => r.codice === codice && r.codice_evento === codiceEvento)){
-        orariDaAggiungere = orariDaAggiungere.some(r => !(r.codice === codice && r.codice_evento === codiceEvento));
+        orariDaAggiungere = orariDaAggiungere.filter(r => !(r.codice === codice && r.codice_evento === codiceEvento));
     } else if(orariModificati.some(r => r.codice === codice && r.codice_evento === codiceEvento)){
-        orariModificati = orariModificati.some(r => !(r.codice === codice && r.codice_evento === codiceEvento));
+        orariModificati = orariModificati.filter(r => !(r.codice === codice && r.codice_evento === codiceEvento));
     } else if(!orariDaRimuovere.some(r => r.codice === codice && r.codice_evento === codiceEvento)){
         orariDaRimuovere.push({
                 codice: codice,
@@ -1018,8 +1015,6 @@ function editOrario(codice, codiceEvento){
     );
 
     html.innerHTML = `
-        <div class="orario-${o.codice}-${o.codice_evento}">
-
             <p>Inizio corrente: ${formatDateTimeForView(o.inizio)}</p>
             <input
                 type="datetime-local"
@@ -1042,8 +1037,6 @@ function editOrario(codice, codiceEvento){
             <button onclick="confirmEditOrario(${o.codice}, ${codiceEvento}, '${lista}')">
                 Conferma
             </button>
-
-        </div>
     `;
 }
 
@@ -1053,8 +1046,12 @@ function confirmEditOrario(codice, codiceEvento, lista){
         document.getElementById(`edit-orario-inizio-${codice}-${codiceEvento}`).value;
     const fine =
         document.getElementById(`edit-orario-fine-${codice}-${codiceEvento}`).value;
-    const luogo =
-        Number(document.getElementById(`edit-place-select-${codice}-${codiceEvento}`).value);
+    const luogoValue =
+        document.getElementById(`edit-place-select-${codice}-${codiceEvento}`).value;
+
+    const luogo = luogoValue === ""
+        ? null
+        : Number(luogoValue);
 
     if(luogo){
         let posti = null;
@@ -1107,7 +1104,7 @@ function confirmEditOrario(codice, codiceEvento, lista){
         ...vecchio,
         ...(inizio && { inizio }),
         ...(fine && { fine }),
-        ...(luogo && { codice_luogo: luogo })
+        ...(luogo !== null && { codice_luogo: luogo })
     };
 
     const dataInizio = new Date(modificato.inizio);
