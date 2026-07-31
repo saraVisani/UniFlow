@@ -92,6 +92,7 @@ switch($action){
         ];
         if(isUserLoggedIn() && $_SESSION['user']['livello_accesso']==4){
             $response["professori"] = $dbh->getProfessors();
+            $response["sedi"] = $dbh->getAllCampusesWithCode();
         }
         $response += getLoggedData();
         echo json_encode($response);

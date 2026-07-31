@@ -95,7 +95,7 @@ function changeCities(cittalist){
     `<option value="">-- Nessuno --</option>` + citta;
 }
 
-function addInputs(prof, provincie, via){
+function addInputs(prof, provincie, via, sedi){
     const tipo = document.getElementById("tipo").value;
     const extra = document.getElementById("extra-inputs");
     let contTipo;
@@ -108,8 +108,13 @@ function addInputs(prof, provincie, via){
 
     let html = "";
 
-    if (!originalPlace && tipo !== "alt" && contTipo) {
+    if (!originalPlace && tipo !== "alt") {
         html += `
+            <label for="codUni">Sede</label>
+            <select id="codUni">
+                <option value="">-- Nessuno --</option>
+                ${provinciaList(sedi)}
+            </select>
             <label for="codClasse">Codice Stanza</label>
             <input type="number" id="codClasse"/>
         `;
@@ -789,7 +794,7 @@ async function loadAzioni() {
         select = document.getElementById("tipo");
 
         if (select) {
-            select.addEventListener("change", () => addInputs(json.professori, json.provincie, json.via));
+            select.addEventListener("change", () => addInputs(json.professori, json.provincie, json.via, json.sedi));
         }
     }
 }
@@ -1361,7 +1366,9 @@ async function saveAllChanges(){
                     civico
                 };
             } else {
+                const uni = Number(document.getElementById("codUni").value);
                 const stanza = Number(document.getElementById("codClasse").value);
+                if(isNaN(uni) || uni <= 0) mancanti.push("sede")
                 if(isNaN(stanza) || stanza <= 0) mancanti.push("codice stanza")
                 if(tipo === "uff"){
                     const ufficio = document.getElementById("assegnato").value;
@@ -1375,6 +1382,7 @@ async function saveAllChanges(){
                 } else {
                     luogo.tipo = "universitario";
                 }
+                luogo.cod_uni = uni;
                 luogo.cod_stanza = stanza;
             }
 
@@ -1688,6 +1696,10 @@ async function saveAllChanges(){
                             : null
                 }
             };
+
+            modifiche.idProv = originalPlace.indirizzo.provincia;
+            modifiche.idCitta = originalPlace.indirizzo.citta;
+            modifiche.idCivico = originalPlace.indirizzo.civico;
 
             if (Object.values(modifiche.indirizzo).every(v => v === null)) {
                 modifiche.indirizzo = null;
