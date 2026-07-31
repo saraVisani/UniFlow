@@ -36224,7 +36224,6 @@ alter table Canale add constraint REF_Canal_Forum
 alter table Citta add constraint REF_Citta_Provi
      foreign key (Codice_Prov)
      references Provincia(Codice)
-     on delete cascade
      on update cascade;
 
 alter table Classe add constraint ID_Class_Unive_FK
@@ -36336,7 +36335,6 @@ alter table Formato_Da add constraint REF_Forma_Mater
 alter table Indirizzo add constraint REF_Indir_Citta
      foreign key (Codice_Prov, Codice_Citta)
      references Citta(Codice_Prov, Codice)
-     on delete cascade
      on update cascade;
 
 alter table Inoltrare_Messaggio add constraint REF_Inolt_Immag_1
@@ -36378,7 +36376,6 @@ alter table Insegna add constraint REF_Inseg_Mater
 alter table Materia add constraint REF_Mater_Sede_FK
      foreign key (Codice_Uni)
      references Sede(Codice)
-     on delete cascade
      on update cascade;
 
 alter table Materia_Anno add constraint REF_Mater_Mater
@@ -36438,13 +36435,11 @@ alter table Orario add constraint REF_Orari_Modul
 alter table Orario add constraint REF_Orari_Class
      foreign key (Codice_Uni, Codice_Stanza)
      references Classe(Codice_Uni, Codice_Stanza)
-     on delete cascade
      on update cascade;
 
 alter table Orario_Evento add constraint REF_Orari_Luogo
      foreign key (Cod_Luogo)
      references Luogo(Codice)
-     on delete cascade
      on update cascade;
 
 alter table Orario_Evento add constraint REF_Orari_Event
@@ -36498,7 +36493,6 @@ alter table Rappresentano add constraint REF_Rappr_Promo
 alter table Ricevimento add constraint REF_Ricev_Uffic_FK
      foreign key (Codice_Uni, Codice_Stanza)
      references Ufficio(Codice_Uni, Codice_Stanza)
-     on delete cascade
      on update cascade;
 
 alter table Ricevimento add constraint REF_Ricev_Uffic_CHK
@@ -36616,13 +36610,11 @@ alter table Segreteria add constraint ID_Segre_Siste_FK
 alter table Segreteria add constraint REF_Segre_Sede_FK
      foreign key (Codice_Uni)
      references Sede(Codice)
-     on delete cascade
      on update cascade;
 
 alter table Seguito_In add constraint REF_Segui_Sede
      foreign key (Codice_Uni)
      references Sede(Codice)
-     on delete cascade
      on update cascade;
 
 alter table Seguito_In add constraint EQU_Segui_Corso_FK
@@ -36682,7 +36674,6 @@ alter table Tutor add constraint REF_Tutor_Stude_FK
 alter table Tutor add constraint REF_Tutor_Mater
      foreign key (Cod_Mat_Anno)
      references Materia_Anno(Cod_Mat_Anno)
-     on delete cascade
      on update cascade;
 
 alter table Ufficio add constraint ID_Uffic_Unive_FK

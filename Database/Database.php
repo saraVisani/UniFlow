@@ -1188,153 +1188,6 @@ class DatabaseHelper
         return $persone;
     }
 
-    /*private function getLevelFromUser($user) {
-        $sql = "SELECT p.Livello_Permesso
-                FROM Persona p
-                JOIN Sistema_Universitario su ON su.CF = p.CF
-                WHERE su.Matricola = ?";
-        $stmt = $this->db->prepare($sql);
-        $stmt->bind_param("i", $user);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        if ($result->num_rows === 0) {
-            return null; // utente non trovato
-        }
-        $row = $result->fetch_assoc();
-        $stmt->close();
-        return $row['Livello_Permesso'];
-    }
-
-    public function getForumsWithChannels($level){
-
-        $sql = "SELECT
-                    f.Codice as forumId,
-                    f.Nome as nomeForum,
-                    c.Codice as canaleId,
-                    c.Nome as nomeCanale,
-
-                    (
-                        c.Grado = 0
-                        OR c.Grado <= ?
-                    ) as canWrite,
-
-                    (
-                        c.Grado = 0
-                        OR c.Grado <= ?
-                        OR (c.Visualizzare = 1 AND ? >= c.Grado - 1)
-                        OR (c.Visualizzare_Tutti = 1 AND c.Grado > 0 AND ? >= 1)
-                    ) as canRead
-
-                FROM Forum f
-                JOIN Canale c
-                    ON c.Cod_Forum = f.Codice
-
-                HAVING canRead = 1
-
-                ORDER BY f.Nome, c.Nome";
-
-        $stmt = $this->db->prepare($sql);
-
-        $stmt->bind_param(
-            "iiii",
-            $level,
-            $level,
-            $level,
-            $level
-        );
-
-        $stmt->execute();
-
-        $result = $stmt->get_result();
-        $rows = $result->fetch_all(MYSQLI_ASSOC);
-
-        $stmt->close();
-
-        $forums = [];
-
-        foreach($rows as $row){
-
-            $fid = $row["forumId"];
-
-            if(!isset($forums[$fid])){
-                $forums[$fid] = [
-                    "id" => $fid,
-                    "nome" => $row["nomeForum"],
-                    "canali" => []
-                ];
-            }
-
-            $forums[$fid]["canali"][] = [
-                "id" => $row["canaleId"],
-                "nome" => $row["nomeCanale"],
-                "canWrite" => (bool)$row["canWrite"]
-            ];
-        }
-
-        return array_values($forums);
-    }
-
-    public function getThreadsByChannel($canaleId){
-        $sql = "SELECT
-                    t.Cod_Unico as id,
-                    t.Titolo,
-                    t.Testo,
-                    t.Data,
-                    t.Likes,
-                    t.Dislikes,
-                    t.Pin,
-                    (t.No_Replay = 1 OR t.Chiuso = 1) as canReply,
-                    p.Nome,
-                    p.Cognome
-                FROM Thread t
-                LEFT JOIN Sistema_Universitario su ON su.Matricola = t.Matricola
-                LEFT JOIN Persona p ON p.CF = su.CF
-                WHERE t.Cod_Canale = ?
-                ORDER BY t.Pin DESC, t.Data ASC";
-
-        $stmt = $this->db->prepare($sql);
-        $stmt->bind_param("i", $canaleId);
-        $stmt->execute();
-
-        $result = $stmt->get_result();
-        $data = $result->fetch_all(MYSQLI_ASSOC);
-
-        $stmt->close();
-        return $data;
-    }
-
-    public function getCommentsByThread($threadId){
-        $sql = "SELECT
-                    m.Cod_Unico as id,
-                    m.Testo,
-                    m.Data,
-                    m.Likes,
-                    m.Dislikes,
-                    m.Pin,
-                    m.Pin_Speciale,
-                    m.Messaggio_Puntato,
-                    p.Nome,
-                    p.Cognome
-                FROM Messaggio m
-                LEFT JOIN Sistema_Universitario su ON su.Matricola = m.Matricola
-                LEFT JOIN Persona p ON p.CF = su.CF
-                WHERE m.Cod_Unico_Thread = ?
-                ORDER BY
-                    m.Pin_Speciale DESC,
-                    m.Pin DESC,
-                    m.Data ASC";
-
-        $stmt = $this->db->prepare($sql);
-        $stmt->bind_param("i", $threadId);
-        $stmt->execute();
-
-        $result = $stmt->get_result();
-        $data = $result->fetch_all(MYSQLI_ASSOC);
-
-        $stmt->close();
-        return $data;
-    }*/
-
     public function getEventsByPerson($idUtente, $luogo=-1, $range=-1, $date=-1) {
         $mt = $this->resolveUserId($idUtente);
         if ($mt === null) return [];
@@ -1836,75 +1689,6 @@ class DatabaseHelper
         $stmt->close();
 
         return $dates;
-    }
-
-    public function getEventDatesById($idEvent, $idDate){
-        $sql = "SELECT
-                    o.Codice AS codice,
-                    o.Codice_Evento AS codice_evento,
-                    o.Inizio AS inizio,
-                    o.Fine AS fine,
-                    o.Cod_Luogo AS codice_luogo,
-                    l.Nome AS nome_luogo,
-                    CASE
-                            WHEN S.Codice IS NOT NULL
-                            THEN CONCAT(S.Nome, ' ', Uni.Codice)
-                        END AS nome_sede,
-                        CASE
-                            WHEN S.Codice IS NOT NULL THEN
-                                CONCAT(
-                                    ISD.Via, ' ',
-                                    ISD.Nome, ' ',
-                                    S.N_Civico, ', ',
-                                    CS.Nome, ' (', S.Codice_Prov, ')'
-                                )
-                            ELSE
-                                CONCAT(
-                                    IES.Via, ' ',
-                                    IES.Nome, ' ',
-                                    X.N_Civico, ', ',
-                                    CE.Nome, ' (', X.Codice_Prov, ')'
-                                )
-                        END AS indirizzo
-                FROM Orario_Evento o
-                JOIN Luogo l ON l.Codice = o.Cod_Luogo
-                    LEFT JOIN Universitario Uni
-                        ON Uni.Cod_Luogo = l.Codice
-
-                    LEFT JOIN Sede S
-                        ON S.Codice = Uni.Codice_Uni
-
-                    LEFT JOIN Esterno X
-                        ON X.Cod_Luogo = l.Codice
-
-                    LEFT JOIN Indirizzo ISD
-                        ON ISD.Codice_Prov = S.Codice_Prov
-                        AND ISD.Codice_Citta = S.Codice_Citta
-                        AND ISD.N_Civico = S.N_Civico
-
-                    LEFT JOIN Indirizzo IES
-                        ON IES.Codice_Prov = X.Codice_Prov
-                        AND IES.Codice_Citta = X.Codice_Citta
-                        AND IES.N_Civico = X.N_Civico
-
-                    LEFT JOIN Citta CS
-                        ON CS.Codice_Prov = S.Codice_Prov
-                        AND CS.Codice = S.Codice_Citta
-
-                    LEFT JOIN Citta CE
-                        ON CE.Codice_Prov = X.Codice_Prov
-                        AND CE.Codice = X.Codice_Citta
-                WHERE o.Codice_Evento = ?
-                AND o.Codice = ?
-                LIMIT 1";
-        $stmt = $this->db->prepare($sql);
-        $stmt->bind_param("ii", $idEvent, $idDate);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $date = $result->fetch_assoc();
-        $stmt->close();
-
-        return $date;
     }
 
     private function insertCollaboratoriRichiesta($codiceRichiesta, $input){
@@ -3057,6 +2841,732 @@ class DatabaseHelper
                 default: return $mat;
             }
         }
+    }
+
+    //usata in api-azioneLuoghi
+    function getIndirizzi() {
+        $sql = "SELECT Codice_Prov AS cod_Prov, Codice_Citta AS cod_Citta, N_Civico AS civico, Via AS via, Nome AS nome
+                FROM Indirizzo";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $indirizzo = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+        return $indirizzo;
+    }
+
+    function getcities(){
+        $sql = "SELECT Codice_Prov AS cod_Prov, Codice AS codice, Nome AS nome
+                FROM Citta";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $citta = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+        return $citta;
+    }
+
+    function getProvincies(){
+        $sql = "SELECT Codice AS codice, Nome AS nome
+                FROM Provincia";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $provincia = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+        return $provincia;
+    }
+
+    function getAllVie(){
+        $sql = "SELECT DISTINCT Via AS via
+                FROM Indirizzo
+                ORDER BY Via";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $vie = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+        return $vie;
+    }
+
+    function getProfessors(){
+        $sql = "SELECT p.Matricola AS matr, o.Cognome AS cognome, o.Nome AS nome
+                FROM Professore p
+                JOIN Sistema_Universitario s ON s.Matricola = p.Matricola
+                JOIN Persona o ON o.CF = s.CF
+                ORDER BY o.Cognome, o.Nome";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $prof = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+        return $prof;
+    }
+
+    function getAllExternPlaces(){
+        $sql = "SELECT Codice_Prov AS cod_Prov, Codice_Citta AS cod_Citta, N_Civico AS civico, e.Codice AS codice,
+                Capienza AS capienza, Nome AS nome, e.Cod_Luogo AS cod_Luogo
+                FROM Esterno e
+                JOIN Luogo l ON l.Codice = e.Cod_Luogo
+                ORDER BY Nome";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $ext = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+        return $ext;
+    }
+
+    function getPlaceByCode($idPlace){
+        $sql = "
+            SELECT
+                L.Codice,
+                L.Nome,
+                L.Capienza,
+
+                E.Codice_Prov,
+                E.Codice_Citta,
+                E.N_Civico,
+
+                I.Via,
+                I.Nome AS NomeVia,
+                P.Nome AS Provincia,
+                Ci.Nome AS Citta,
+
+                U.Codice_Uni,
+                U.Codice AS cod_stanza,
+
+                Cl.Lab,
+
+                Uf.Matricola
+
+            FROM Luogo L
+
+            LEFT JOIN Esterno E
+                ON L.Codice = E.Cod_Luogo
+
+            LEFT JOIN Indirizzo I
+                ON E.Codice_Prov = I.Codice_Prov
+                AND E.Codice_Citta = I.Codice_Citta
+                AND E.N_Civico = I.N_Civico
+
+            LEFT JOIN Provincia P
+                ON E.Codice_Prov = P.Codice
+
+            LEFT JOIN Citta Ci
+                ON E.Codice_Citta = Ci.Codice
+                AND E.Codice_Prov = Ci.Cod_Prov
+
+            LEFT JOIN Universitario U
+                ON L.Codice = U.Cod_Luogo
+
+            LEFT JOIN Classe Cl
+                ON U.Codice_Uni = Cl.Codice_Uni
+                AND U.Codice = Cl.Codice_Stanza
+
+            LEFT JOIN Ufficio Uf
+                ON U.Codice_Uni = Uf.Codice_Uni
+                AND U.Codice = Uf.Codice_Stanza
+
+            WHERE L.Codice = ?
+        ";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param("i",$idPlace);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $luogo = $result->fetch_assoc();
+
+        $stmt->close();
+
+
+        if(!$luogo)
+            return null;
+
+
+        $tipo = "universitario";
+
+        if($luogo["Codice_Prov"] !== null){
+            $tipo = "esterno";
+        }
+        else if($luogo["Lab"] !== null){
+            $tipo = "classe";
+        }
+        else if($luogo["Matricola"] !== null){
+            $tipo = "ufficio";
+        }
+
+
+        $response = [
+            "codice_luogo" => $luogo["Codice"],
+            "nome" => $luogo["Nome"],
+            "capienza" => $luogo["Capienza"],
+            "tipo" => $tipo
+        ];
+
+
+        if($tipo === "esterno"){
+
+            $response["indirizzo"] = [
+                "provincia" => $luogo["Codice_Prov"],
+                "prov_nome" => $luogo["Provincia"],
+                "citta" => $luogo["Codice_Citta"],
+                "citta_nome" => $luogo["Citta"],
+                "via" => $luogo["Via"],
+                "nomeVia" => $luogo["NomeVia"],
+                "civico" => $luogo["N_Civico"]
+            ];
+
+        }
+
+        if($tipo === "classe"){
+
+            $response["cod_stanza"] = $luogo["cod_stanza"];
+            $response["lab"] = (bool)$luogo["Lab"];
+
+        }
+
+        if($tipo === "ufficio"){
+
+            $response["cod_stanza"] = $luogo["cod_stanza"];
+            $response["assegnato"] = $luogo["Matricola"];
+
+        }
+
+        return $response;
+    }
+
+    public function getSedeByCode($id){
+        $sql = "
+            SELECT
+                S.Codice,
+                S.Nome,
+                S.Descrizione,
+                S.Path,
+                S.Descrizione_Img,
+
+                S.Codice_Prov,
+                S.Codice_Citta,
+                S.N_Civico,
+
+                I.Via,
+                I.Nome AS NomeVia,
+
+                P.Nome AS Provincia,
+                C.Nome AS Citta
+
+            FROM Sede S
+
+            JOIN Indirizzo I
+                ON S.Codice_Prov = I.Codice_Prov
+                AND S.Codice_Citta = I.Codice_Citta
+                AND S.N_Civico = I.N_Civico
+
+            JOIN Provincia P
+                ON S.Codice_Prov = P.Codice
+
+            JOIN Citta C
+                ON S.Codice_Citta = C.Codice
+                AND S.Codice_Prov = C.Cod_Prov
+
+            WHERE S.Codice = ?
+        ";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $sede = $result->fetch_assoc();
+
+        $stmt->close();
+
+
+        if(!$sede)
+            return null;
+
+
+        return [
+            "codice" => $sede["Codice"],
+
+            "nome" => $sede["Nome"],
+            "descrizione" => $sede["Descrizione"],
+
+            "path" => $sede["Path"],
+            "descrizioneImmagine" => $sede["Descrizione_Img"],
+
+            "indirizzo" => [
+                "provincia" => $sede["Codice_Prov"],
+                "prov_nome" => $sede["Provincia"],
+                "citta" => $sede["Codice_Citta"],
+                "citta_nome" => $sede["Citta"],
+                "via" => $sede["Via"],
+                "nomeVia" => $sede["NomeVia"],
+                "civico" => $sede["N_Civico"]
+            ]
+        ];
+    }
+
+    private function deleteRecord($tabella, $where, $types, $valori){
+        $sql = "
+            DELETE FROM $tabella
+            WHERE ".implode(" AND ", $where);
+
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param(
+            $types,
+            ...$valori
+        );
+        $stmt->execute();
+        if($stmt->affected_rows === 0){
+            $stmt->close();
+            throw new Exception("Nessuna riga eliminata.");
+        }
+        $stmt->close();
+    }
+
+    function deleteRecordElementi($tipo, $elementi, &$message, &$success){
+
+        $config = [
+            "provincia" => [
+                "tabella" => "Provincia",
+                "chiave" => ["Codice"]
+            ],
+
+            "citta" => [
+                "tabella" => "Citta",
+                "chiave" => ["Codice_Prov", "Codice"]
+            ]
+        ];
+
+        if(!isset($config[$tipo])){
+            $success = false;
+            $message = "Tipo eliminazione non valido";
+            return;
+        }
+
+        $tabella = $config[$tipo]["tabella"];
+        $chiavi = $config[$tipo]["chiave"];
+
+        $this->db->begin_transaction();
+
+        try{
+
+            foreach($elementi as $elemento){
+
+                $where = [];
+                $valori = [];
+                $types = "";
+
+                foreach($chiavi as $chiave){
+
+                    $where[] = "$chiave = ?";
+
+                    if($chiave === "Codice_Prov"){
+                        $valori[] = $elemento["cod_Prov"];
+                    }else{
+                        $valori[] = $elemento["codice"];
+                    }
+
+                    $types .= "s";
+                }
+
+                $this->deleteRecord(
+                    $tabella,
+                    $where,
+                    $types,
+                    $valori
+                );
+            }
+
+            $this->db->commit();
+
+            $success = true;
+            $message = ucfirst($tipo)." eliminati correttamente";
+
+        }catch(Throwable $e){
+
+            $this->db->rollback();
+
+            $success = false;
+
+            if($e instanceof mysqli_sql_exception && $e->getCode() == 1451){
+                $message = "Impossibile eliminare il $tipo perché è ancora utilizzato.";
+            }else{
+                $message = "Errore durante l'eliminazione del $tipo.";
+            }
+        }
+    }
+
+    function saveRecordElementi($tipo, $aggiunti, $modificati, $eliminati, &$message, &$success){
+
+        $config = [
+
+            "provincia" => [
+                "tabella" => "Provincia",
+                "chiave" => [
+                    "codice"
+                ],
+                "campo" => [
+                    "codice"
+                ],
+                "campi" => [
+                    "Nome"
+                ],
+                "tipo" => [
+                    "s"
+                ]
+            ],
+
+            "citta" => [
+                "tabella" => "Citta",
+                "chiave" => [
+                    "Codice_Prov",
+                    "Codice"
+                ],
+                "campo" => [
+                    "cod_Prov",
+                    "codice"
+                ],
+                "campi" => [
+                    "Nome"
+                ],
+                "tipo" => [
+                    "s",
+                    "s"
+                ]
+            ]
+        ];
+
+        if(!isset($config[$tipo])){
+            $success = false;
+            $message = "Tipo non valido";
+            return;
+        }
+
+        $tabella = $config[$tipo]["tabella"];
+        $chiavi = $config[$tipo]["chiave"];
+        $campiChiave = $config[$tipo]["campo"];
+        $campi = $config[$tipo]["campi"];
+        $tipi = $config[$tipo]["tipo"];
+        $this->db->begin_transaction();
+        try {
+            // ADD
+            foreach($aggiunti as $elemento){
+
+                $colonne = [];
+                $valori = [];
+                $types = "";
+
+                foreach($elemento as $index => $valore){
+
+                    $colonne[] = array_keys($elemento)[$index];
+                    $valori[] = $valore;
+                    $types .= $tipi[$index];
+                }
+                $sql = "
+                    INSERT INTO $tabella
+                    (".implode(",", $colonne).")
+                    VALUES
+                    (".implode(",", array_fill(0, count($valori), "?")).")
+                ";
+                $stmt = $this->db->prepare($sql);
+                $stmt->bind_param(
+                    $types,
+                    ...$valori
+                );
+                $stmt->execute();
+                $stmt->close();
+            }
+            // EDIT
+            foreach($modificati as $elemento){
+                $set = [];
+                $valori = [];
+                $types = "";
+                foreach($campi as $index => $campo){
+                    if(isset($elemento[$campo]) && $elemento[$campo] !== null){
+                        $set[] = "$campo = ?";
+                        $valori[] = $elemento[$campo];
+                        $types .= $tipi[$index];
+                    }
+                }
+                if(count($set) === 0)
+                    continue;
+
+                $where = [];
+                foreach($chiavi as $index => $chiave){
+                    $where[] = "$chiave = ?";
+                    $valori[] = $elemento[$campiChiave[$index]];
+                    $types .= $tipi[$index];
+                }
+                $sql = "
+                    UPDATE $tabella
+                    SET ".implode(",", $set)."
+                    WHERE ".implode(" AND ", $where);
+
+                $stmt = $this->db->prepare($sql);
+                $stmt->bind_param(
+                    $types,
+                    ...$valori
+                );
+                $stmt->execute();
+                $stmt->close();
+            }
+            // DELETE
+            foreach($eliminati as $elemento){
+                $where = [];
+                $valori = [];
+                $types = "";
+                foreach($chiavi as $index => $chiave){
+                    $where[] = "$chiave = ?";
+                    $valori[] = $elemento[$campiChiave[$index]];
+                    $types .= $tipi[$index];
+                }
+                $this->deleteRecord(
+                    $tabella,
+                    $where,
+                    $types,
+                    $valori
+                );
+            }
+            $this->db->commit();
+            $success = true;
+            $message = ucfirst($tipo)." salvati correttamente";
+        } catch(Throwable $e) {
+            $this->db->rollback();
+            $success = false;
+            if($e instanceof mysqli_sql_exception && $e->getCode() == 1451){
+                $message = "Impossibile modificare il $tipo perché alcuni elementi sono ancora utilizzati.";
+            } else {
+                $message = "Errore durante il salvataggio del $tipo.";
+            }
+        }
+    }
+
+    function deleteElementi($tipo, $elemento, &$message, &$success){
+        $config = [
+
+            "luogo" => [
+                "tabella" => "Luogo",
+                "chiave" => [
+                    "Codice"
+                ],
+                "campo" => [
+                    "codice"
+                ],
+                "tipo" => [
+                    "i"
+                ]
+            ],
+
+            "sede" => [
+                "tabella" => "Sede",
+                "chiave" => [
+                    "Codice"
+                ],
+                "campo" => [
+                    "codice"
+                ],
+                "tipo" => [
+                    "i"
+                ]
+            ]
+        ];
+
+        if(!isset($config[$tipo])){
+            $success = false;
+            $message = "Tipo non valido";
+            return;
+        }
+        $tabella = $config[$tipo]["tabella"];
+        $chiavi = $config[$tipo]["chiave"];
+        $campi = $config[$tipo]["campo"];
+        $tipi = $config[$tipo]["tipo"];
+        $where = [];
+        $valori = [];
+        $types = "";
+
+        foreach($chiavi as $index => $chiave){
+            $where[] = "$chiave = ?";
+            $valori[] = $elemento[$campi[$index]];
+            $types .= $tipi[$index];
+        }
+        $this->db->begin_transaction();
+        try {
+            $this->deleteRecord(
+                $tabella,
+                $where,
+                $types,
+                $valori
+            );
+            $this->db->commit();
+            $success = true;
+            $message = ucfirst($tipo)." eliminato correttamente";
+        } catch(Throwable $e) {
+            $this->db->rollback();
+            $success = false;
+            if($e instanceof mysqli_sql_exception && $e->getCode() == 1451){
+                $message = "Impossibile eliminare il $tipo perché è ancora utilizzato.";
+            } else {
+                $message = "Errore durante eliminazione del $tipo.";
+            }
+        }
+    }
+
+    function insertElement($tabelle, $campi, $valori, $tipoCampi, &$message, &$success){
+
+        $this->db->begin_transaction();
+        $codiciCreati = [];
+        try {
+            foreach($tabelle as $index => $tabella){
+                $colonne = $campi[$index];
+                $dati = $valori[$index];
+                $types = $tipoCampi[$index];
+
+                // gestione AUTO
+                foreach($dati as $i => $valore){
+                    if($valore === "AUTO"){
+                        $codice = $this->getNextCode(
+                            $tabella,
+                            $colonne[$i]
+                        );
+                        $dati[$i] = $codice;
+                        $codiciCreati[$tabella] = $codice;
+                    }
+                    else if(str_starts_with($valore, "AUTO:")){
+                        $tabellaRiferimento = explode(":", $valore)[1];
+                        if(!isset($codiciCreati[$tabellaRiferimento])){
+                            throw new Exception(
+                                "Codice automatico non trovato per $tabellaRiferimento"
+                            );
+                        }
+                        $dati[$i] = $codiciCreati[$tabellaRiferimento];
+                    }
+                }
+                $placeholder = array_fill(0, count($colonne), "?");
+                $sql = "
+                    INSERT INTO $tabella
+                    (".implode(",", $colonne).")
+                    VALUES
+                    (".implode(",", $placeholder).")
+                ";
+                $stmt = $this->db->prepare($sql);
+                $stmt->bind_param(
+                    $types,
+                    ...$dati
+                );
+                $stmt->execute();
+                $stmt->close();
+            }
+            $this->db->commit();
+            $success = true;
+            $message = "Inserimento completato";
+        } catch(Throwable $e){
+            $this->db->rollback();
+            $success = false;
+            if($e instanceof mysqli_sql_exception && $e->getCode() == 1062){
+                $message = "Elemento già esistente.";
+            }
+            else{
+                $message = "Errore durante inserimento.";
+            }
+        }
+    }
+
+    function updateElement($tabelle, $campi, $valori, $tipoCampi, $campiWhere, $valoriWhere, $tipoCampiWhere, $elim, &$message, &$success){
+        $this->db->begin_transaction();
+        try {
+            // DELETE
+            foreach($elim as $elemento){
+                $where = [];
+                foreach($elemento["whereCampi"] as $campo){
+                    $where[] = "$campo = ?";
+                }
+                $sql = "
+                    DELETE FROM ".$elemento["tabella"]."
+                    WHERE ".implode(" AND ", $where);
+
+
+                $stmt = $this->db->prepare($sql);
+                $stmt->bind_param(
+                    implode("", $elemento["whereTipi"]),
+                    ...$elemento["whereValori"]
+                );
+                $stmt->execute();
+                $stmt->close();
+            }
+
+            // UPDATE
+            foreach($tabelle as $index => $tabella){
+                $set = [];
+                foreach($campi[$index] as $campo){
+                    $set[] = "$campo = ?";
+                }
+                $where = [];
+                foreach($campiWhere[$index] as $campo){
+                    $where[] = "$campo = ?";
+                }
+                $sql = "
+                    UPDATE $tabella
+                    SET ".implode(",", $set)."
+                    WHERE ".implode(" AND ", $where);
+                $dati = array_merge(
+                    $valori[$index],
+                    $valoriWhere[$index]
+                );
+                $types =
+                    implode("", $tipoCampi[$index]).
+                    implode("", $tipoCampiWhere[$index]);
+                $stmt = $this->db->prepare($sql);
+                $stmt->bind_param(
+                    $types,
+                    ...$dati
+                );
+                $stmt->execute();
+                $stmt->close();
+            }
+            $this->db->commit();
+            $success = true;
+            $message = "Modifica completata";
+
+
+        } catch(Throwable $e){
+            $this->db->rollback();
+            $success = false;
+            if($e instanceof mysqli_sql_exception){
+                if($e->getCode() == 1451){
+                    $message = "Impossibile modificare: elemento ancora utilizzato.";
+                }
+                else if($e->getCode() == 1062){
+                    $message = "Elemento già esistente.";
+                }
+                else{
+                    $message = "Errore database.";
+                }
+            } else {
+                $message = "Errore durante modifica.";
+            }
+        }
+    }
+
+    function getImmagineSede($idSede){
+        $sql = "
+            SELECT Path
+            FROM Sede
+            WHERE Codice = ?
+        ";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param(
+            "i",
+            $idSede
+        );
+        $stmt->execute();
+        $result = $stmt->get_result()->fetch_assoc();
+        $stmt->close();
+        return $result["Path"] ?? null;
     }
 }
 ?>
