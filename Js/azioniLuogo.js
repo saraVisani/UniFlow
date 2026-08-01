@@ -68,7 +68,7 @@ function persUnivList(list){
 
 function renderMainEventi() {
     return `
-    <header class="Luoghi-header">
+    <header class="luoghi-header">
 
         <h2 id="eventi-title">
             Azioni su Luoghi:
