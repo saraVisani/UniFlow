@@ -521,8 +521,8 @@ function adminLuogoDetails(json) {
 
                 <p>Via corrente:
                     ${originalPlace.indirizzo.via}
-                    ${originalPlace.indirizzo.nome_via}
-                    ${originalPlace.indirizzo.n_civico}
+                    ${originalPlace.indirizzo.nomeVia}
+                    ${originalPlace.indirizzo.civico}
                 </p>
 
                 <select name="via" id="via">
@@ -555,7 +555,7 @@ function adminLuogoDetails(json) {
                     accept="image/*"
                 />
 
-                <label for="descrizioneImmagine">Descrizione immagine corrente: ${originalPlace.descrizione_img}</label>
+                <label for="descrizioneImmagine">Descrizione immagine corrente: ${originalPlace.descrizioneImmagine}</label>
                 <textarea
                     id="descrizioneImmagine"
                     name="descrizioneImmagine">
@@ -607,8 +607,8 @@ function renderLuogoDetails(json) {
 
                     <p>Via corrente:
                         ${originalPlace.indirizzo.via}
-                        ${originalPlace.indirizzo.nome_via}
-                        ${originalPlace.indirizzo.n_civico}
+                        ${originalPlace.indirizzo.nomeVia}
+                        ${originalPlace.indirizzo.civico}
                     </p>
 
                     <select name="via" id="via">
@@ -805,10 +805,12 @@ function renderListaCitta(action, idProv = -1) {
 
     switch (action) {
 
+        case "addProv":
         case "add":
             lista = cittaDaAggiungere;
             break;
 
+        case "editProv":
         case "edit":
             lista = cittaOriginali
                 .map(o =>
@@ -825,14 +827,18 @@ function renderListaCitta(action, idProv = -1) {
     }
 
     if (idProv !== -1) {
-        lista = lista.filter(c => c.cod_Prov === idProv);
+        lista = lista.filter(c =>
+            (c.cod_Prov_Rif ?? c.cod_Prov) === idProv
+        );
     }
 
     return lista.map(citta => {
+        const codice = citta.codice_Rif ?? citta.codice;
+        const cod_prov = citta.cod_Prov_Rif ?? citta.cod_Prov;
 
         const eliminata = cittaDaEliminare.some(r =>
-            r.codice === citta.codice &&
-            r.cod_Prov === citta.cod_Prov
+            r.codice === codice &&
+            r.cod_Prov === cod_prov
         );
 
         let buttons = "";
@@ -840,7 +846,7 @@ function renderListaCitta(action, idProv = -1) {
         if (eliminata) {
 
             buttons = `
-                <button onclick="restoreCitta(${action}, ${citta.cod_Prov}, ${citta.codice})">
+                <button onclick="restoreCitta('${action}', ${cod_prov}, ${codice})">
                     Annulla
                 </button>
             `;
@@ -849,14 +855,14 @@ function renderListaCitta(action, idProv = -1) {
 
             if (action !== "delete") {
                 buttons += `
-                    <button onclick="editCitta(${action}, ${citta.cod_Prov}, ${citta.codice})">
+                    <button onclick="editCitta('${action}', ${cod_prov}, ${codice})">
                         Modifica
                     </button>
                 `;
             }
 
             buttons += `
-                <button onclick="removeCitta(${action}, ${citta.cod_Prov}, ${citta.codice})">
+                <button onclick="removeCitta('${action}', ${cod_prov}, ${codice})">
                     Elimina
                 </button>
             `;
@@ -864,7 +870,7 @@ function renderListaCitta(action, idProv = -1) {
 
         return `
             <li
-                id="citta-${citta.cod_Prov}-${citta.codice}"
+                id="citta-${cod_prov}-${codice}"
                 class="${eliminata ? "pending-delete" : ""}"
             >
 
@@ -881,11 +887,13 @@ function renderListaCitta(action, idProv = -1) {
 function renderListaProvincie(action) {
 
     let lista;
+    let tipoAction;
 
     switch (action) {
 
         case "add":
             lista = provincieDaAggiungere;
+            tipoAction = "addProv";
             break;
 
         case "edit":
@@ -895,25 +903,27 @@ function renderListaProvincie(action) {
                         m.codice_Rif === o.codice
                     ) ?? o)
                 .concat(provincieDaAggiungere);
+            tipoAction = "editProv";
             break;
 
         case "delete":
             lista = provincieOriginali;
+            tipoAction = action;
             break;
     }
 
     return lista.map(prov => {
 
-        const eliminata = provincieDaEliminare.some(r =>
-            r.codice === prov.codice
-        );
+        const codice = prov.codice_Rif ?? prov.codice;
+
+        const eliminata = provincieDaEliminare.includes(codice);
 
         let buttons = "";
 
         if (eliminata) {
 
             buttons = `
-                <button onclick="restoreProvincia(${action}, ${prov.codice})">
+                <button onclick="restoreProvincia('${action}', ${codice})">
                     Annulla
                 </button>
             `;
@@ -922,41 +932,49 @@ function renderListaProvincie(action) {
 
             if (action !== "delete") {
                 buttons += `
-                    <button onclick="editProvincia(${action}, ${prov.codice})">
+                    <button onclick="editProvincia('${action}', ${codice})">
                         Modifica Provincia
                     </button>
                 `;
             }
 
             buttons += `
-                <button onclick="removeProvincia(${action}, ${prov.codice})">
+                <button onclick="removeProvincia('${action}', ${codice})">
                     Elimina Provincia
                 </button>
             `;
         }
 
+        let controlli = "";
+
+        if (action !== "delete") {
+            controlli = `
+                <label for="nome_citta-${codice}">Nome Città</label>
+                <input
+                    type="text"
+                    id="nome_citta-${codice}"
+                    name="nome_citta-${codice}"
+                />
+
+                <button type="button" id="add-citta-${codice}" onclick='addCitta('${action}', ${codice})'>
+                    Aggiungi città
+                </button>
+            `;
+        }
+
         return `
-            <li id="provincia-${prov.codice}" class="${eliminata ? "pending-delete" : ""}">
+            <li id="provincia-${codice}" class="${eliminata ? "pending-delete" : ""}">
 
                 <p>Codice: ${prov.codice}</p>
                 <p>Nome: ${prov.nome}</p>
 
                 <p>Lista città correnti</p>
 
-                <ul>
-                    ${renderListaCitta(action, prov.codice)}
+                <ul id="lista-citta-${codice}">
+                    ${renderListaCitta(tipoAction, codice)}
                 </ul>
 
-                <label for="nome_citta-${prov.codice}">Nome Città</label>
-                <input
-                    type="text"
-                    id="nome_citta-${prov.codice}"
-                    name="nome_citta-${prov.codice}"
-                />
-
-                <button type="button" id="add-citta-${prov.codice}" onclick='addCitta(${action}, ${prov.codice})'>
-                    Aggiungi città
-                </button>
+                ${controlli}
 
                 ${buttons}
 
@@ -1003,7 +1021,7 @@ function addCitta(action, idProv = -1) {
 
     idC.add(`${idProv}-${codice}`);
     cittaDaAggiungere.push(nuovo);
-    refresh(action, "lista-citta", renderListaCitta);
+    refresh("lista-citta-" + idProv, renderListaCitta, action, idProv);
 }
 
 function restoreCitta(action, idProv, idCitta) {
@@ -1014,7 +1032,7 @@ function restoreCitta(action, idProv, idCitta) {
         cittaDaEliminare =
             cittaDaEliminare.filter(r => !(r.codice === idCitta && r.cod_Prov === idProv));
         idC.add(`${idProv}-${idCitta}`);
-        refresh(action, "lista-citta", renderListaCitta);
+        refresh("lista-citta-" + idProv, renderListaCitta, action, idProv);
     }
 }
 
@@ -1036,28 +1054,41 @@ function editCitta(action, idProv, idCitta) {
         );
     }
 
+    const provincia =
+    provincieDaAggiungere.find(p => p.codice === idProv) ??
+    provincieModificare.find(p => p.codice_Rif === idProv) ??
+    provincieOriginali.find(p => p.codice === idProv);
+
+    const nomeProvincia = provincia.nome;
+    const codiceProvincia = provincia.codice;
+
+    let prov = action.endsWith("Prov") ?
+    `<p>Provincia: ${codiceProvincia} - ${nomeProvincia}</p>`
+    :
+    `<label>Provincia</label>
+    <select name="provincia-${idProv}-${idCitta}" id="provincia-${idProv}-${idCitta}">
+        <option value="${o.cod_Prov}">${nomeProvincia}</option>
+        ${provinciaList(provincieOriginali.filter(p => p.codice !== o.cod_Prov))}
+    </select>`;
+
     html.innerHTML = `
-            <label>Provincia</label>
-            <select name="provincia-${o.cod_Prov}-${o.codice}" id="provincia-${o.cod_Prov}-${o.codice}">
-                <option value="${o.cod_Prov}">${provincieOriginali.find(p => p.codice === o.cod_Prov).nome}</option>
-                ${provinciaList(provincieOriginali.filter(p => p.codice !== o.cod_Prov))}
-            </select>
+            ${prov}
 
             <label>Codice</label>
             <input
                 type="text"
-                id="cod_citta-${o.cod_Prov}-${o.codice}"
+                id="cod_citta-${idProv}-${idCitta}"
                 value="${o.codice}"
             >
 
-            <label for="nome_citta-${o.cod_Prov}-${o.codice}">Nome Città</label>
+            <label for="nome_citta-${idProv}-${idCitta}">Nome Città</label>
             <input
                 type="text"
-                id="nome_citta-${o.cod_Prov}-${o.codice}"
-                name="nome_citta-${o.cod_Prov}-${o.codice}"
+                id="nome_citta-${idProv}-${idCitta}"
+                name="nome_citta-${idProv}-${idCitta}"
                 value = "${o.nome}"
             />
-            <button onclick="confirmEditCitta(${action}, ${o.cod_Prov}, ${o.codice})">
+            <button onclick="confirmEditCitta('${action}', ${idProv}, ${idCitta})">
                 Conferma
             </button>
     `;
@@ -1084,12 +1115,18 @@ function removeCitta(action, idProv, idCitta) {
         });
         idC.delete(`${idProv}-${idCitta}`);
     }
-    refresh(action, "lista-citta", renderListaCitta);
+    refresh("lista-citta-" + idProv, renderListaCitta, action, idProv);
 }
 
 function confirmEditCitta(action, idProv, idCitta){
-    const nuovoCodiceProv =
-        document.getElementById(`provincia-${idProv}-${idCitta}`).value.trim();
+    let nuovoCodiceProv;
+
+    if (action.endsWith("Prov")) {
+        nuovoCodiceProv = idProv;
+    } else {
+        nuovoCodiceProv =
+            document.getElementById(`provincia-${idProv}-${idCitta}`).value.trim();
+    }
 
     const nuovoCodice =
         document.getElementById(`cod_citta-${idProv}-${idCitta}`).value.trim();
@@ -1102,7 +1139,11 @@ function confirmEditCitta(action, idProv, idCitta){
     ?? cittaModificare.find(c => c.cod_Prov_Rif === idProv && c.codice_Rif === idCitta)
     ?? cittaOriginali.find(c => c.cod_Prov === idProv && c.codice === idCitta);
 
-    if (nuovoCodiceProv === citta.cod_Prov && nuovoCodice === citta.codice && nuovoNome === citta.nome) {
+    const provinciaCorrente = action.endsWith("Prov")
+    ? idProv
+    : citta.cod_Prov;
+
+    if ( nuovoCodiceProv === provinciaCorrente && nuovoCodice === citta.codice && nuovoNome === citta.nome) {
         alert("Nessuna modifica effettuata");
         return;
     }
@@ -1150,7 +1191,7 @@ function confirmEditCitta(action, idProv, idCitta){
             cittaModificare.push(modificato);
         }
     }
-    refresh(action, "lista-citta", renderListaCitta);
+    refresh("lista-citta-" + idProv, renderListaCitta, action, idProv);
 }
 
 function addProvincia(action) {
@@ -1176,7 +1217,7 @@ function addProvincia(action) {
     };
     idP.add(codice);
     provincieDaAggiungere.push(nuovo);
-    refresh(action, "lista-provincie", renderListaProvincie);
+    refresh("lista-provincie", renderListaProvincie, action);
 }
 
 function restoreProvincia(action, idProv) {
@@ -1184,9 +1225,9 @@ function restoreProvincia(action, idProv) {
         alert("Impossibile il restore perchè il codice non è disponibile");
         return;
     }
-    provincieDaEliminare = provincieDaEliminare.filter(p => p.codice !== idProv);
+    provincieDaEliminare = provincieDaEliminare.filter(p => p !== idProv);
     idP.add(idProv);
-    refresh(action, "lista-provincie", renderListaProvincie);
+    refresh("lista-provincie", renderListaProvincie, action);
 }
 
 function editProvincia(action, idProv) {
@@ -1205,30 +1246,30 @@ function editProvincia(action, idProv) {
             <label>Codice</label>
             <input
                 type="text"
-                id="cod_prov-${o.codice}"
+                id="cod_prov-${idProv}"
                 value="${o.codice}"
             >
 
-            <label for="nome_provincia-${o.codice}">Nome Provincia</label>
+            <label for="nome_provincia-${idProv}">Nome Provincia</label>
             <input
                 type="text"
-                id="nome_provincia-${o.codice}"
-                name="nome_provincia-${o.codice}"
+                id="nome_provincia-${idProv}"
+                name="nome_provincia-${idProv}"
                 value = "${o.nome}"
             />
 
-            <label for="nome_citta-${o.codice}">Nome Città</label>
+            <label for="nome_citta-${idProv}">Nome Città</label>
             <input
                 type="text"
-                id="nome_citta-${o.codice}"
-                name="nome_citta-${o.codice}"
+                id="nome_citta-${idProv}"
+                name="nome_citta-${idProv}"
             />
 
-            <button type="button" id="add-citta-${o.codice}" onclick='addCitta(${action}, ${o.codice})'>
+            <button type="button" id="add-citta-${idProv}" onclick='addCitta('${action}', ${idProv})'>
                 Aggiungi città
             </button>
 
-            <button onclick="confirmEditProvincia(${action}, ${o.codice})">
+            <button onclick="confirmEditProvincia('${action}', ${idProv})">
                 Conferma
             </button>
     `;
@@ -1252,7 +1293,7 @@ function removeProvincia(action, idProv) {
         provincieDaEliminare.push(idProv);
         idP.delete(idProv);
     }
-    refresh(action, "lista-provincie", renderListaProvincie);
+    refresh("lista-provincie", renderListaProvincie, action);
 }
 
 function confirmEditProvincia(action, idProv) {
@@ -1302,12 +1343,11 @@ function confirmEditProvincia(action, idProv) {
             provincieModificare.push(modificato);
         }
     }
-    refresh(action, "lista-provincie", renderListaProvincie);
+    refresh("lista-provincie", renderListaProvincie, action);
 }
 
-function refresh(action, key, fun) {
-    document.getElementById(key).innerHTML =
-        fun(action);
+function refresh(id, fun, ...args) {
+    document.getElementById(id).innerHTML = fun(...args);
 }
 
 async function saveAllChanges(){
@@ -1460,8 +1500,8 @@ async function saveAllChanges(){
                     modifiche.indirizzo = null;
                 }
             } else {
-                modifiche.idUni = Number(modifiche.cod_Uni);
-                modifiche.idStanza =  Number(modifiche.cod_stanza);
+                modifiche.idUni = Number(originalPlace.cod_uni);
+                modifiche.idStanza =  Number(originalPlace.cod_stanza);
                 const tipo = document.getElementById("tipo").value;
                 const valore = document.getElementById("codClasse").value.trim();
                 modifiche.cod_stanza =
