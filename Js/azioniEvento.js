@@ -1851,22 +1851,27 @@ async function saveAllChanges() {
             break;
     }
 
-    const res = await fetch("./Api/api-saveEvento.php", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(dati)
-    });
+    try{
+        const res = await fetch("./Api/api-saveEvento.php", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(dati)
+        });
 
-    const json = await res.json();
+        const json = await res.json();
 
-    alert(json.message);
+        alert(json.message);
 
-    if (json.success) {
-        sessionStorage.removeItem("bozzaEvento");
-        resetEvento();
-        await loadAzioni();
+        if (json.success) {
+            sessionStorage.removeItem("bozzaEvento");
+            resetEvento();
+            await loadAzioni();
+        }
+    } catch (error) {
+        console.error("Errore durante l'invio della richiesta:", error);
+        alert("Si è verificato un errore durante l'invio della richiesta. Controlla la console per ulteriori dettagli.");
     }
 }
 

@@ -1258,6 +1258,10 @@ function editProvincia(action, idProv) {
                 value = "${o.nome}"
             />
 
+            <ul id="lista-citta-${codice}">
+                ${renderListaCitta(tipoAction, codice)}
+            </ul>
+
             <label for="nome_citta-${idProv}">Nome Città</label>
             <input
                 type="text"
@@ -1951,22 +1955,26 @@ async function saveAllChanges(){
         }
     }
 
+    try{
+        const res = await fetch("./Api/api-saveLuogo.php",{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify(dati)
+        });
 
-    const res = await fetch("./Api/api-saveLuogo.php",{
-        method:"POST",
-        headers:{
-            "Content-Type":"application/json"
-        },
-        body:JSON.stringify(dati)
-    });
+        const json = await res.json();
 
-    const json = await res.json();
+        alert(json.message);
 
-    alert(json.message);
-
-    if(json.success){
-        reset();
-        await loadAzioni();
+        if(json.success){
+            reset();
+            await loadAzioni();
+        }
+    } catch (error) {
+        console.error("Errore durante l'invio della richiesta:", error);
+        alert("Si è verificato un errore durante l'invio della richiesta. Controlla la console per ulteriori dettagli.");
     }
 }
 
