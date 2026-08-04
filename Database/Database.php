@@ -79,7 +79,7 @@ class DatabaseHelper
         ";
     }
 
-    private function getCFfromMat($mt){
+    function getCFfromMat($mt){
         $query = "
             SELECT CF
             FROM Sistema_Universitario
@@ -1172,6 +1172,7 @@ class DatabaseHelper
                     p.Cognome AS cognome,
                     p.Email AS email,
                     su.Email_Uni AS email_uni,
+                    su.Matricola AS matricola,
                     p.Livello_Permesso AS livello
                 FROM Persona p
                 JOIN Sistema_Universitario su
@@ -1546,15 +1547,42 @@ class DatabaseHelper
         return $promoters;
     }
 
-    public function getAllPromoters(){
-        $sql = "SELECT
+    public function getAllPromoters($cf = null){
+        if($cf !== null){
+            $id = "";
+            $mat = $this->resolveUserId($cf);
+            if($mat === null){
+                $id = $cf;
+            } else {
+                $id = $this->getCFfromMat($mat);
+            }
+            $sql = "
+                SELECT DISTINCT
                     p.Codice AS codice,
                     p.Nome AS nome,
                     p.Email AS email
                 FROM Promotore p
-                ORDER BY nome";
-
-        $stmt = $this->db->prepare($sql);
+                JOIN Rappresentano r
+                    ON r.Codice_Promotore = p.Codice
+                WHERE r.CF = ?
+                ORDER BY p.Nome
+            ";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bind_param(
+                "s",
+                $id
+            );
+        } else {
+            $sql = "
+                SELECT
+                    p.Codice AS codice,
+                    p.Nome AS nome,
+                    p.Email AS email
+                FROM Promotore p
+                ORDER BY p.Nome
+            ";
+            $stmt = $this->db->prepare($sql);
+        }
         $stmt->execute();
         $result = $stmt->get_result();
         $promoters = $result->fetch_all(MYSQLI_ASSOC);
@@ -3023,6 +3051,7 @@ class DatabaseHelper
 
         if($tipo === "classe"){
 
+            $response["cod_uni"] = $luogo["Codice_Uni"];
             $response["cod_stanza"] = $luogo["cod_stanza"];
             $response["lab"] = (bool)$luogo["Lab"];
 
@@ -3030,6 +3059,7 @@ class DatabaseHelper
 
         if($tipo === "ufficio"){
 
+            $response["cod_uni"] = $luogo["Codice_Uni"];
             $response["cod_stanza"] = $luogo["cod_stanza"];
             $response["assegnato"] = $luogo["Matricola"];
 
@@ -3567,6 +3597,178 @@ class DatabaseHelper
         $result = $stmt->get_result()->fetch_assoc();
         $stmt->close();
         return $result["Path"] ?? null;
+    }
+
+    function saveRecordElementiBetter(
+        $insertTabelle,
+        $insertCampi,
+        $insertValori,
+        $insertTipi,
+        $updateTabelle,
+        $updateCampi,
+        $updateValori,
+        $updateTipi,
+        $updateWhereCampi,
+        $updateWhereValori,
+        $updateWhereTipi,
+        $delete,
+        &$message,
+        &$success
+    ){
+        $this->db->begin_transaction();
+        try{
+            // DELETE
+            foreach($delete as $elemento){
+                $where = [];
+                foreach($elemento["whereCampi"] as $campo){
+                    $where[] = "$campo = ?";
+                }
+                $sql = "
+                    DELETE FROM {$elemento["tabella"]}
+                    WHERE ".implode(" AND ", $where);
+                $stmt = $this->db->prepare($sql);
+                $valori = $elemento["whereValori"];
+                $parametri = [];
+                foreach($valori as &$valore){
+                    $parametri[] = &$valore;
+                }
+                $stmt->bind_param(
+                    implode("", $elemento["whereTipi"]),
+                    ...$parametri
+                );
+                $stmt->execute();
+                $stmt->close();
+            }
+            // UPDATE
+            foreach($updateTabelle as $i => $tabella){
+                $set = [];
+                foreach($updateCampi[$i] as $campo){
+                    $set[] = "$campo = ?";
+                }
+                $where = [];
+                foreach($updateWhereCampi[$i] as $campo){
+                    $where[] = "$campo = ?";
+                }
+                $sql = "
+                    UPDATE $tabella
+                    SET ".implode(",", $set)."
+                    WHERE ".implode(" AND ", $where);
+                $stmt = $this->db->prepare($sql);
+                $valori = array_merge(
+                    $updateValori[$i],
+                    $updateWhereValori[$i]
+                );
+                $parametri = [];
+                foreach($valori as &$valore){
+                    $parametri[] = &$valore;
+                }
+                $stmt->bind_param(
+                    implode("", $updateTipi[$i]) .
+                    implode("", $updateWhereTipi[$i]),
+                    ...$parametri
+                );
+                $stmt->execute();
+                $stmt->close();
+            }
+            // INSERT
+            $codiciCreati = [];
+            foreach($insertTabelle as $i => $tabella){
+                $colonne = $insertCampi[$i];
+                $dati = $insertValori[$i];
+                foreach($dati as $j => $valore){
+                    if($valore === "AUTO"){
+                        $codice = $this->getNextCode(
+                            $tabella,
+                            $colonne[$j]
+                        );
+                        $dati[$j] = $codice;
+                        $codiciCreati[$tabella] = $codice;
+                    }
+                    else if(
+                        is_string($valore) &&
+                        str_starts_with($valore, "AUTO:")
+                    ){
+            $parti = explode(":", $valore);
+            if(count($parti) == 2){
+                $codiceTemporaneo = $parti[1];
+                $codice = $this->getNextCode(
+                    $tabella,
+                    $colonne[$j]
+                );
+                $dati[$j] = $codice;
+                $codiciCreati[$tabella][$codiceTemporaneo] = $codice;
+            }
+            else if (count($parti) == 3){
+                $tabellaRef = $parti[1];
+                $codiceTemporaneo = $parti[2];
+                if(!isset($codiciCreati[$tabellaRef][$codiceTemporaneo])){
+                    throw new Exception(
+                        "Codice automatico non trovato per $tabellaRef:$codiceTemporaneo"
+                    );
+                }
+                $dati[$j] =
+                    $codiciCreati[$tabellaRef][$codiceTemporaneo];
+            }
+        }
+    }
+                $sql = "
+                    INSERT INTO $tabella
+                    (".implode(",", $colonne).")
+                    VALUES
+                    (".implode(",", array_fill(0, count($colonne), "?")).")
+                ";
+                $stmt = $this->db->prepare($sql);
+                $parametri = [];
+                foreach($dati as &$valore){
+                    $parametri[] = &$valore;
+                }
+                $stmt->bind_param(
+                    $insertTipi[$i],
+                    ...$parametri
+                );
+                $stmt->execute();
+                $stmt->close();
+            }
+            $this->db->commit();
+            $success = true;
+            $message = "Operazione completata.";
+        }catch(Throwable $e){
+            $this->db->rollback();
+            $success = false;
+            if($e instanceof mysqli_sql_exception){
+                switch($e->getCode()){
+                    case 1062:
+                        $message = "Elemento già esistente.";
+                        break;
+                    case 1451:
+                        $message = "Elemento ancora utilizzato.";
+                        break;
+                    default:
+                        $message = "Errore database: ".$e->getMessage();
+                }
+            }else{
+                $message = "Errore durante il salvataggio: ".$e->getMessage();
+            }
+        }
+    }
+
+    //sta venendo usata in api-savePromotore
+    public function getLevelAccessByCF($cf){
+        $query = "
+            SELECT Livello_Permesso
+            FROM Persona
+            WHERE CF = ?
+        ";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param(
+            "s",
+            $cf
+        );
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        $stmt->close();
+        return $row ? (int)$row["Livello_Permesso"] : false;
     }
 }
 ?>

@@ -417,6 +417,36 @@ create table Universitario (
      constraint SID_Unive_Luogo_ID unique (Cod_Luogo));
 
 # ---------------------------------------------------------------------- #
+# Triggers                                                               #
+# ---------------------------------------------------------------------- #
+
+DELIMITER $$
+
+CREATE TRIGGER BI_Promotore_Delete
+BEFORE DELETE ON Promotore
+FOR EACH ROW
+BEGIN
+
+     IF EXISTS (
+          SELECT 1
+          FROM Propongono p
+          WHERE p.Codice = OLD.Codice
+               AND NOT EXISTS (
+                    SELECT 1
+                    FROM Propongono p2
+                    WHERE p2.Codice_Evento = p.Codice_Evento
+                    AND p2.Codice <> OLD.Codice
+               )
+     ) THEN
+          SIGNAL SQLSTATE '45000'
+          SET MESSAGE_TEXT = 'Impossibile eliminare il promotore: almeno un evento rimarrebbe senza promotori.';
+     END IF;
+
+END$$
+
+DELIMITER ;
+
+# ---------------------------------------------------------------------- #
 # Add info into "Agg_Collaboratore"                                      #
 # ---------------------------------------------------------------------- #
 
