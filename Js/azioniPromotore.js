@@ -42,7 +42,7 @@ function renderMainEventi() {
     return `
     <header class="promotori-header">
 
-        <h2 id="eventi-title">
+        <h2 id="promotori-title">
             Azioni su Promotori:
         </h2>
 
