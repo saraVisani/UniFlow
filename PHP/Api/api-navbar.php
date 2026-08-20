@@ -43,6 +43,10 @@ $response = [
             ["label" => "Eventi", "link" => "../PHP/eventi.php"],
             ["label" => "Forum", "link" => "#"],
             ["label" => "Classi Vuote", "link" => "../PHP/classi-vuote.php"]
+        ],
+        "Database" => [
+                ["label" => "Luoghi", "link" => "../PHP/azioniLuoghi.php"],
+                ["label" => "Promotori", "link" => "../PHP/azioniPromotori.php"],
         ]
     ]
 ];
@@ -85,8 +89,12 @@ if(isUserLoggedIn()){
                 ["label" => "Generali", "link" => "#"]
             ],
             "Richieste" => [
-                ["label" => "Ricevimento", "link" => "#"],
+                ["label" => "Ricevimento", "link" => "../PHP/azioniRicevimenti.php"],
                 ["label" => "Evento", "link" => "../PHP/azioniEvento.php"]
+            ],
+            "Database" => [
+                ["label" => "Luoghi", "link" => "../PHP/azioniLuoghi.php"],
+                ["label" => "Promotori", "link" => "../PHP/azioniPromotori.php"],
             ],
             "UniFlow" => [
                 ["label" => "Eventi", "link" => "../PHP/eventiPersona.php"],
@@ -114,7 +122,12 @@ if(isUserLoggedIn()){
             ],
             "Richieste" => [
                 ["label" => "Orario", "link" => "#"],
+                ["label" => "Ricevimento", "link" => "../PHP/azioniRicevimenti.php"],
                 ["label" => "Evento", "link" => "../PHP/azioniEvento.php"]
+            ],
+            "Database" => [
+                ["label" => "Luoghi", "link" => "../PHP/azioniLuoghi.php"],
+                ["label" => "Promotori", "link" => "../PHP/azioniPromotori.php"],
             ],
             "UniFlow" => [
                 ["label" => "Eventi", "link" => "../PHP/eventiPersona.php"],
@@ -138,8 +151,13 @@ if(isUserLoggedIn()){
             ],
             "Richieste" => [
                 ["label" => "Lezioni", "link" => "#"],
-                ["label" => "Ricevimenti", "link" => "#"],
+                ["label" => "Ricevimento", "link" => "../PHP/azioniRicevimenti.php"],
                 ["label" => "Eventi", "link" => "../PHP/azioniEvento.php"]
+            ],
+            "Database" => [
+                ["label" => "Luoghi", "link" => "../PHP/azioniLuoghi.php"],
+                ["label" => "Promotori", "link" => "../PHP/azioniPromotori.php"],
+                ["label" => "Persone", "link" => "#"]
             ],
             "UniFlow" => [
                 ["label" => "Eventi", "link" => "../PHP/eventiPersona.php"],

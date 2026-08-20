@@ -330,9 +330,11 @@ create table Richiesta_Ricevimento (
      Codice numeric(10) not null,
      Inserimento TINYINT(1) not null,
      Matricola numeric(10) not null,
+     Nuovo_Slot numeric(3) not null,
      Codice_Ric numeric(10),
      N_Slot numeric(3),
      Ricevimento numeric(10),
+     Data_Richiesta datetime not null,
      constraint ID_Richiesta_Ricevimento_ID primary key (Codice));
 
 create table Sede (
@@ -12476,36 +12478,36 @@ insert into Richiesta_Orario values (50, 'Inserisci', '2025-04-27 01:41:10', '20
 
 truncate table Richiesta_Ricevimento;
 
-insert into Richiesta_Ricevimento values (1, 1, 126, NULL, NULL, 1507);
-insert into Richiesta_Ricevimento values (2, 1, 182, NULL, NULL, 1537);
-insert into Richiesta_Ricevimento values (3, 1, 153, NULL, NULL, 1530);
-insert into Richiesta_Ricevimento values (4, 1, 187, NULL, NULL, 1570);
-insert into Richiesta_Ricevimento values (5, 1, 165, NULL, NULL, 1491);
-insert into Richiesta_Ricevimento values (6, 1, 74, NULL, NULL, 1580);
-insert into Richiesta_Ricevimento values (7, 1, 133, NULL, NULL, 1546);
-insert into Richiesta_Ricevimento values (8, 1, 211, NULL, NULL, 1502);
-insert into Richiesta_Ricevimento values (9, 1, 145, NULL, NULL, 1519);
-insert into Richiesta_Ricevimento values (10, 1, 163, NULL, NULL, 1492);
-insert into Richiesta_Ricevimento values (11, 1, 11, NULL, NULL, 1538);
-insert into Richiesta_Ricevimento values (12, 1, 183, NULL, NULL, 1501);
-insert into Richiesta_Ricevimento values (13, 1, 69, NULL, NULL, 1547);
-insert into Richiesta_Ricevimento values (14, 1, 155, NULL, NULL, 1493);
-insert into Richiesta_Ricevimento values (15, 1, 51, NULL, NULL, 1561);
-insert into Richiesta_Ricevimento values (16, 0, 191, 211, 2, NULL);
-insert into Richiesta_Ricevimento values (17, 0, 59, 8, 2, NULL);
-insert into Richiesta_Ricevimento values (18, 0, 48, 151, 4, NULL);
-insert into Richiesta_Ricevimento values (19, 0, 33, 3299, 7, NULL);
-insert into Richiesta_Ricevimento values (20, 0, 222, 1751, 5, NULL);
-insert into Richiesta_Ricevimento values (21, 0, 173, 306, 8, NULL);
-insert into Richiesta_Ricevimento values (22, 0, 140, 1343, 1, NULL);
-insert into Richiesta_Ricevimento values (23, 0, 168, 1814, 2, NULL);
-insert into Richiesta_Ricevimento values (24, 0, 17, 702, 2, NULL);
-insert into Richiesta_Ricevimento values (25, 0, 196, 5150, 3, NULL);
-insert into Richiesta_Ricevimento values (26, 0, 74, 4187, 4, NULL);
-insert into Richiesta_Ricevimento values (27, 0, 177, 5177, 2, NULL);
-insert into Richiesta_Ricevimento values (28, 0, 136, 150, 1, NULL);
-insert into Richiesta_Ricevimento values (29, 0, 192, 5132, 7, NULL);
-insert into Richiesta_Ricevimento values (30, 0, 208, 166, 4, NULL);
+insert into Richiesta_Ricevimento values (1, 1, 126, 1, NULL, NULL, 1507, '2025-10-10 10:20:00');
+insert into Richiesta_Ricevimento values (2, 1, 182, 5, NULL, NULL, 1537, '2025-04-22 15:45:00');
+insert into Richiesta_Ricevimento values (3, 1, 153, 17, NULL, NULL, 1530, '2025-03-15 09:30:00');
+insert into Richiesta_Ricevimento values (4, 1, 187, 2, NULL, NULL, 1570, '2025-12-17 11:10:00');
+insert into Richiesta_Ricevimento values (5, 1, 165, 1, NULL, NULL, 1491, '2025-05-20 08:50:00');
+insert into Richiesta_Ricevimento values (6, 1, 74, 5, NULL, NULL, 1580, '2025-10-03 14:00:00');
+insert into Richiesta_Ricevimento values (7, 1, 133, 4, NULL, NULL, 1546, '2025-06-11 16:15:00');
+insert into Richiesta_Ricevimento values (8, 1, 211, 6, NULL, NULL, 1502, '2025-09-22 12:30:00');
+insert into Richiesta_Ricevimento values (9, 1, 145, 2, NULL, NULL, 1519, '2025-09-18 09:40:00');
+insert into Richiesta_Ricevimento values (10, 1, 163, 1, NULL, NULL, 1492, '2025-05-28 10:00:00');
+insert into Richiesta_Ricevimento values (11, 1, 11, 4, NULL, NULL, 1538, '2025-04-29 13:20:00');
+insert into Richiesta_Ricevimento values (12, 1, 183, 1, NULL, NULL, 1501, '2025-09-13 11:45:00');
+insert into Richiesta_Ricevimento values (13, 1, 69, 6, NULL, NULL, 1547, '2025-09-05 10:10:00');
+insert into Richiesta_Ricevimento values (14, 1, 155, 1, NULL, NULL, 1493, '2025-05-26 15:30:00');
+insert into Richiesta_Ricevimento values (15, 1, 51, 5, NULL, NULL, 1561, '2025-11-11 09:15:00');
+insert into Richiesta_Ricevimento values (16, 0, 191, 3, 211, 2, NULL, '2025-02-17 16:40:00');
+insert into Richiesta_Ricevimento values (17, 0, 59, 3, 8, 2, NULL, '2025-03-11 14:15:00');
+insert into Richiesta_Ricevimento values (18, 0, 48, 3, 151, 4, NULL, '2025-08-14 09:50:00');
+insert into Richiesta_Ricevimento values (19, 0, 33, 6, 3299, 7, NULL, '2026-10-12 15:20:00');
+insert into Richiesta_Ricevimento values (20, 0, 222, 2, 1751, 5, NULL, '2025-09-14 17:00:00');
+insert into Richiesta_Ricevimento values (21, 0, 173, 4, 306, 8, NULL, '2025-05-10 10:35:00');
+insert into Richiesta_Ricevimento values (22, 0, 140, 7, 1343, 1, NULL, '2025-02-10 16:45:00');
+insert into Richiesta_Ricevimento values (23, 0, 168, 3, 1814, 2, NULL, '2025-12-05 13:10:00');
+insert into Richiesta_Ricevimento values (24, 0, 17, 3, 702, 2, NULL, '2025-09-15 11:40:00');
+insert into Richiesta_Ricevimento values (25, 0, 196, 9, 5150, 3, NULL, '2026-10-04 16:20:00');
+insert into Richiesta_Ricevimento values (26, 0, 74, 3, 4187, 4, NULL, '2026-12-16 10:05:00');
+insert into Richiesta_Ricevimento values (27, 0, 177, 4, 5177, 2, NULL, '2026-10-12 09:15:00');
+insert into Richiesta_Ricevimento values (28, 0, 136, 6, 150, 1, NULL, '2025-08-06 14:30:00');
+insert into Richiesta_Ricevimento values (29, 0, 192, 16, 5132, 7, NULL, '2026-10-19 11:25:00');
+insert into Richiesta_Ricevimento values (30, 0, 208, 5, 166, 4, NULL, '2025-11-04 15:40:00');
 
 # ---------------------------------------------------------------------- #
 # Add info into "Sede"                                                   #
@@ -16766,7 +16768,6 @@ insert into Slot values (700, 1, 12);
 insert into Slot values (701, 1, 183);
 insert into Slot values (702, 1, 151);
 insert into Slot values (702, 2, 17);
-insert into Slot values (702, 3, 213);
 insert into Slot values (703, 1, 141);
 insert into Slot values (703, 2, 36);
 insert into Slot values (704, 1, 72);
@@ -19981,8 +19982,6 @@ insert into Slot values (1489, 2, 71);
 insert into Slot values (1489, 3, 142);
 insert into Slot values (1489, 4, 194);
 insert into Slot values (1490, 1, 216);
-insert into Slot values (1491, 1, 196);
-insert into Slot values (1492, 1, 144);
 insert into Slot values (1492, 2, 171);
 insert into Slot values (1492, 3, 125);
 insert into Slot values (1492, 4, 147);
@@ -20020,7 +20019,6 @@ insert into Slot values (1499, 3, 135);
 insert into Slot values (1499, 5, 42);
 insert into Slot values (1499, 6, 61);
 insert into Slot values (1500, 1, 217);
-insert into Slot values (1501, 1, 220);
 insert into Slot values (1502, 1, 37);
 insert into Slot values (1502, 3, 21);
 insert into Slot values (1502, 4, 16);
@@ -20044,7 +20042,6 @@ insert into Slot values (1506, 7, 148);
 insert into Slot values (1506, 8, 193);
 insert into Slot values (1506, 9, 152);
 insert into Slot values (1506, 10, 37);
-insert into Slot values (1507, 1, 133);
 insert into Slot values (1507, 2, 12);
 insert into Slot values (1507, 3, 158);
 insert into Slot values (1508, 1, 213);
@@ -20103,7 +20100,6 @@ insert into Slot values (1518, 8, 37);
 insert into Slot values (1518, 10, 155);
 insert into Slot values (1518, 12, 66);
 insert into Slot values (1519, 1, 180);
-insert into Slot values (1519, 2, 143);
 insert into Slot values (1519, 3, 30);
 insert into Slot values (1520, 1, 66);
 insert into Slot values (1520, 2, 170);
@@ -20313,7 +20309,6 @@ insert into Slot values (1567, 11, 51);
 insert into Slot values (1568, 1, 39);
 insert into Slot values (1569, 1, 152);
 insert into Slot values (1570, 1, 161);
-insert into Slot values (1570, 2, 14);
 insert into Slot values (1571, 1, 206);
 insert into Slot values (1572, 1, 50);
 insert into Slot values (1572, 2, 194);

@@ -12,8 +12,8 @@ class DatabaseHelper
         }
     }
 
-    // Funzione privata per ottenere la matricola reale a partire da email o matricola
-    private function resolveUserId($idUtente)
+    // Funzione per ottenere la matricola reale a partire da email o matricola
+    function resolveUserId($idUtente)
     {
         // Se è già numerico, lo consideriamo matricola
         if (is_numeric($idUtente)) {
@@ -1216,7 +1216,7 @@ class DatabaseHelper
                         L.Nome        AS nome_luogo,
                         CASE
                             WHEN S.Codice IS NOT NULL
-                            THEN CONCAT(S.Nome, ' ', Uni.Codice)
+                            THEN S.Nome
                         END AS nome_sede,
                         CASE
                             WHEN S.Codice IS NOT NULL THEN
@@ -1351,25 +1351,25 @@ class DatabaseHelper
                     l.Nome AS nome,
                     l.Capienza AS capienza,
                     CASE
-                            WHEN S.Codice IS NOT NULL
-                            THEN CONCAT(S.Nome, ' ', Uni.Codice)
-                        END AS nome_sede,
-                        CASE
-                            WHEN S.Codice IS NOT NULL THEN
-                                CONCAT(
-                                    ISD.Via, ' ',
-                                    ISD.Nome, ' ',
-                                    S.N_Civico, ', ',
-                                    CS.Nome, ' (', S.Codice_Prov, ')'
-                                )
-                            ELSE
-                                CONCAT(
-                                    IES.Via, ' ',
-                                    IES.Nome, ' ',
-                                    X.N_Civico, ', ',
-                                    CE.Nome, ' (', X.Codice_Prov, ')'
-                                )
-                        END AS indirizzo
+                        WHEN S.Codice IS NOT NULL
+                        THEN S.Nome
+                    END AS nome_sede,
+                    CASE
+                        WHEN S.Codice IS NOT NULL THEN
+                            CONCAT(
+                                ISD.Via, ' ',
+                                ISD.Nome, ' ',
+                                S.N_Civico, ', ',
+                                CS.Nome, ' (', S.Codice_Prov, ')'
+                            )
+                        ELSE
+                            CONCAT(
+                                IES.Via, ' ',
+                                IES.Nome, ' ',
+                                X.N_Civico, ', ',
+                                CE.Nome, ' (', X.Codice_Prov, ')'
+                            )
+                    END AS indirizzo
                 FROM Luogo l
                 LEFT JOIN Universitario Uni
                         ON Uni.Cod_Luogo = L.Codice
@@ -2919,7 +2919,7 @@ class DatabaseHelper
     }
 
     function getProfessors(){
-        $sql = "SELECT p.Matricola AS matr, o.Cognome AS cognome, o.Nome AS nome
+        $sql = "SELECT p.Matricola AS matr, o.Cognome AS cognome, o.Nome AS nome, s.Email_Uni AS email
                 FROM Professore p
                 JOIN Sistema_Universitario s ON s.Matricola = p.Matricola
                 JOIN Persona o ON o.CF = s.CF
@@ -3769,6 +3769,268 @@ class DatabaseHelper
         $row = $result->fetch_assoc();
         $stmt->close();
         return $row ? (int)$row["Livello_Permesso"] : false;
+    }
+
+    private function getReunions($inizio, $fine, $matricola = null){
+
+        $sql = "
+            SELECT
+                R.Codice AS codice,
+                R.Online AS online,
+                R.Data_Inizio AS data_inizio,
+                R.Data_Fine AS data_fine,
+                R.N_Slot AS n_slot,
+                R.Matricola AS matricola,
+
+                P.Nome AS nome,
+                P.Cognome AS cognome,
+                SU.Email_Uni AS email,
+
+                CASE
+                    WHEN R.Online = 0 THEN R.Codice_Uni
+                END AS cod_uni,
+
+                CASE
+                    WHEN R.Online = 0 THEN L.Codice
+                END AS cod_stanza,
+
+                CASE
+                    WHEN R.Online = 0 THEN L.Nome
+                END AS nome_stanza,
+
+                CASE
+                    WHEN R.Online = 0 THEN L.Capienza
+                END AS capienza
+
+            FROM Ricevimento R
+
+            JOIN Sistema_Universitario SU
+                ON SU.Matricola = R.Matricola
+
+            JOIN Persona P
+                ON P.CF = SU.CF
+
+            LEFT JOIN Universitario U
+                ON U.Codice_Uni = R.Codice_Uni
+                AND U.Codice = R.Codice_Stanza
+
+            LEFT JOIN Luogo L
+                ON L.Codice = U.Cod_Luogo
+
+            WHERE R.Data_Inizio >= ?
+            AND R.Data_Inizio < ?
+        ";
+
+        $tipi = "ss";
+        $param = [$inizio, $fine];
+
+        if($matricola !== null){
+            $sql .= " AND R.Matricola = ?";
+            $tipi .= "i";
+            $param[] = $matricola;
+        }
+
+        $sql .= " ORDER BY R.Data_Inizio ASC";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param($tipi, ...$param);
+        $stmt->execute();
+
+        $ricevimenti = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        $slots = $this->getSlots($inizio, $fine);
+
+        $indice = [];
+
+        foreach($ricevimenti as &$ric){
+            $ric["slots"] = [];
+            $indice[$ric["codice"]] = &$ric;
+        }
+        unset($ric);
+
+        foreach($slots as $slot){
+            if(isset($indice[$slot["codice_ric"]])){
+                $indice[$slot["codice_ric"]]["slots"][] = $slot;
+            }
+        }
+
+        return $ricevimenti;
+    }
+
+    private function getSlots($inizio, $fine, $matricola = null){
+
+        $sql = "
+            SELECT
+                s.Codice_Ric AS codice_ric,
+                s.N_Slot AS slot,
+                s.Matricola AS matricola,
+                p.Nome AS nome,
+                p.Cognome AS cognome,
+                u.Email_Uni AS email
+
+            FROM Slot s
+
+            JOIN Sistema_Universitario u
+                ON s.Matricola = u.Matricola
+
+            JOIN Persona p
+                ON u.CF = p.CF
+
+            JOIN Ricevimento r
+                ON s.Codice_Ric = r.Codice
+
+            WHERE r.Data_Inizio >= ?
+            AND r.Data_Inizio < ?
+        ";
+
+        $tipi = "ss";
+        $param = [$inizio, $fine];
+
+        if($matricola !== null){
+            $sql .= " AND s.Matricola = ?";
+            $tipi .= "i";
+            $param[] = $matricola;
+        }
+
+        $sql .= " ORDER BY s.Codice_Ric, s.N_Slot";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param($tipi, ...$param);
+        $stmt->execute();
+
+        $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+
+        $stmt->close();
+
+        return $result;
+    }
+
+    private function getOffices($matricola = null){
+
+        $sql = "
+            SELECT
+                l.Codice AS codice,
+                u.Codice_Uni AS cod_uni,
+                u.Codice_Stanza AS cod_stanza,
+                se.Nome AS nome_sede,
+                l.Nome AS nome_stanza,
+                l.Capienza AS capienza,
+                p.Nome AS nome,
+                p.Cognome AS cognome,
+                s.Matricola AS matricola,
+                s.Email_Uni AS email,
+                CONCAT(
+                    i.Via, ' ',
+                    i.Nome, ' ',
+                    se.N_Civico, ', ',
+                    c.Nome, ' (', se.Codice_Prov, ')'
+                ) AS indirizzo
+
+            FROM Ufficio u
+
+            JOIN Universitario un
+                ON u.Codice_Uni = un.Codice_Uni
+                AND u.Codice_Stanza = un.Codice
+
+            JOIN Sede se
+                ON un.Codice_Uni = se.Codice
+
+            LEFT JOIN Indirizzo i
+                ON i.Codice_Prov = se.Codice_Prov
+                AND i.Codice_Citta = se.Codice_Citta
+                AND i.N_Civico = se.N_Civico
+
+            LEFT JOIN Citta c
+                ON c.Codice_Prov = se.Codice_Prov
+                AND c.Codice = se.Codice_Citta
+
+            JOIN Luogo l
+                ON un.Cod_Luogo = l.Codice
+
+            JOIN Sistema_Universitario s
+                ON s.Matricola = u.Matricola
+
+            JOIN Persona p
+                ON p.CF = s.CF
+        ";
+
+        if($matricola !== null){
+            $sql .= " WHERE u.Matricola = ?";
+        }
+
+        $sql .= " ORDER BY u.Matricola";
+
+        $stmt = $this->db->prepare($sql);
+
+        if($matricola !== null){
+            $stmt->bind_param("i", $matricola);
+        }
+
+        $stmt->execute();
+
+        $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+
+        $stmt->close();
+
+        return $result;
+    }
+
+    public function getAllReunions($inizio, $fine){
+        return $this->getReunions($inizio, $fine);
+    }
+
+    public function getAllReunionsByProfessor($inizio, $fine, $user){
+        $mat = $this->resolveUserId($user);
+        if(!$mat){
+            return [];
+        }
+        return $this->getReunions($inizio, $fine, $mat);
+    }
+
+    public function getAllSlots($inizio, $fine){
+        return $this->getSlots($inizio, $fine);
+    }
+
+    public function getAllUserSlots($inizio, $fine, $user){
+        $mat = $this->resolveUserId($user);
+        if(!$mat){
+            return [];
+        }
+        return $this->getSlots($inizio, $fine, $mat);
+    }
+
+    public function getAllOffices(){
+        return $this->getOffices();
+    }
+
+    public function getAllOfficesByProfessor($user){
+        $mat = $this->resolveUserId($user);
+        if(!$mat){
+            return [];
+        }
+        return $this->getOffices($mat);
+    }
+
+    public function getStudents(){
+        $sql = " SELECT
+                    p.Nome AS nome,
+                    p.Cognome AS cognome,
+                    u.Matricola AS matr,
+                    u.Email_Uni AS email
+                FROM Studente s
+                JOIN Sistema_Universitario u
+                    ON s.Matricola = u.Matricola
+                JOIN Persona p
+                    ON u.CF = p.CF
+                ORDER BY p.Cognome, p.Nome, u.Matricola
+            ";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $stud = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+        return $stud;
     }
 }
 ?>

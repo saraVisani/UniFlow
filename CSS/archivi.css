@@ -1,0 +1,85 @@
+.slot-griglia {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(70px, 100px));
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.slot {
+    width: 100%;
+    min-height: 5rem;
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #999;
+    border-radius: 4px;
+    padding: 0.5rem;
+    gap: .25rem;
+    text-align: center;
+}
+
+button.slot {
+    cursor: pointer;
+}
+
+.slot-orario {
+    font-size: .9rem;
+}
+
+.slot-stato {
+    font-weight: bold;
+}
+
+.slot.libero {
+    background: transparent;
+}
+
+.slot.occupato {
+    background: #464545;
+}
+
+.slot.elimina {
+    background: #f95959;
+}
+
+.slot.studente {
+    background: #7bff7b;
+}
+
+.slot.modificato {
+    background: #fad158;
+}
+
+.slot-short {
+    display: none;
+}
+
+.slot .slot-date {
+    display: inline;
+}
+
+.slot .slot-separator {
+    display: inline;
+}
+
+@media (max-width: 768px) {
+    .slot-long {
+        display: none;
+    }
+
+    .slot-short {
+        display: inline;
+    }
+
+    .slot .slot-date {
+        display: block;
+    }
+
+    .slot .slot-separator {
+        display: block;
+    }
+}
