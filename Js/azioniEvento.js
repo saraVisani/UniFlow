@@ -1692,7 +1692,7 @@ async function saveAllChanges() {
 
                 break;
         }
-        case "delete":
+        case "delete":{
             if(!document.getElementById("evento-select").value){
                 alert("Cancellazione è andata storta");
                 return;
@@ -1719,8 +1719,9 @@ async function saveAllChanges() {
             }
 
             break;
+        }
 
-        case "addOrario":
+        case "addOrario":{
             let richiedente;
             if(document.getElementById('richiedente')){
                 richiedente = document.getElementById('richiedente').value;
@@ -1749,8 +1750,9 @@ async function saveAllChanges() {
             }
 
             break;
+        }
 
-        case "editOrario":
+        case "editOrario":{
             if(!document.getElementById("evento-select").value ){
                 alert("Salvataggio è andato storto");
                 return;
@@ -1803,8 +1805,9 @@ async function saveAllChanges() {
             }
 
             break;
+        }
 
-        case "deleteOrario":
+        case "deleteOrario":{
             if(!document.getElementById("evento-select").value){
                 alert("Cancellazione è andata storta");
                 return;
@@ -1849,6 +1852,7 @@ async function saveAllChanges() {
             }
 
             break;
+        }
     }
 
     try{
